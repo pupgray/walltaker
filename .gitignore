@@ -34,3 +34,9 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 /.idea/railways.cache
+
+#Ignore custom configs
+config/database.yml
+docker-compose.yml
+Dockerfile
+.docker

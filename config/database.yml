@@ -16,7 +16,7 @@ development: &development
   database: walltaker
   username: postgres
   password:
-  host: localhost
+  host: database
   port: 5432
 
 # Warning: The database defined as "test" will be erased and
