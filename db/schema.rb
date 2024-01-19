@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_13_205455) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_19_122623) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -206,6 +206,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_13_205455) do
     t.index ["receiver_id"], name: "index_friendships_on_receiver_id"
     t.index ["sender_id", "receiver_id"], name: "index_friendships_on_sender_id_and_receiver_id", unique: true
     t.index ["sender_id"], name: "index_friendships_on_sender_id"
+    t.check_constraint "sender_id <> receiver_id", name: "not_friending_self"
   end
 
   create_table "link_abilities", force: :cascade do |t|
