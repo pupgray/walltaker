@@ -53,6 +53,11 @@ class FriendshipsController < ApplicationController
       return
     end
 
+    if receiver.id == current_user.id
+      redirect_back_or_to root_path, alert: 'You can\'t befriend yourself!'
+      return
+    end
+
     @friendship = Friendship.new(HashWithIndifferentAccess.new({
                                                                  sender_id: current_user.id,
                                                                  receiver_id: receiver.id,
