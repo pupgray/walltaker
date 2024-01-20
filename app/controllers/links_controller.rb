@@ -36,7 +36,7 @@ class LinksController < ApplicationController
           .joins(:past_links)
           .where('past_links.created_at = (SELECT MAX(created_at) FROM past_links WHERE past_links.link_id = links.id)')
           .order(Arel.sql(%q{
-                    past_links.created_at - make_interval(secs := users.set_count * 6) ASC
+                    EXTRACT (EPOCH FROM AGE(NOW(), past_links.created_at)) * (1 + (users.set_count / 3000.0)) DESC
                  }))
           .limit(18)
           .pluck(:id)
