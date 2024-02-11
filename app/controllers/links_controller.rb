@@ -51,6 +51,7 @@ class LinksController < ApplicationController
     @has_friendship = Friendship.find_friendship(current_user, @link.user).exists? if current_user
     @set_by = User.find(@link.set_by_id) if @link.set_by_id && request.format == :json
     @is_current_user = (current_user && (current_user.id == @link.user.id))
+    @past_links = PastLink.all.order(id: :desc).where(link: @link).offset(1).take(7)
   end
 
   # GET /links/new
