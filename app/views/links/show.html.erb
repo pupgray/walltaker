@@ -165,12 +165,14 @@
 
 <%= turbo_stream_from "link_details_#{@link.id}" %>
 <%= render 'details', link: @link, set_by: @set_by %>
-<h3>Previous wallpapers</h3>
-<%= render partial: 'past_links', locals: { past_links: @past_links } %>
-<span class="mock-link small see-all-past-wallpapers">
-  View More
-  <ion-icon role="presentation" name="arrow-forward"></ion-icon>
-</span>
+<% unless @past_links.empty? %>
+  <h3>Previous wallpapers</h3>
+  <%= render partial: 'past_links', locals: { past_links: @past_links } %>
+  <span class="mock-link small see-all-past-wallpapers">
+    View More
+    <ion-icon role="presentation" name="arrow-forward"></ion-icon>
+  </span>
+<% end %>
 
 <div class="tabs" data-controller="tabs">
   <div class="tabs__charm">
