@@ -1,0 +1,9 @@
+<div class="<%= past_links.length > 7 ? 'past-link-posts past-link-posts--grid' : 'past-link-posts' %>">
+  <% past_links.each do |past_link| %>
+    <% unless past_link.post_thumbnail_url.nil? %>
+      <a href="<%= past_link.post_url %>" target="_blank">
+        <%= image_tag past_link.post_thumbnail_url %>
+      </a>
+    <% end %>
+  <% end %>
+</div>
