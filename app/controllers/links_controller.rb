@@ -9,16 +9,16 @@ class LinksController < ApplicationController
   before_action :authorize, only: %i[index new edit create destroy]
 
   # 2. set @link instance var, since a lot of action filters use it
-  before_action :set_link, only: %i[show edit update destroy export toggle_ability]
+  before_action :set_link, only: %i[show history edit update destroy export toggle_ability]
 
   # 3. protect link-specific buisness rules
-  before_action :prevent_public_expired, only: %i[show update]
-  before_action :protect_friends_only_links, only: %i[show update]
+  before_action :prevent_public_expired, only: %i[show history update]
+  before_action :protect_friends_only_links, only: %i[show history update]
   before_action :skip_unauthorized_requests, only: %i[update toggle_ability], if: -> { update_request_unsafe? }
 
   # 4. save presence + analytics
   after_action :log_presence, only: %i[show]
-  after_action :track_visit, only: %i[index browse new show edit]
+  after_action :track_visit, only: %i[index browse new show history edit]
 
   # GET /links or /links.json (only your links)
   def index
@@ -58,6 +58,11 @@ class LinksController < ApplicationController
   def new
     @link = Link.new
     @link.expires = Time.now.utc + 1.days
+  end
+
+  # GET /links/1/history
+  def history
+    @past_links = PastLink.all.order(id: :desc).where(link: @link).take(50)
   end
 
   # GET /links/1/edit
