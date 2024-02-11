@@ -1,6 +1,9 @@
+<div class="left">
+    <%= link_to "Back to link", url_for(action: :show) %>
+</div>
 <%= turbo_stream_from @link %>
 <%= render @link %>
-<h1>Past Wallpapers</h1>
+<h1>Previous Wallpapers</h1>
 <p>Below is a list of the last <%= pluralize(@past_links.length, "wallpaper")%> set by others for this link. Click any wallpaper to go to see the full size image.</p>
 <div class="past-link-posts past-link-posts--grid">
   <% @past_links.each do |past_link| %>
