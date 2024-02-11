@@ -1,0 +1,13 @@
+<%= turbo_stream_from @link %>
+<%= render @link %>
+<h1>Past Wallpapers</h1>
+<p>Below is a list of the last <%= pluralize(@past_links.length, "wallpaper")%> set by others for this link. Click any wallpaper to go to see the full size image.</p>
+<div class="past-link-posts past-link-posts--grid">
+  <% @past_links.each do |past_link| %>
+    <% unless past_link.post_thumbnail_url.nil? %>
+      <a href="<%= past_link.post_url %>" target="_blank">
+        <%= image_tag past_link.post_thumbnail_url %>
+      </a>
+    <% end %>
+  <% end %>
+</div>
