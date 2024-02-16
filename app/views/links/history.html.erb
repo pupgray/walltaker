@@ -5,12 +5,22 @@
 <%= render @link %>
 <h2>Previous Wallpapers</h2>
 <p>Below is a list of the last <%= pluralize(@past_links.length, "wallpaper")%> set by others for this link. Click any wallpaper to go to see the full size image.</p>
-<div class="past-link-posts past-link-posts--grid">
+<div class="link-history--list">
   <% @past_links.each do |past_link| %>
     <% unless past_link.post_thumbnail_url.nil? %>
-      <a href="<%= past_link.post_url %>" target="_blank">
-        <%= image_tag past_link.post_thumbnail_url %>
-      </a>
+      <div class="link-history--card">
+        <a href="<%= past_link.post_url %>" class="link-history--image-link" target="_blank">
+          <%= image_tag past_link.post_thumbnail_url %>
+        </a>
+        <div class="link-history--card-footer"> 
+          <% unless past_link.set_by.nil? %>
+            <%= link_to past_link.set_by.username, user_path(past_link.set_by.username), target: '_top', data: { controller: 'user-reference' } %>
+          <% else %>
+            anon
+          <% end %>
+        </div>
+      </div>
     <% end %>
+
   <% end %>
 </div>

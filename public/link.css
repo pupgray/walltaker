@@ -1170,3 +1170,52 @@ h4.forks-header + p {
         grid-template-columns: repeat(1, auto);
     }
 }
+
+.link-history--list {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+
+}
+@media screen and (max-width: 760px) {
+    .link-history--list {
+        grid-template-columns: repeat(3, auto);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .link-history--list{
+        grid-template-columns: repeat(2, auto);
+    }
+}
+
+.link-history--card {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    grid-template-rows: 1fr 30px;
+    background-color: var(--accent-bg);
+    border-radius: 5px;
+    border: 1px solid var(--border);
+    margin: 5px;
+    padding: 5px;
+    height: 200px;
+}
+
+.link-history--card .link-history--image-link {
+    margin: 8px;
+    grid-column-start: span 1;
+    grid-row-start: 1;
+    min-height: 0;
+    min-width: 0;
+    display: flex;
+    justify-content: center;
+}
+.link-history--card-footer {
+    grid-column-start: span 1;
+    grid-row-start: 2;
+    margin: 5px;
+}
+
+.link-history--card img {
+    object-fit: contain;
+    border-radius: 0;
+}
