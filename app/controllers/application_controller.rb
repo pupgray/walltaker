@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
         track :error, :e621_posts_api_fail, response: response
         return nil
       end
-  
+
       results = JSON.parse(response.body)['posts']
       if results.present? && results.class == Array
         if /order:random/i =~ padded_tag_string
@@ -47,7 +47,7 @@ class ApplicationController < ActionController::Base
         else
           Rails.cache.write(key, results, expires_in: 45.minutes)
         end
-        
+
         unless link_can_show_videos
           results.filter do |post|
             %w[png jpg bmp webp].include? post['file']['ext']
@@ -158,37 +158,52 @@ class ApplicationController < ActionController::Base
 
   helper_method :log_link_presence
 
-  def on_link_react (link)
+  def on_link_react (past_link, response_type, response_text)
+    link = past_link.link
+    is_current_post = PastLink.where(link: link).last == past_link
+    print "~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!\n"
+    print "~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!\n"
+    print "~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!\n"
+    print is_current_post
+    print "~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!\n"
+    print "~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!\n"
+    print "~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!\n"
     # Make notification for setter
-    notification_text = "#{link.user.username} loved your post!" if link.response_type == 'horny'
-    notification_text = "#{link.user.username} did not like your post." if link.response_type == 'disgust'
-    notification_text = "#{link.user.username} came to your post!" if link.response_type == 'came'
-    notification_text = "#{notification_text} \"#{link.response_text}\"" unless link.response_type.nil?
+    notification_text = "#{link.user.username} loved your post!" if response_type == 'horny'
+    notification_text = "#{link.user.username} did not like your post." if response_type == 'disgust'
+    notification_text = "#{link.user.username} came to your post!" if response_type == 'came'
+    notification_text = "#{notification_text} \"#{response_text}\"" unless response_type.nil?
     Notification.create user_id: link.set_by_id, notification_type: :post_response, text: notification_text, link: "/links/#{link.id}"
 
     # Log reaction in chat sidebar
-    comment_text = "> loved it! #{ link.post_url }" if link.response_type == 'horny'
-    comment_text = "> hated it. #{ link.post_url }" if link.response_type == 'disgust'
-    comment_text = "> came to it! #{ link.post_url }" if link.response_type == 'came'
+    comment_text = "> loved #{past_link.set_by.username}'s wallpaper! #{ past_link.post_url }" if response_type == 'horny'
+    comment_text = "> hated it. #{ past_link.post_url }" if response_type == 'disgust'
+    comment_text = "> came to #{past_link.set_by.username}'s wallpaper! #{ past_link.post_url }" if response_type == 'came'
     Comment.create user_id: link.user.id, link_id: link.id, content: comment_text
-    Comment.create user_id: link.user.id, link_id: link.id, content: link.response_text unless link.response_type.nil?
+    Comment.create user_id: link.user.id, link_id: link.id, content: response_text unless response_type.nil?
 
     # If a came reaction, log an orgasm
-    Nuttracker::Orgasm.create rating: 3, is_ruined: false, user: link.user, caused_by: link.set_by if link.response_type == 'came'
+    Nuttracker::Orgasm.create rating: 3, is_ruined: false, user: link.user, caused_by: past_link.set_by if response_type == 'came'
 
     # If a disgust reaction, revert to old wallpaper
-    if link.response_type == 'disgust'
-      past_links = PastLink.where(link_id: link.id, post_url: link.post_url)
+    if response_type == 'disgust'
+      offending_post_url = past_link.post_url
+      past_links = PastLink.where(link: link, post_url: past_link.post_url)
       past_links.destroy_all unless past_links.empty?
-
-      last_past_link = PastLink.where(link_id: link.id).where.not(post_url: link.post_url).order('created_at').last
-
-      link.post_url = last_past_link ? last_past_link.post_url : nil
-      link.post_thumbnail_url = last_past_link ? last_past_link.post_thumbnail_url : nil
-      link.set_by = last_past_link.set_by
+      if is_current_post
+        past_link = PastLink.where(link: link).where.not(post_url: offending_post_url).order('created_at').last
+      end
     end
 
-    link
+    if is_current_post
+      link.response_text = response_text
+      link.response_type = response_type
+      link.post_url = past_link ? past_link.post_url : nil
+      link.post_thumbnail_url = past_link ? past_link.post_thumbnail_url : nil
+      link.set_by = past_link&.set_by
+    end
+
+    link.save
   end
 
   def authorize

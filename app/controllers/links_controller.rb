@@ -110,16 +110,17 @@ class LinksController < ApplicationController
     end
 
     result_of_link_model_save = if e621_post.nil?
-                                  @link.assign_attributes(link_params)
+                                  did_save_successfully = false
+                                  unless link_response_params['response_type'].nil?
+                                    past_link = PastLink.where(link: @link).last
+                                    did_save_successfully = on_link_react(past_link, link_response_params['response_type'], link_response_params['response_text'])
+                                  else
+                                    @link.assign_attributes(link_params)
+                                    @link.custom_url = nil if @link.custom_url == ''
+                                    @link.custom_url = nil if @link.user.set_count < 300
 
-                                  @link.custom_url = nil if @link.custom_url == ''
-                                  @link.custom_url = nil if @link.user.set_count < 300
-
-                                  unless link_params['response_type'].nil?
-                                    @link = on_link_react(@link)
+                                    did_save_successfully = @link.save
                                   end
-
-                                  did_save_successfully = @link.save
 
                                   track :regular, :update_link_details
                                   did_save_successfully
@@ -250,7 +251,11 @@ class LinksController < ApplicationController
   # Helpers
 
   def link_params
-    params.require(:link).permit(:expires, :terms, :blacklist, :friends_only, :never_expires, :theme, :min_score, :response_text, :response_type, :custom_url)
+    params.require(:link).permit(:expires, :terms, :blacklist, :friends_only, :never_expires, :theme, :min_score, :custom_url)
+  end
+
+  def link_response_params
+    params.require(:link).permit(:response_text, :response_type)
   end
 
   def prevent_public_expired
