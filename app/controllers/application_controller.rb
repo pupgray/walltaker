@@ -161,13 +161,7 @@ class ApplicationController < ActionController::Base
   def on_link_react (past_link, response_type, response_text)
     link = past_link.link
     is_current_post = PastLink.where(link: link).last == past_link
-    print "~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!\n"
-    print "~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!\n"
-    print "~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!\n"
-    print is_current_post
-    print "~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!\n"
-    print "~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!\n"
-    print "~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!\n"
+
     # Make notification for setter
     notification_text = "#{link.user.username} loved your post!" if response_type == 'horny'
     notification_text = "#{link.user.username} did not like your post." if response_type == 'disgust'
@@ -187,16 +181,19 @@ class ApplicationController < ActionController::Base
 
     # If a disgust reaction, revert to old wallpaper
     if response_type == 'disgust'
-      offending_post_url = past_link.post_url
       past_links = PastLink.where(link: link, post_url: past_link.post_url)
       past_links.destroy_all unless past_links.empty?
-      if is_current_post
-        past_link = PastLink.where(link: link).where.not(post_url: offending_post_url).order('created_at').last
-      end
+      return true
     end
 
+    new_response = PastLinkResponse.new()
+    new_response.past_link = past_link
+    new_response.response_text = response_text + "CORRECT"
+    new_response.response_type = response_type
+    new_response.save
+
     if is_current_post
-      link.response_text = response_text
+      link.response_text = response_text + "FIXME!!"
       link.response_type = response_type
       link.post_url = past_link ? past_link.post_url : nil
       link.post_thumbnail_url = past_link ? past_link.post_thumbnail_url : nil

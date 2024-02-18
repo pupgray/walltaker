@@ -1,0 +1,17 @@
+<% target = "link_response_#{link.id}" %>
+<%# Most of the codebase uses "response" rather than "reaction", but the latter is necessary to avoid a name collision with rails %>
+<%= turbo_frame_tag target do %>
+  <% if reaction && reaction.response_text && !reaction.disgust? %>
+    <div class="link--response">
+      <strong>
+        <%= link.user.username %>
+        <% if reaction.horny? %>
+          😍:
+        <% elsif reaction.came? %>
+          💦 said while cumming:
+        <% end %>
+      </strong>
+      <%= reaction.response_text %>
+    </div>
+  <% end %>
+<% end %>

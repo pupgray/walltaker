@@ -66,7 +66,11 @@ class Link < ApplicationRecord
       abilities.create ability: ability_name
     end
   end
-
+  def current_reaction
+    latest_post = PastLink.where(link_id: self.id).last
+    return nil if latest_post.nil?
+    return PastLinkResponse.where(past_link_id: latest_post.id).last
+  end
   # @return [User | nil]
   def get_set_by_user
     return User.find(self.set_by_id) if self.set_by_id
