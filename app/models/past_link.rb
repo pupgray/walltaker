@@ -2,7 +2,7 @@ class PastLink < ApplicationRecord
   belongs_to :link
   belongs_to :user
   belongs_to :set_by, foreign_key: :set_by_id, class_name: 'User', optional: true
-  has_many :past_link_response, :dependent => :delete_all
+  has_many :past_link_responses, :dependent => :delete_all
   visitable :ahoy_visit
 
   def self.log_link(link)

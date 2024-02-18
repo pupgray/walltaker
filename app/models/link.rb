@@ -67,9 +67,7 @@ class Link < ApplicationRecord
     end
   end
   def current_reaction
-    latest_post = PastLink.where(link_id: self.id).last
-    return nil if latest_post.nil?
-    return PastLinkResponse.where(past_link_id: latest_post.id).last
+    return past_links&.last&.past_link_responses&.last
   end
   # @return [User | nil]
   def get_set_by_user

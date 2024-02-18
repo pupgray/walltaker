@@ -112,7 +112,7 @@ class LinksController < ApplicationController
     result_of_link_model_save = if e621_post.nil?
                                   did_save_successfully = false
                                   unless link_response_params['response_type'].nil?
-                                    past_link = PastLink.where(link: @link).last
+                                    past_link = @link.past_links.last
                                     did_save_successfully = on_link_react(past_link, link_response_params['response_type'], link_response_params['response_text'])
                                   else
                                     @link.assign_attributes(link_params)
