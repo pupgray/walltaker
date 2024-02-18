@@ -185,6 +185,7 @@ class ApplicationController < ActionController::Base
 
       link.post_url = last_past_link ? last_past_link.post_url : nil
       link.post_thumbnail_url = last_past_link ? last_past_link.post_thumbnail_url : nil
+      link.set_by = last_past_link.set_by
     end
 
     link
