@@ -170,9 +170,10 @@ class ApplicationController < ActionController::Base
     Notification.create user_id: link.set_by_id, notification_type: :post_response, text: notification_text, link: "/links/#{link.id}"
 
     # Log reaction in chat sidebar
-    comment_text = "> loved #{past_link.set_by.username}'s wallpaper! #{ past_link.post_url }" if response_type == 'horny'
+    setter_name = past_link.set_by&.username || "anon"
+    comment_text = "> loved #{setter_name}'s wallpaper! #{ past_link.post_url }" if response_type == 'horny'
     comment_text = "> hated it. #{ past_link.post_url }" if response_type == 'disgust'
-    comment_text = "> came to #{past_link.set_by.username}'s wallpaper! #{ past_link.post_url }" if response_type == 'came'
+    comment_text = "> came to #{setter_name}'s wallpaper! #{ past_link.post_url }" if response_type == 'came'
     Comment.create user_id: link.user.id, link_id: link.id, content: comment_text
     Comment.create user_id: link.user.id, link_id: link.id, content: response_text unless response_type.nil?
 
