@@ -267,6 +267,43 @@
             <% end %>
           </div>
         </div>
+
+        <div class="abilities__ability">
+        <% force_preview = link.check_ability 'force_preview' %>
+
+        <div class="abilities__ability__title">
+          <strong>
+            <% if force_preview %>
+              <ion-icon name="expand-outline"></ion-icon>
+            <% else %>
+              <ion-icon name="contract-outline"></ion-icon>
+            <% end %>
+            <%= force_preview ? 'Force preview' : 'Don’t force preview' %>
+          </strong>
+          <p>
+            <% if force_preview %>
+              Yuor preview is now forced.
+            <% else %>
+              Your preview isn’t forced.
+            <% end %>
+          </p>
+          <% if force_preview %>
+              <div>
+                <div class="abilities__ability__controls">
+                  <%= button_to toggle_link_ability_link_path(ability: :force_preview), method: :post, class: force_preview ? 'enabled' : 'disabled' do %>
+                   <%= force_preview ? 'Force preview' : 'Dont force preview' %>
+                    <% end %>
+                </div>
+              </div>
+          <% end %>
+        </div>
+        <div class="abilities__ability__controls">
+          <%= button_to toggle_link_ability_link_path(ability: :force_preview), method: :post, class: force_preview ? 'enabled' : 'disabled' do %>
+            <%= force_preview ? 'Force preview' : 'Dont force preview' %>
+          <% end %>
+        </div>
+      </div>
+
       </div>
     <% end %>
   </div>
