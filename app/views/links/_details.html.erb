@@ -43,17 +43,17 @@
       <a href="<%= link.post_url %>" target="_blank" class="background-sample">
         <% force_preview = link.check_ability 'force_preview' %>
 
-        <% if force_preview%>
+        <% if !force_preview%>
           <% case device%>
            <% when :desktop %>
+            <img src="<%= link.post_thumbnail_url %>" class="background-sample__image--<%= device %>"/>
             <ion-icon role="presentation" name="laptop-outline" class="background-sample__icon--desktop"></ion-icon>
            <% when :mobile %>
             <ion-icon role="presentation" name="phone-portrait-outline" class="background-sample__icon--mobile"></ion-icon>
-            <img src="<%= link.post_thumbnail_url %>" class="background-sample__image--<%= device %>"/>
           <% end %>
         <% else %>
-          <ion-icon role="presentation" name="phone-portrait-outline" class="background-sample__icon--mobile"></ion-icon>
           <img src="<%= link.post_thumbnail_url %>" class="background-sample__image--mobile"/>
+          <ion-icon role="presentation" name="phone-portrait-outline" class="background-sample__icon--mobile"></ion-icon>
         <% end %>
         
       </a>
