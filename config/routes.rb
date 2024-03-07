@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get 'kinks/new', to: 'kink#new', as: 'kink_new_form'
   get 'kinks/:id', to: 'kink#show', as: 'kink_show'
   post 'kinks(/:id)', to: 'kink#update', as: 'kink'
+  post 'kinks/:id/test/e621', to: 'kink#test_on_e621', as: 'kink_e621'
   delete 'kinks/:id', to: 'kink#remove', as: 'kink_remove'
 
   get 'settings/index'
@@ -12,6 +13,7 @@ Rails.application.routes.draw do
   mount Nuttracker::Engine => "/nut"
   mount Crono::Engine, at: '/pornbot'
   get 'help', to: 'help#index', as: 'help'
+  get 'help/faq', to: 'help#faq', as: 'faq'
   get 'leaderboard', to: 'leaderboard#index', as: 'leaderboard'
   get 'notification/show'
   delete 'notification', to: 'notification#delete_all', as: 'clear_notifications'

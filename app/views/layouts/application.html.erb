@@ -27,11 +27,10 @@
   <%= javascript_importmap_tags %>
 </head>
 
-
 <body>
 <header>
   <div class="header__age-warning">
-    🔞 This is an app for adults over the age of 18 only.
+    <span id="age-warning__icon">🔞</span> This is an app for adults over the age of 18 only.
   </div>
   <div class="header__inner">
     <h1>
@@ -108,7 +107,8 @@
     Want more horny debauchery? Try <a href="https://joi.how">joi.how</a>.<br/>
     Horny lizards Warren, Taylor, and Ki conceived of and drawn by
     <a href="https://www.furaffinity.net/user/cherryzbun/" target=_blank>CherryzBun</a><br/>
-    <%= link_to 'Need help with Walltaker?', help_path %>
+    <%= link_to 'Need help with Walltaker?', help_path %> &nbsp
+    <%= link_to 'FAQs', faq_path %>
   </p>
   <small>
     © joi.how 2024 / Commit
