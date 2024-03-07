@@ -5,7 +5,7 @@ class PastLink < ApplicationRecord
   has_many :past_link_responses, :dependent => :delete_all
   visitable :ahoy_visit
 
-  def self.log_link(link)
+  def self.log_link(link) # post_url, post_thumbnail_url, set_by_id
     new({
           link:,
           user: link.user,
@@ -13,6 +13,10 @@ class PastLink < ApplicationRecord
           post_thumbnail_url: link.post_thumbnail_url,
           set_by_id: link.set_by_id
         })
+  end
+
+  def current_reaction
+    return past_link_responses.last
   end
 
   after_commit do

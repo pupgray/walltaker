@@ -160,7 +160,6 @@ class ApplicationController < ActionController::Base
 
   def on_link_react (past_link, response_type, response_text)
     link = past_link.link
-    is_current_post = PastLink.where(link: link).last == past_link
 
     # Make notification for setter
     notification_text = "#{link.user.username} loved your post!" if response_type == 'horny'
@@ -182,25 +181,25 @@ class ApplicationController < ActionController::Base
 
     # If a disgust reaction, revert to old wallpaper
     if response_type == 'disgust'
-      past_links = PastLink.where(link: link, post_url: past_link.post_url)
+      past_links = link.past_links.where(post_url: past_link.post_url)
       past_links.destroy_all unless past_links.empty?
-      return true
+      past_link = link.past_links.last
+
+      # In the future, this will be normalized out so that deleting past_link is enough to accomplish this.
+      is_current_post = PastLink.where(link: link).last == past_link
+      if is_current_post
+        link.post_url = past_link ? past_link.post_url : nil
+        link.post_thumbnail_url = past_link ? past_link.post_thumbnail_url : nil
+        link.set_by = past_link&.set_by
+      end
+      link.save
+    else
+      new_response = PastLinkResponse.new()
+      new_response.past_link = past_link
+      new_response.response_text = response_text + "CORRECT"
+      new_response.response_type = response_type
+      new_response.save
     end
-
-    new_response = PastLinkResponse.new()
-    new_response.past_link = past_link
-    new_response.response_text = response_text + "CORRECT"
-    new_response.response_type = response_type
-    new_response.save
-
-    if is_current_post
-      link.response_text = response_text + "FIXME!!"
-      link.response_type = response_type
-      link.post_url = past_link ? past_link.post_url : nil
-      link.post_thumbnail_url = past_link ? past_link.post_thumbnail_url : nil
-      link.set_by = past_link&.set_by
-    end
-
     link.save
   end
 

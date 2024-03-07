@@ -6,6 +6,7 @@ class Link < ApplicationRecord
   has_many :forks, foreign_key: :forked_from_id, class_name: 'Link', inverse_of: :forked_from
   has_many :viewing_users, foreign_key: :viewing_link_id, class_name: 'User'
   has_many :past_links
+  has_many :past_link_responses, through: :past_links
   has_many :comments, dependent: :destroy
   has_many :abilities, class_name: 'LinkAbility', inverse_of: :link, dependent: :destroy
   has_many :users_viewing, class_name: 'User', foreign_key: :viewing_link_id, inverse_of: :viewing_link, dependent: :nullify
@@ -66,9 +67,15 @@ class Link < ApplicationRecord
       abilities.create ability: ability_name
     end
   end
+
   def current_reaction
-    return past_links&.last&.past_link_responses&.last
+    return current_post&.current_reaction
   end
+
+  def current_post
+    return past_links&.last
+  end
+
   # @return [User | nil]
   def get_set_by_user
     return User.find(self.set_by_id) if self.set_by_id
