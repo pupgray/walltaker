@@ -213,6 +213,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_09_231425) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_starred", default: false, null: false
     t.index ["kink_id"], name: "index_kink_havers_on_kink_id"
     t.index ["user_id"], name: "index_kink_havers_on_user_id"
   end

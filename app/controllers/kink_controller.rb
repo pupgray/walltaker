@@ -1,6 +1,6 @@
 class KinkController < ApplicationController
   include ActionView::RecordIdentifier
-  before_action :authorize, only: %i[add remove]
+  before_action :authorize, only: %i[add remove toggle_star]
 
   def users_kinks
     user = User.find_by_username(params['user_id'])
@@ -15,6 +15,15 @@ class KinkController < ApplicationController
   def show
     @kink = Kink.find(params['id'])
     @users = @kink.users.order(updated_at: :desc).where.not(id: current_user&.id)
+  end
+
+  def search_kinks
+    @link = Link.find(params[:link_id])
+    return redirect_to root_path unless @link
+
+    @user = @link.user
+    @kinks = @user.kinks if @user.present?
+    @kinks = [] unless @user.present?
   end
 
   def test_on_e621
@@ -43,7 +52,8 @@ class KinkController < ApplicationController
         @kink = kink
         render 'update'
       rescue
-        render turbo_stream: ""
+        kink.valid?
+        redirect_to user_kinks_path(current_user.username), alert: kink.errors.full_messages.first
       end
     else
       kink = current_user.kinks.build
@@ -54,11 +64,28 @@ class KinkController < ApplicationController
           @kink = kink
           render 'update'
         else
-          raise
+          redirect_to user_kinks_path(current_user.username), alert: kink.errors.full_messages.first
         end
       rescue
         redirect_to user_kinks_path(current_user.username), alert: kink.errors.full_messages.first
       end
+    end
+  end
+
+  def toggle_star
+    @kink = Kink.find(params['id'])
+
+    if @kink
+      kink_haver = @kink.had_by(current_user)
+
+      if @kink.had_by(current_user)
+        result = kink_haver.toggle_star
+        redirect_to user_kinks_path(current_user.username), alert: kink_haver.errors.full_messages.join("\n") unless result
+      else
+        redirect_to user_kinks_path(current_user.username), alert: 'Something went wrong'
+      end
+    else
+      redirect_to user_kinks_path(current_user.username), alert: 'Kink missing'
     end
   end
 
