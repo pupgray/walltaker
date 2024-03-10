@@ -18,6 +18,7 @@ class LinksController < ApplicationController
   before_action :prevent_public_expired, only: %i[show history update]
   before_action :protect_friends_only_links, only: %i[show history update]
   before_action :skip_unauthorized_requests, only: %i[update toggle_ability], if: -> { update_request_unsafe? }
+  before_action :skip_unauthorized_requests, only: %i[new_reaction], if: -> { !past_link_belongs_to_user? }
 
   # 4. save presence + analytics
   after_action :log_presence, only: %i[show]
@@ -66,6 +67,12 @@ class LinksController < ApplicationController
   # GET /links/1/history
   def history
     @past_links = PastLink.all.order(id: :desc).where(link: @link).take(50)
+  end
+
+  # POST /links/:id/history/:past_link_id/reaction
+  def new_reaction
+    @past_link.set_reaction(past_link_params['response_type'], past_link_params['response_text'])
+    redirect_to url_for(controller: :links, action: :new_reaction, id: @link.id)
   end
 
   # GET /links/1/edit
@@ -219,6 +226,10 @@ class LinksController < ApplicationController
     user_trying_to_update_others_link_restricted_values || unauthed_user_trying_to_update_others_link_restricted_values
   end
 
+  def past_link_belongs_to_user?
+    @past_link.link.user == current_user
+  end
+
   def protect_friends_only_links
     unless request.format == :json
       authorize if @link.friends_only
@@ -272,7 +283,12 @@ class LinksController < ApplicationController
   # Helpers
 
   def link_params
-    params.require(:link).permit(:expires, :terms, :blacklist, :friends_only, :never_expires, :theme, :min_score, :custom_url, :response_text, :response_type, :past_link_id)
+    params.require(:link).permit(:expires, :terms, :blacklist, :friends_only, :never_expires, :theme, :min_score, :custom_url, :response_text, :response_type)
+  end
+
+  def past_link_params
+    params.require([:response_type, :past_link_id])
+    return params.permit(:response_type, :past_link_id, :response_text)
   end
 
   def prevent_public_expired

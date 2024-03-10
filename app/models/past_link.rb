@@ -36,8 +36,8 @@ class PastLink < ApplicationRecord
     Nuttracker::Orgasm.create rating: 3, is_ruined: false, user: link.user, caused_by: set_by if response_type == 'came'
 
     # If a disgust reaction, revert to old wallpaper
+    is_current_post = link.current_past_link == self
     if response_type == 'disgust'
-      is_current_post = link.current_past_link == self
       previous_past_post = link.past_links.where.not(id: id).last
       if is_current_post
         link.post_url = previous_past_post ? previous_past_post.post_url : nil
@@ -47,14 +47,16 @@ class PastLink < ApplicationRecord
       self.destroy
       link.save! # failure should only happen here if we've made a mistake, so throw rather than return false
       return self.destroyed?
-    else
-      self.response_text = response_text
-      self.response_type = response_type
     end
+    self.response_text = response_text
+    self.response_type = response_type
     return self.save
   end
 
   after_commit do
+    if response_text_previously_changed? || response_type_previously_changed?
+      broadcast_replace_to "link_response_#{link_id}", target: "link_response_#{link_id}", partial: 'links/response', locals: { link: self.link } if self.link.current_past_link == self
+    end
     broadcast_replace_to "link_details_#{link_id}", target: "link_details_#{link_id}", partial: 'links/details', locals: { link: self.link }
     broadcast_replace_to "dashboard_recent_posts", target: "recent_posts", partial: "dashboard/recent_posts", locals: {
       recent_posts: PastLink.order(id: :desc).take(6)

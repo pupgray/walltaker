@@ -36,6 +36,7 @@ Rails.application.routes.draw do
   get 'logout', to: 'session#destroy', as: 'logout'
   get 'browse', to: 'links#browse'
   get 'links/:id/history', to: 'links#history'
+  post 'links/:id/history/:past_link_id/reaction', to: 'links#new_reaction'
   get 'users/:username', to: 'users#show'
   get 'users/:username/edit', to: 'users#edit'
   get 'users/:username/history', to: 'past_links#index', as: 'past_links'

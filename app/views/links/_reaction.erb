@@ -1,0 +1,13 @@
+<% if past_link && past_link.response_text %>
+  <div class="link--response">
+    <strong>
+    <%= past_link.link.user.username %>
+    <% if past_link.horny? %>
+      😍:
+    <% elsif past_link.came? %>
+      💦 said while cumming:
+    <% end %>
+    </strong>
+    <%= past_link.response_text %>
+  </div>
+<% end %>

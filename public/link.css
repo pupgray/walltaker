@@ -1219,3 +1219,17 @@ h4.forks-header + p {
     object-fit: contain;
     border-radius: 0;
 }
+
+.link-history--modal--image-preview {
+    margin: 12px;
+    max-height: 400px;
+    min-height: 0;
+    min-width: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.link-history--modal--image-preview img {
+    object-fit: contain;
+    border-radius: 0;
+}
