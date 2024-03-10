@@ -27,7 +27,7 @@ test:
   database: walltaker_test
 
 production:
-  adapter: postgresql
+  adapter: postgresql # change me to redis :)
   encoding: unicode
   timeout: 5000
   url: <%= ENV['DATABASE_URL'] %>
