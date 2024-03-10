@@ -158,51 +158,6 @@ class ApplicationController < ActionController::Base
 
   helper_method :log_link_presence
 
-  def on_link_react (past_link, response_type, response_text)
-    link = past_link.link
-
-    # Make notification for setter
-    notification_text = "#{link.user.username} loved your post!" if response_type == 'horny'
-    notification_text = "#{link.user.username} did not like your post." if response_type == 'disgust'
-    notification_text = "#{link.user.username} came to your post!" if response_type == 'came'
-    notification_text = "#{notification_text} \"#{response_text}\"" unless response_type.nil?
-    Notification.create user_id: link.set_by_id, notification_type: :post_response, text: notification_text, link: "/links/#{link.id}"
-
-    # Log reaction in chat sidebar
-    setter_name = past_link.set_by&.username || "anon"
-    comment_text = "> loved #{setter_name}'s wallpaper! #{ past_link.post_url }" if response_type == 'horny'
-    comment_text = "> hated it. #{ past_link.post_url }" if response_type == 'disgust'
-    comment_text = "> came to #{setter_name}'s wallpaper! #{ past_link.post_url }" if response_type == 'came'
-    Comment.create user_id: link.user.id, link_id: link.id, content: comment_text
-    Comment.create user_id: link.user.id, link_id: link.id, content: response_text unless response_type.nil?
-
-    # If a came reaction, log an orgasm
-    Nuttracker::Orgasm.create rating: 3, is_ruined: false, user: link.user, caused_by: past_link.set_by if response_type == 'came'
-
-    # If a disgust reaction, revert to old wallpaper
-    if response_type == 'disgust'
-      past_links = link.past_links.where(post_url: past_link.post_url)
-      past_links.destroy_all unless past_links.empty?
-      past_link = link.past_links.last
-
-      # In the future, this will be normalized out so that deleting past_link is enough to accomplish this.
-      is_current_post = PastLink.where(link: link).last == past_link
-      if is_current_post
-        link.post_url = past_link ? past_link.post_url : nil
-        link.post_thumbnail_url = past_link ? past_link.post_thumbnail_url : nil
-        link.set_by = past_link&.set_by
-      end
-      link.save
-    else
-      new_response = PastLinkResponse.new()
-      new_response.past_link = past_link
-      new_response.response_text = response_text + "CORRECT"
-      new_response.response_type = response_type
-      new_response.save
-    end
-    link.save
-  end
-
   def authorize
     redirect_to new_session_url, alert: 'Not authorized' if current_user.nil?
 

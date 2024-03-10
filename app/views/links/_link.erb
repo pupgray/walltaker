@@ -178,8 +178,8 @@
     </div>
 
   </div>
-  <%= turbo_stream_from "link_response_#{link.id}" %>
-  <%= render 'links/response', reaction: link.current_reaction, link: link %>
+
+  <%= render 'links/response', link: link %>
 
   <% if !link.never_expires && link.expires <= Time.now.utc %>
     </div>

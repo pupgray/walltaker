@@ -111,9 +111,8 @@ class LinksController < ApplicationController
 
     result_of_link_model_save = if e621_post.nil?
                                   did_save_successfully = false
-                                  unless link_response_params['response_type'].nil?
-                                    past_link = @link.past_links.last
-                                    did_save_successfully = on_link_react(past_link, link_response_params['response_type'], link_response_params['response_text'])
+                                  unless link_params['response_type'].nil?
+                                    did_save_successfully = @link.set_reaction(link_params['response_type'], link_params['response_text'])
                                   else
                                     @link.assign_attributes(link_params)
                                     @link.custom_url = nil if @link.custom_url == ''
@@ -251,11 +250,7 @@ class LinksController < ApplicationController
   # Helpers
 
   def link_params
-    params.require(:link).permit(:expires, :terms, :blacklist, :friends_only, :never_expires, :theme, :min_score, :custom_url)
-  end
-
-  def link_response_params
-    params.require(:link).permit(:response_text, :response_type)
+    params.require(:link).permit(:expires, :terms, :blacklist, :friends_only, :never_expires, :theme, :min_score, :custom_url, :response_text, :response_type, :past_link_id)
   end
 
   def prevent_public_expired

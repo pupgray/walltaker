@@ -6,11 +6,9 @@ class Link < ApplicationRecord
   has_many :forks, foreign_key: :forked_from_id, class_name: 'Link', inverse_of: :forked_from
   has_many :viewing_users, foreign_key: :viewing_link_id, class_name: 'User'
   has_many :past_links
-  has_many :past_link_responses, through: :past_links
   has_many :comments, dependent: :destroy
   has_many :abilities, class_name: 'LinkAbility', inverse_of: :link, dependent: :destroy
   has_many :users_viewing, class_name: 'User', foreign_key: :viewing_link_id, inverse_of: :viewing_link, dependent: :nullify
-  enum response_type: %i[horny came disgust]
   validates :expires, presence: true, unless: :never_expires?
   validates :theme, format: { without: /\s+/i, message: 'must be only 1 tag.' }
   validates :theme, format: { without: /\:/, message: 'must not contain filter or sort tags. (like score:>30) Use the Minimum Score setting instead.' }
@@ -68,11 +66,19 @@ class Link < ApplicationRecord
     end
   end
 
-  def current_reaction
-    return current_post&.current_reaction
+  def set_reaction(reaction_type, reaction_text)
+    current_past_link.set_reaction(reaction_type, reaction_text)
   end
 
-  def current_post
+  def response_text
+    return current_past_link&.response_text
+  end
+
+  def response_type
+    return current_past_link&.response_type
+  end
+
+  def current_past_link
     return past_links&.last
   end
 

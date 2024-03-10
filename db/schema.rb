@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_18_172258) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_09_231425) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -300,15 +300,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_18_172258) do
     t.index ["user_id"], name: "index_nuttracker_orgasms_on_user_id"
   end
 
-  create_table "past_link_responses", force: :cascade do |t|
-    t.string "response_text"
-    t.integer "response_type"
-    t.bigint "past_link_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["past_link_id"], name: "index_past_link_responses_on_past_link_id"
-  end
-
   create_table "past_links", force: :cascade do |t|
     t.integer "user_id"
     t.string "post_url"
@@ -318,6 +309,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_18_172258) do
     t.bigint "link_id"
     t.bigint "set_by_id"
     t.bigint "ahoy_visit_id"
+    t.string "response_text"
+    t.integer "response_type"
     t.index ["link_id"], name: "index_past_links_on_link_id"
     t.index ["set_by_id"], name: "index_past_links_on_set_by_id"
     t.index ["user_id"], name: "index_past_links_on_user_id"

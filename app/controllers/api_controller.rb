@@ -69,16 +69,14 @@ class ApiController < ApplicationController
     end
 
     begin
-      @link.response_type = params[:type].nil? ? "horny" : params[:type]
+      response_type = params[:type].nil? ? "horny" : params[:type]
     rescue
       return render json: { message: 'type must be "horny", "disgust", or "came"' }, status: 400
     end
 
-    @link.response_text = params[:text].nil? ? "" : params[:text]
+    response_text = params[:text].nil? ? "" : params[:text]
 
-    @link = on_link_react(@link)
-
-    result = @link.save
+    result = @link.set_reaction(response_type, response_text)
 
     if result
       return render partial: 'link', locals: { link: @link, set_by: @set_by }
