@@ -9,7 +9,10 @@ class LinksController < ApplicationController
   before_action :authorize, only: %i[index new edit create destroy]
 
   # 2. set @link instance var, since a lot of action filters use it
-  before_action :set_link, only: %i[show history edit update destroy export toggle_ability]
+  before_action :set_link, only: %i[show history edit update destroy export toggle_ability new_reaction]
+  before_action :require_link, only: %i[show history edit update destroy export toggle_ability new_reaction]
+  before_action :set_past_link, only: %i[new_reaction]
+  before_action :require_past_link, only: %i[new_reaction]
 
   # 3. protect link-specific buisness rules
   before_action :prevent_public_expired, only: %i[show history update]
@@ -238,7 +241,26 @@ class LinksController < ApplicationController
     if params[:id].match? /\D+/
       @link = Link.find_by(custom_url: params[:id])
     else
-      @link = Link.find(params[:id])
+      @link = Link.find_by(id: params[:id])
+    end
+  end
+
+  def require_link
+    if @link.nil?
+      raise ActionController::RoutingError.new('Not Found')
+    end
+  end
+
+  def set_past_link
+    if params[:past_link_id].match?(/\d+/)
+      @past_link = PastLink.find_by(id: params[:past_link_id])
+    end
+
+  end
+
+  def require_past_link
+    if @past_link.nil?
+      raise ActionController::RoutingError.new('Not Found')
     end
   end
 
