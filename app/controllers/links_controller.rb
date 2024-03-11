@@ -263,8 +263,10 @@ class LinksController < ApplicationController
     if post_count.nil?
       redirect_to edit_link_path(@link), alert: "E621 may be down. You can save your link for now, though we can't verify that posts match your filter criteria at the moment."
     end
-    if post_count > 99
+    if post_count > 100
       redirect_to edit_link_path(@link), notice: "Many posts are selectable with these settings."
+    elsif post_count == 99
+      redirect_to edit_link_path(@link), notice: "Only #{post_count} #{'post'.pluralize post_count} can be selected with these settings. You may not get many wallpapers.🎈"
     elsif post_count > 30
       redirect_to edit_link_path(@link), notice: "Only #{post_count} #{'post'.pluralize post_count} can be selected with these settings. You may not get many wallpapers."
     elsif post_count > 0
