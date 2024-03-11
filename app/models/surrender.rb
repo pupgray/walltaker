@@ -4,6 +4,7 @@ class Surrender < ApplicationRecord
 
   validates :user, uniqueness: { scope: :friendship }
   validates :expires_at, comparison: { greater_than: Time.now }, on: :create
+  validate :no_admin_surrendering
 
   scope :not_for_user, ->(user) { where.not(user: user) }
   scope :for_user, ->(user) { find_by(user: user) }
@@ -14,5 +15,11 @@ class Surrender < ApplicationRecord
 
   def expired?
     expires_at.before? Time.now
+  end
+
+  private
+
+  def no_admin_surrendering
+    errors.add :user, 'cannot be an admin, think about that! That would give someone the admin tools!' if user.admin
   end
 end
