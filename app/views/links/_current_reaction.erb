@@ -1,3 +1,3 @@
 <%= turbo_frame_tag "link_response_#{link.id}" do %>
-  <%= render 'reaction', past_link: link.current_past_link %>
+  <%= render 'links/reaction', past_link: link.current_past_link %>
 <% end %>

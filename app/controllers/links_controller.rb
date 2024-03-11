@@ -55,7 +55,7 @@ class LinksController < ApplicationController
     @has_friendship = Friendship.find_friendship(current_user, @link.user).exists? if current_user
     @set_by = User.find(@link.set_by_id) if @link.set_by_id && request.format == :json
     @is_current_user = (current_user && (current_user.id == @link.user.id))
-    @past_links = PastLink.all.order(id: :desc).where(link: @link).offset(1).take(7)
+    @past_links = PastLink.all.order(id: :desc).where(link: @link).offset(1).take(5)
   end
 
   # GET /links/new
@@ -71,6 +71,7 @@ class LinksController < ApplicationController
 
   # POST /links/:id/history/:past_link_id/reaction
   def new_reaction
+    # TODO: handle failure case with error message
     @past_link.set_reaction(past_link_params['response_type'], past_link_params['response_text'])
     redirect_to url_for(controller: :links, action: :new_reaction, id: @link.id)
   end

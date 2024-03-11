@@ -55,7 +55,7 @@ class PastLink < ApplicationRecord
 
   after_commit do
     if response_text_previously_changed? || response_type_previously_changed?
-      broadcast_replace_to "link_response_#{link_id}", target: "link_response_#{link_id}", partial: 'links/response', locals: { link: self.link } if self.link.current_past_link == self
+      broadcast_replace_to "link_response_#{link_id}", target: "link_response_#{link_id}", partial: 'links/reaction', locals: { link: self.link } if self.link.current_past_link == self
     end
     broadcast_replace_to "link_details_#{link_id}", target: "link_details_#{link_id}", partial: 'links/details', locals: { link: self.link }
     broadcast_replace_to "dashboard_recent_posts", target: "recent_posts", partial: "dashboard/recent_posts", locals: {
