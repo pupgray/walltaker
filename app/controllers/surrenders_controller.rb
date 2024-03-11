@@ -1,6 +1,6 @@
 class SurrendersController < ApplicationController
   before_action :authorize, except: %i[show destroy]
-  before_action :authorize_for_surrenderd_accounts, only: %i[show destroy]
+  before_action :authorize_for_surrendered_accounts, only: %i[show destroy]
   before_action :set_friendship_options, only: %i[new edit]
   before_action :set_surrender, only: %i[show edit destroy assume]
   before_action :protect_own_surrender, only: %i[show destroy]

@@ -239,7 +239,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def authorize_for_surrenderd_accounts
+  def authorize_for_surrendered_accounts
     return redirect_to new_session_url, alert: 'Error 500, service/E621 down?' if current_visit&.banned_ip.present?
 
     return redirect_to new_session_url, alert: 'Not authorized' if current_user.nil?
@@ -248,7 +248,7 @@ class ApplicationController < ActionController::Base
   end
 
   def authorize
-    result = authorize_for_surrenderd_accounts
+    result = authorize_for_surrendered_accounts
     return result if result
 
     result_two = disallow_surrendered_accounts
