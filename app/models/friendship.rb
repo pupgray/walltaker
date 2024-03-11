@@ -1,4 +1,5 @@
 class Friendship < ApplicationRecord
+  has_many :surrenders, dependent: :destroy
   belongs_to :sender, foreign_key: :sender_id, class_name: 'User'
   belongs_to :receiver, foreign_key: :receiver_id, class_name: 'User', optional: true
 
@@ -37,5 +38,9 @@ class Friendship < ApplicationRecord
   def other_user(user)
     return sender if sender.id != user.id
     receiver if receiver.id != user.id
+  end
+
+  def controllable(user)
+    surrenders.where(user: user).any?
   end
 end
