@@ -43,7 +43,7 @@ class SurrendersController < ApplicationController
 
   def assume
     return redirect_to root_path, alert: 'Not allowed.' unless Friendship.where(id: @surrender.friendship.id).involving(current_user).is_confirmed.exists?
-    return redirect_to surrender_path(surrender), alert: '... what? How does that even make sense? You chose to surrender you account, then assume your own account?' unless @surrender.user != current_user
+    return redirect_to surrender_path(surrender), alert: '... what? How does that even make sense? You chose to surrender your account, then assume your own account?' unless @surrender.user != current_user
 
     log_in_as(@surrender.user, @surrender)
   end
