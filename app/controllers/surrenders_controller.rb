@@ -6,7 +6,6 @@ class SurrendersController < ApplicationController
   before_action :protect_own_surrender, only: %i[show destroy]
 
   def index
-    @current_surrender = current_user.current_surrender
   end
 
   def show
@@ -16,7 +15,7 @@ class SurrendersController < ApplicationController
     friendship = Friendship.involving(current_user).is_confirmed.find(surrender_params[:friendship])
 
     if friendship.present?
-      surrender = current_user.create_current_surrender(expires_at: Time.now + 24.hours, friendship:)
+      surrender = current_user.create_current_surrender(expires_at: Time.now + 24.hours, friendship:, accepted_consequences: surrender_params[:accepted_consequences])
 
       if surrender.save
         Notification.create user: surrender.controller, notification_type: :surrender_event, link: friendships_path, text: "#{surrender.user.username} has allowed you to log into their account. You can do so in the friends menu."
@@ -60,7 +59,7 @@ class SurrendersController < ApplicationController
   end
 
   def surrender_params
-    params.require(:surrender).permit(:friendship)
+    params.require(:surrender).permit(:friendship, :accepted_consequences)
   end
 
   def protect_own_surrender

@@ -198,6 +198,15 @@ form.orgasms .form__row {
     flex-wrap: wrap;
 }
 
+.form__row--checkbox {
+    align-items: flex-start;
+    gap: 1rem;
+
+    & > input[type="checkbox"] {
+        margin-top: 2px;
+    }
+}
+
 .form__row input.full-width {
     width: 100%;
     margin-bottom: 0;

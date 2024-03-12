@@ -6,5 +6,12 @@
     <%= f.select :friendship, friendship_options, {}, class: 'no-margin' %>
   <% end %>
 
+  <hr>
+
+  <%= f.label :accepted_consequences, class: 'form__row form__row--checkbox' do %>
+    <%= f.check_box :accepted_consequences, class: 'no-margin' %>
+    <span>I’m bad a risk analysis and decision-making, so I accept the consequences of this action that could result in the Very Bad Things™ I just read about.</span>
+  <% end %>
+
   <%= f.submit "Give them my account for up to 24hrs", class: 'danger-button accent-block__button' %>
 <% end %>

@@ -3,6 +3,7 @@ class Surrender < ApplicationRecord
   belongs_to :friendship, required: true
 
   validates :user, uniqueness: { scope: :friendship }
+  validates :accepted_consequences, acceptance: true, on: :create
   validates :expires_at, comparison: { greater_than: Time.now }, on: :create
   validate :no_admin_surrendering
 
