@@ -3,9 +3,9 @@ class Surrender < ApplicationRecord
   belongs_to :friendship, required: true
 
   validates :user, uniqueness: { scope: :friendship }
-  validates :accepted_consequences, acceptance: true, on: :create
-  validates :expires_at, comparison: { greater_than: Time.now }, on: :create
-  validate :no_admin_surrendering
+  validates :accepted_consequences, acceptance: true
+  validates :expires_at, comparison: { greater_than: Time.now }
+  validate :no_admin_surrendering, :friendship_is_confirmed
 
   scope :not_for_user, ->(user) { where.not(user: user) }
   scope :for_user, ->(user) { find_by(user: user) }
@@ -14,17 +14,17 @@ class Surrender < ApplicationRecord
     friendship.other_user(user)
   end
 
-  def expired?
-    expires_at.before? Time.now
-  end
-
   def active?
-    !expired? && !pending?
+    valid? && !pending?
   end
 
   private
 
   def no_admin_surrendering
     errors.add :user, 'cannot be an admin, think about that! That would give someone the admin tools!' if user.admin
+  end
+
+  def friendship_is_confirmed
+    errors.add :friendship, 'must be accepted.' if !friendship.confirmed?
   end
 end

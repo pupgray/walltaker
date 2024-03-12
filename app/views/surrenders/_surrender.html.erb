@@ -6,20 +6,38 @@
     <div class="accent-block__charm">
       <ion-icon name="ticket"></ion-icon>
       <%= time_tag surrender.expires_at do %>
-        surrendered for <%= distance_of_time_in_words_to_now surrender.expires_at, include_seconds: true %>.
+        <% if surrender.valid? %>
+          surrendered for <%= distance_of_time_in_words_to_now surrender.expires_at, include_seconds: true %>.
+        <% else %>
+          invalid/expired surrender, you're free!
+        <% end %>
       <% end %>
     </div>
 
-    <p>
-      <strong><%= surrender.user.username %></strong> is currently surrendered to <strong><%= surrender.controller.username %></strong>. This means this account is essentially compromised until this surrender token has been deleted using the button at the bottom of this panel, or after 24hrs has elapsed.
-    </p>
+    <% if surrender.valid? %>
+      <p>
+        <strong><%= surrender.user.username %></strong> is currently surrendered to
+        <strong><%= surrender.controller.username %></strong>. This means this account is essentially compromised until
+        this surrender token has been deleted using the button at the bottom of this panel, or after 24hrs has elapsed.
+      </p>
+    <% else %>
+      <p>
+        <strong><%= surrender.user.username %></strong> is was formerly surrendered to
+        <strong><%= surrender.controller.username %></strong>, who was locked out of the
+        account <%= time_ago_in_words [surrender.expires_at, surrender.updated_at].max, include_seconds: true %> ago.
+      </p>
+    <% end %>
 
     <br>
 
     <%= render 'users/user', user: surrender.controller %>
 
     <%= button_to surrender_path(surrender), method: :delete, class: 'accent-block__button' do %>
-      Stop and return account
+      <% if surrender.valid? %>
+        Stop and return account
+      <% else %>
+        Delete
+      <% end %>
     <% end %>
   </div>
 <% end %>
