@@ -222,7 +222,7 @@ class ApplicationController < ActionController::Base
   end
 
   def kick_bad_surrender_controllers
-    if cookies.signed[:surrender_id].present?
+    if helpers.is_surrender_controller_session?
       begin
         surrender = Surrender.find(cookies.signed[:surrender_id])
         if !surrender || surrender.expired?

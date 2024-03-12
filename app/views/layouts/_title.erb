@@ -8,7 +8,7 @@
     Walltaker
 
     <div class="mascot">
-      <%= image_tag("marx.png", class: ["mascot__under-cover", mascot, pervert ? 'nsfw' : 'sfw']) unless cookies.signed[:surrender_id].nil? %>
+      <%= image_tag("marx.png", class: ["mascot__under-cover", mascot, pervert ? 'nsfw' : 'sfw']) if is_surrender_controller_session? %>
 
       <% if mascot == 'ki' %>
         <%= image_tag("mascot/Ki#{pervert ? 'NSFW' : ''}.png", alt: 'A suave little lizard welcoming you to the website.', class: 'mascot', height: 190) %>
