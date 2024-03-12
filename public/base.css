@@ -115,6 +115,58 @@ body > header {
 
 body > header h1 span {
     position: relative;
+
+    .mascot__under-cover {
+        position: absolute;
+        z-index: 99999;
+        opacity: 1;
+        perspective: 100px;
+
+        &.taylor {
+            &.sfw {
+                height: 72px;
+                top: 41px;
+                left: 32px;
+                transform: rotate3d(1.5, 3.9, -0.6, 30deg);
+            }
+            &.nsfw {
+                height: 72px;
+                top: 34px;
+                left: 32px;
+                transform: rotate3d(0.5, 3.6, -0.2, 30deg);
+            }
+        }
+
+        &.warren {
+            &.sfw {
+                height: 79px;
+                top: 35px;
+                left: 37px;
+                transform: rotate3d(-0.3, 0.8, -0.1, 30deg);
+            }
+            &.nsfw {
+                height: 79px;
+                top: 37px;
+                left: 60px;
+                transform: rotate3d(1, 1.6, -0.2, 30deg);
+            }
+        }
+
+        &.ki {
+            &.sfw {
+                height: 72px;
+                top: 39px;
+                left: 40px;
+                transform: rotate3d(-1.3, 3.6, -0.5, 30deg);
+            }
+            &.nsfw {
+                height: 97px;
+                top: 53px;
+                left: 16px;
+                transform: rotate3d(-0.6, 2.5, -0.6, 30deg);
+            }
+        }
+    }
 }
 
 body > header h1 span > .mascot {
