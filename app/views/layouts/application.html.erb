@@ -5,9 +5,9 @@
   <title><%= content_for?(:html_title) ? yield(:html_title) : "Walltaker" %></title>
   <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1">
   <meta name="rating" content="adult"/>
-  <%= favicon_link_tag 'mascot/KiHead.png' if mascot == 'ki'%>
-  <%= favicon_link_tag 'mascot/WarrenHead.png' if mascot == 'warren'%>
-  <%= favicon_link_tag 'mascot/TaylorHead.png' if mascot == 'taylor'%>
+  <%= favicon_link_tag 'mascot/KiHead.png' if mascot == 'ki' %>
+  <%= favicon_link_tag 'mascot/WarrenHead.png' if mascot == 'warren' %>
+  <%= favicon_link_tag 'mascot/TaylorHead.png' if mascot == 'taylor' %>
   <link rel="stylesheet" href="/simple.min.css">
   <link rel="stylesheet" href="/base.css?x=<%= ENV['HEROKU_SLUG_COMMIT'] %>"/>
   <link rel="stylesheet" href="/link.css?x=<%= ENV['HEROKU_SLUG_COMMIT'] %>"/>
@@ -32,14 +32,13 @@
 <header>
   <div class="header__age-warning">
     <span id="age-warning__icon">🔞</span> This is an app for adults over the age of 18 only.
-    <% if current_user&.current_surrender && cookies.signed[:surrender_id].nil? %>
-      <% surrender = current_user.current_surrender %>
-      <br>
-      Your account is surrendered to <%= link_to surrender.controller.username, user_path(surrender.controller.username) %>.
-      <br>
-      <%= link_to 'Help me!', surrender_path(surrender) %>
-    <% end %>
   </div>
+
+  <% if !is_surrender_controller_session? && current_user&.current_surrender %>
+    <%= turbo_stream_from current_user.current_surrender %>
+    <%= render 'layouts/surrender', surrender: current_user&.current_surrender %>
+  <% end %>
+
   <div class="header__inner">
     <h1>
       <a href="/">
@@ -85,7 +84,10 @@
     <div data-controller='discord-invite'>
       <dialog class="modal" data-discord-invite-target="modal">
         <h4>Just a note!</h4>
-        <p>To keep things organized and peaceful, we ask that you verify your walltaker account in the discord when you join. It's really quick, doesn't require anything other than your username and a link ID from your account! <strong>We also kick discord accounts newer than a week old or those without profile pictures!</strong> Try again after that period if you can't join.</p>
+        <p>To keep things organized and peaceful, we ask that you verify your walltaker account in the discord when you
+          join. It's really quick, doesn't require anything other than your username and a link ID from your account!
+          <strong>We also kick discord accounts newer than a week old or those without profile pictures!</strong> Try
+          again after that period if you can't join.</p>
         <div class="modal__buttons">
           <%= link_to 'https://discord.gg/s4z9GfwuKw', class: 'no-underline secondary', target: '_blank' do %>
             Let me join!
@@ -94,7 +96,8 @@
       </dialog>
 
       <ion-icon name="logo-discord" class="big"></ion-icon>
-      Join our Discord</div>
+      Join our Discord
+    </div>
     <%= render 'layouts/mascot_picker' if current_user %>
   </div>
 <% end %>
@@ -115,7 +118,7 @@
   </p>
   <small>
     © joi.how 2024 / Commit
-    <a href="https://github.com/pupgray/walltaker/commit">#<%= ENV['HEROKU_SLUG_COMMIT'].present? ? ENV['HEROKU_SLUG_COMMIT'][0..8] : '' %> <%= (time_ago_in_words Time.new( ENV['HEROKU_RELEASE_CREATED_AT'])) + " ago" if ENV['HEROKU_RELEASE_CREATED_AT'].present? %></a>
+    <a href="https://github.com/pupgray/walltaker/commit">#<%= ENV['HEROKU_SLUG_COMMIT'].present? ? ENV['HEROKU_SLUG_COMMIT'][0..8] : '' %> <%= (time_ago_in_words Time.new(ENV['HEROKU_RELEASE_CREATED_AT'])) + " ago" if ENV['HEROKU_RELEASE_CREATED_AT'].present? %></a>
     <% if current_user && current_user.admin %>
       <%= link_to blazer_path do %>
         <ion-icon role="presentation" name="stats-chart"></ion-icon>

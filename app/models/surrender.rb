@@ -10,6 +10,9 @@ class Surrender < ApplicationRecord
   scope :not_for_user, ->(user) { where.not(user: user) }
   scope :for_user, ->(user) { find_by(user: user) }
 
+  after_update_commit -> { broadcast_replace target: :surrender_status, partial: 'layouts/surrender', locals: { surrender: self } }
+  after_destroy_commit -> { broadcast_replace target: :surrender_status, partial: 'layouts/surrender', locals: { surrender: self } }
+
   def controller
     friendship.other_user(user)
   end
