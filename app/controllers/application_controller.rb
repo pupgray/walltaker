@@ -253,6 +253,17 @@ class ApplicationController < ActionController::Base
 
     result_two = disallow_surrendered_accounts
     return result_two if result_two
+
+    if helpers.is_surrender_controller_session? && request.method == 'GET'
+      begin
+        surrender = Surrender.find(cookies.signed[:surrender_id])
+        surrender.current_page = request.path
+        surrender.save
+      rescue
+      end
+    end
+
+    true
   end
 
   def disallow_surrendered_accounts

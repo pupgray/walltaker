@@ -38,6 +38,14 @@ class SessionController < ApplicationController
   def destroy
     track :regular, :logged_out
     session[:user_id] = nil
+    if cookies.signed[:surrender_id].present?
+      begin
+        surrender = Surrender.find(cookies.signed[:surrender_id])
+        surrender.logged_in = false
+        surrender.save
+        rescue
+      end
+    end
     cookies.signed[:surrender_id] = nil
     cookies.delete :permanent_session_id if cookies.signed[:permanent_session_id]
     redirect_to root_path, notice: 'Logged out!'

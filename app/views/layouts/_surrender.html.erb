@@ -17,6 +17,11 @@
         <span>
             Account is surrendered to
           <%= link_to surrender.controller.username, user_path(surrender.controller.username) %>.
+
+          <% if surrender.logged_in %>
+            Logged in
+            <%= "and viewing #{surrender.current_page}" if surrender.current_page %>
+          <% end %>
           </span>
       <% elsif surrender && surrender.valid? && surrender.pending? %>
         <div class="surrender-status__circle surrender-status__circle--pending">

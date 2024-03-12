@@ -49,10 +49,10 @@ class SurrendersController < ApplicationController
     return redirect_to root_path, alert: 'Not allowed.' if @surrender.controller != current_user
     return redirect_to surrender_path(@surrender), alert: '... what? How does that even make sense? You chose to surrender your account, then assume your own account?' if @surrender.user == current_user
 
-    if @surrender.pending?
-      @surrender.pending = false
-      @surrender.save
-    end
+    @surrender.logged_in = true
+    @surrender.pending = false if @surrender.pending?
+
+    @surrender.save
 
     log_in_as(@surrender.user, @surrender)
   end
