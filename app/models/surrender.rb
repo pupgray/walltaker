@@ -18,6 +18,10 @@ class Surrender < ApplicationRecord
     expires_at.before? Time.now
   end
 
+  def active?
+    !expired? && !pending?
+  end
+
   private
 
   def no_admin_surrendering

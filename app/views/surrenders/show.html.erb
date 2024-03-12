@@ -1,3 +1,5 @@
 <%= render 'surrenders/surrender', surrender: @surrender %>
 
+<h2><ion-icon role="presentation" name="document" class="big"></ion-icon> Your Links</h2>
+
 <%= render 'links/links', links: @surrender.user.link.all %>

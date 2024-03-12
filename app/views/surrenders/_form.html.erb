@@ -6,7 +6,16 @@
     <%= f.select :friendship, friendship_options, {}, class: 'no-margin' %>
   <% end %>
 
+  <%= f.label :pending, class: 'form__row form__row--checkbox' do %>
+    <%= f.check_box :pending, class: 'no-margin' %>
+    <span>Let me keep using the site till my account is taken over.</span>
+  <% end %>
+
   <hr>
+
+  <p>
+    Please check the checkbox below <strong>to confirm you understand the warnings above.</strong>
+  </p>
 
   <%= f.label :accepted_consequences, class: 'form__row form__row--checkbox' do %>
     <%= f.check_box :accepted_consequences, class: 'no-margin' %>

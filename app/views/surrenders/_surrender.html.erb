@@ -2,13 +2,21 @@
 
 <%= turbo_frame_tag dom_id(surrender), target: '_top' do %>
   <div class="accent-block">
+    <ion-icon role="presentation" name="ticket" class="scare-charm"></ion-icon>
     <div class="accent-block__charm">
-      <ion-icon role="presentation" name="eye-off"></ion-icon>
-      Only you see this
+      <ion-icon name="ticket"></ion-icon>
+      <%= time_tag surrender.expires_at do %>
+        surrendered for <%= distance_of_time_in_words_to_now surrender.expires_at, include_seconds: true %>.
+      <% end %>
     </div>
+
     <p>
-      Surrendered to <%= surrender.controller.username %>
+      <strong><%= surrender.user.username %></strong> is currently surrendered to <strong><%= surrender.controller.username %></strong>. This means this account is essentially compromised until this surrender token has been deleted using the button at the bottom of this panel, or after 24hrs has elapsed.
     </p>
+
+    <br>
+
+    <%= render 'users/user', user: surrender.controller %>
 
     <%= button_to surrender_path(surrender), method: :delete, class: 'accent-block__button' do %>
       Stop and return account

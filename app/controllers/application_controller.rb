@@ -225,7 +225,7 @@ class ApplicationController < ActionController::Base
     if helpers.is_surrender_controller_session?
       begin
         surrender = Surrender.find(cookies.signed[:surrender_id])
-        if !surrender || surrender.expired?
+        if !surrender || !surrender.active?
           session[:user_id] = nil
           cookies.signed[:surrender_id] = nil
           surrender.destroy if surrender
@@ -257,7 +257,7 @@ class ApplicationController < ActionController::Base
 
   def disallow_surrendered_accounts
     current_surrender = current_user&.current_surrender
-    if cookies.signed[:surrender_id].nil? && current_surrender && !current_surrender.expired?
+    if cookies.signed[:surrender_id].nil? && current_surrender && current_surrender.active?
       return redirect_to current_surrender, alert: "#{current_surrender.user.username} attempted to use walltaker while their account is surrendered."
     end
 
