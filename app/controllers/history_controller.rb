@@ -46,4 +46,8 @@ class HistoryController < ApplicationController
     redirect_to link_url(@link), alert: 'Not authorized.'
   end
 
+  def prevent_public_expired
+    redirect_to root_url, alert: 'That link has expired!'
+  end
+
 end
