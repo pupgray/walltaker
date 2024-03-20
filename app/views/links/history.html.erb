@@ -4,48 +4,38 @@
 
 <h2>Previous Wallpapers</h2>
 <p>Below is a list of the last <%= pluralize(@past_links.length, "wallpaper")%> set by others for this link. Click any wallpaper to go to see the full size image.</p>
-<div class="link-history--list">
+
+<div class="link-history--list" data-controller="past-reaction">
+  <dialog class="modal link-history--modal" data-past-reaction-target="modal">
+    <%= turbo_frame_tag "past_link_modal"%>
+  </dialog>
+  
   <% @past_links.each do |past_link| %>
     <% unless past_link.post_thumbnail_url.nil? %>
-      <div class="link-history--card" data-controller="past-reaction">
-        <% if past_link.horny? %>
-          😍
+    <div class="link-history--card">
+      <% if past_link.horny? %>
+        😍
+      <% end %>
+      <% if past_link.came? %>
+        💦
+      <% end %>
+      <a href="<%= past_link.post_url %>" class="link-history--image-link" target="_blank">
+        <%= image_tag past_link.post_thumbnail_url %>
+      </a>
+      <div class="link-history--card-footer"> 
+        <% unless past_link.set_by.nil? %>
+          <%= link_to past_link.set_by.username, user_path(past_link.set_by.username), target: '_top', data: { controller: 'user-reference' } %>
+        <% else %>
+          anon
         <% end %>
-        <% if past_link.came? %>
-          💦
+        <%= link_to "+R", {:controller => "links", :action => "history_entry", :past_link_id   => past_link.id }, data: { turbo_frame: 'past_link_modal', action: 'click->past-reaction#showReaction' } %>
+        <%= button_tag class: 'no-underline secondary', data: { action: 'click->past-reaction#addReaction' } do %>
+          <ion-icon role="presentation" name="happy"></ion-icon>
+          <ion-icon role="presentation" name="add"></ion-icon>
         <% end %>
-        <a href="<%= past_link.post_url %>" class="link-history--image-link" target="_blank">
-          <%= image_tag past_link.post_thumbnail_url %>
-        </a>
-        <div class="link-history--card-footer"> 
-          <% unless past_link.set_by.nil? %>
-            <%= link_to past_link.set_by.username, user_path(past_link.set_by.username), target: '_top' %>
-          <% else %>
-            anon
-          <% end %>
-          <%= button_tag class: 'no-underline secondary', data: { action: 'click->past-reaction#addReaction' } do %>
-            <ion-icon role="presentation" name="happy"></ion-icon>
-            <ion-icon role="presentation" name="add"></ion-icon>
-          <% end %>
-        </div>
-        <dialog class="modal link-history--modal" data-past-reaction-target="modal">
-          <h4>Previous wallpaper from <%= past_link.set_by&.username || "anon" %></h4>
-          <a href="<%= past_link.post_url %>" class="link-history--modal--image-preview" target="_blank">
-            <%= image_tag past_link.post_thumbnail_url %>
-          </a>
-
-          <%= render 'links/reaction', past_link: past_link %>
-          <% if current_user == past_link.link.user%>
-            <%= form_with url: url_for(controller: :links, action: :new_reaction, id: past_link.link.id, past_link_id: past_link.id), class: 'set-post-response' do |form| %>
-              <div>
-                <%= form.text_field :response_text, placeholder: 'How do you feel about this wallpaper?', autocomplete: 'off' %>
-                <%= form.select :response_type, [['Love it!', :horny], ['Hate it!', :disgust], ['I came', :came]] %>
-                <%= form.submit 'Reply' %>
-              </div>
-            <% end %>
-          <% end %>
-        </dialog>
       </div>
+
+    </div>
     <% end %>
   <% end %>
 </div>

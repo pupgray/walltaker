@@ -9,10 +9,10 @@ class LinksController < ApplicationController
   before_action :authorize, only: %i[index new edit create destroy]
 
   # 2. set @link instance var, since a lot of action filters use it
-  before_action :set_link, only: %i[show history edit update destroy export toggle_ability new_reaction]
-  before_action :require_link, only: %i[show history edit update destroy export toggle_ability new_reaction]
-  before_action :set_past_link, only: %i[new_reaction]
-  before_action :require_past_link, only: %i[new_reaction]
+  before_action :set_link, only: %i[show history edit update destroy export toggle_ability new_reaction history_entry]
+  before_action :require_link, only: %i[show history edit update destroy export toggle_ability new_reaction history_entry]
+  before_action :set_past_link, only: %i[new_reaction history_entry]
+  before_action :require_past_link, only: %i[new_reaction history_entry]
 
   # 3. protect link-specific buisness rules
   before_action :prevent_public_expired, only: %i[show history update]
@@ -51,6 +51,8 @@ class LinksController < ApplicationController
     @links = Link.where(id: science_links)
   end
 
+  def history_entry
+  end
   # GET /links/1 or /links/1.json
   def show
     @has_friendship = Friendship.find_friendship(current_user, @link.user).exists? if current_user
