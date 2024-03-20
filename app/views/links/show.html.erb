@@ -170,7 +170,10 @@
   <h3>Previous wallpapers</h3>
   <%= render partial: 'past_links', locals: { past_links: @past_links } %>
   <a href="<%=link_past_links_path(link_id: @link.id)%>" class="small see-all-past-wallpapers" %>
-    View More
+    View More 
+    <% if current_user == @link.user %>
+      and Send Reactions
+    <% end %>
     <ion-icon role="presentation" name="arrow-forward"></ion-icon>
   </a>
 <% end %>
