@@ -1,0 +1,46 @@
+<div class="left">
+    <%= link_to "Back to link", link_path(id: @link.id) %>
+</div>
+
+<h2>Previous Wallpapers</h2>
+<p>
+  Below is a list of the last <%= pluralize(@past_links.length, "wallpaper")%> set by others for this link.
+  <% if current_user == @link.user %>
+    Click any wallpaper to add a reaction or view the original post.
+  <% else %>
+    Click any wallpaper to see their reaction or view the original post.
+  <% end %>
+</p>
+
+<div class="link-history--list" data-controller="past-reaction">
+  <dialog class="modal link-history--modal" data-past-reaction-target="modal">
+    <%= turbo_frame_tag "past_link_modal"%>
+  </dialog>
+  
+  <% @past_links.each do |past_link| %>
+    <% unless past_link.post_thumbnail_url.nil? %>
+    <div class="link-history--card">
+
+      <a class="link-history--image-link" href=<%= link_past_link_path(link_id: @link.id, id: past_link.id) %> data-turbo-frame="past_link_modal", data-action="click->past-reaction#showReaction">
+        <%= image_tag past_link.post_thumbnail_url %>
+      </a>
+      <div class="link-history--card-footer"> 
+        <% unless past_link.set_by.nil? %>
+          <%= link_to past_link.set_by.username, user_path(past_link.set_by.username), target: '_top' %>
+        <% else %>
+          anon
+        <% end %>
+        <div class="link-history--emote">
+          <% if past_link.horny? %>
+            😍
+          <% end %>
+          <% if past_link.came? %>
+            💦
+          <% end %>
+        </div>
+      </div>
+
+    </div>
+    <% end %>
+  <% end %>
+</div>

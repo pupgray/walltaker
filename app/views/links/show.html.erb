@@ -169,7 +169,7 @@
 <% unless @past_links.empty? %>
   <h3>Previous wallpapers</h3>
   <%= render partial: 'past_links', locals: { past_links: @past_links } %>
-  <a href="<%=url_for(action: :history)%>" class="small see-all-past-wallpapers" %>
+  <a href="<%=link_past_links_path(link_id: @link.id)%>" class="small see-all-past-wallpapers" %>
     View More
     <ion-icon role="presentation" name="arrow-forward"></ion-icon>
   </a>

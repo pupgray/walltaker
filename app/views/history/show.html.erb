@@ -1,0 +1,34 @@
+<% past_link = @past_link %>
+<% e621_url = "https://e621.net/posts?md5=#{ CGI.escape(past_link.post_url[/\w*(?=\.(png|jpg|bmp|webm|gif)$)/]) }" %>
+<%= turbo_frame_tag "past_link_modal" do %>
+  <h4>
+    Previous wallpaper from 
+    <% unless past_link.set_by.nil? %>
+      <%= link_to past_link.set_by.username, user_path(past_link.set_by.username), target: '_top', data: { controller: 'user-reference' } %>
+    <% else %>
+      anon
+    <% end %>
+  </h4>
+  <a href="<%= past_link.post_url %>" class="link-history--modal--image-preview" target="_blank">
+  <%= image_tag past_link.post_thumbnail_url %>
+  </a>
+  <%= render 'links/reaction', past_link: past_link %>
+  <div class="link-history--modal--image-details">
+    <small>
+      Set <%= time_ago_in_words past_link.created_at %> ago
+    </small>
+    <%= link_to e621_url, class: 'small' do %>
+      Show on E621
+      <ion-icon role="presentation" name="arrow-forward"></ion-icon>
+    <% end %>
+  </div>
+  <% if current_user == past_link.link.user%>
+      <%= form_with url: link_past_link_path(@link, past_link), method: 'PATCH', class: 'set-post-response' do |form| %>
+          <div>
+          <%= form.text_field :response_text, placeholder: 'How do you feel about this wallpaper?', autocomplete: 'off' %>
+          <%= form.select :response_type, [['Love it!', :horny], ['Hate it!', :disgust], ['I came', :came]] %>
+          <%= form.submit 'Reply' %>
+          </div>
+      <% end %>
+  <% end %>
+<% end %>

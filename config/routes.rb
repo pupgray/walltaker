@@ -35,9 +35,6 @@ Rails.application.routes.draw do
   post 'i-forgor/commit/:password_reset_token', to: 'users#commit_apply_new_password', as: 'forgor_apply_commit'
   get 'logout', to: 'session#destroy', as: 'logout'
   get 'browse', to: 'links#browse'
-  get 'links/:id/history', to: 'links#history'
-  get 'links/:id/history/:past_link_id', to: 'links#history_entry'
-  post 'links/:id/history/:past_link_id', to: 'links#new_reaction'
   get 'users/:username', to: 'users#show'
   get 'users/:username/edit', to: 'users#edit'
   get 'users/:username/history', to: 'past_links#index', as: 'past_links'
@@ -98,6 +95,7 @@ Rails.application.routes.draw do
         post :apply, to: 'link_wizard#apply', as: 'apply'
       end
     end
+    resources :past_links, controller: :history, path: :history, only: [:index, :show, :update]
   end
 
   resources :surrenders do

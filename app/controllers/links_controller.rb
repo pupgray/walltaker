@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class LinksController < ApplicationController
+  include LinkPermissionsChecks
   ######
   # WELCOME TO HELL
   ######
@@ -9,21 +10,20 @@ class LinksController < ApplicationController
   before_action :authorize, only: %i[index new edit create destroy]
 
   # 2. set @link instance var, since a lot of action filters use it
-  before_action :set_link, only: %i[show history edit update destroy export toggle_ability new_reaction history_entry]
-  before_action :require_link, only: %i[show history edit update destroy export toggle_ability new_reaction history_entry]
-  before_action :set_past_link, only: %i[new_reaction history_entry]
-  before_action :require_past_link, only: %i[new_reaction history_entry]
+  before_action only: %i[show edit update destroy export toggle_ability] do
+    set_link(params[:id])
+  end
+  before_action :require_link, only: %i[show edit update destroy export toggle_ability]
 
   # 3. protect link-specific buisness rules
-  before_action :prevent_public_expired, only: %i[show history update]
-  before_action :protect_friends_only_links, only: %i[show history update]
+  before_action :prevent_public_expired, only: %i[show update], if: -> { link_is_expired_and_not_owned? }
+  before_action :protect_friends_only_links, only: %i[show update]
   before_action :skip_unauthorized_requests, only: %i[update toggle_ability], if: -> { update_request_unsafe? }
-  before_action :skip_unauthorized_requests, only: %i[new_reaction], if: -> { !past_link_belongs_to_user? }
   before_action :disallow_surrendered_accounts, only: %i[update]
 
   # 4. save presence + analytics
   after_action :log_presence, only: %i[show]
-  after_action :track_visit, only: %i[index browse new show history edit]
+  after_action :track_visit, only: %i[index browse new show edit]
 
   # GET /links or /links.json (only your links)
   def index
@@ -51,8 +51,6 @@ class LinksController < ApplicationController
     @links = Link.where(id: science_links)
   end
 
-  def history_entry
-  end
   # GET /links/1 or /links/1.json
   def show
     @has_friendship = Friendship.find_friendship(current_user, @link.user).exists? if current_user
@@ -65,18 +63,6 @@ class LinksController < ApplicationController
   def new
     @link = Link.new
     @link.expires = Time.now.utc + 1.days
-  end
-
-  # GET /links/1/history
-  def history
-    @past_links = PastLink.all.order(id: :desc).where(link: @link).take(50)
-  end
-
-  # POST /links/:id/history/:past_link_id/reaction
-  def new_reaction
-    # TODO: handle failure case with error message
-    @past_link.set_reaction(past_link_params['response_type'], past_link_params['response_text'])
-    redirect_to url_for(controller: :links, action: :new_reaction, id: @link.id)
   end
 
   # GET /links/1/edit
@@ -233,53 +219,8 @@ class LinksController < ApplicationController
     user_trying_to_update_others_link_restricted_values || unauthed_user_trying_to_update_others_link_restricted_values
   end
 
-  def past_link_belongs_to_user?
-    @past_link.link.user == current_user
-  end
-
-  def protect_friends_only_links
-    unless request.format == :json
-      authorize if @link.friends_only
-
-      unless current_user.nil?
-        friendship_exists = Friendship.find_friendship(@link.user, current_user).exists?
-        if @link.friends_only && !friendship_exists && (current_user.id != @link.user.id)
-          return redirect_to root_url, alert: 'Not Authorized'
-        end
-      end
-    end
-  end
-
   def log_presence
     log_link_presence(@link)
-  end
-
-  # Use callbacks to share common setup or constraints between actions.
-  def set_link
-    if params[:id].match? /\D+/
-      @link = Link.find_by(custom_url: params[:id])
-    else
-      @link = Link.find_by(id: params[:id])
-    end
-  end
-
-  def require_link
-    if @link.nil?
-      raise ActionController::RoutingError.new('Not Found')
-    end
-  end
-
-  def set_past_link
-    if params[:past_link_id].match?(/\d+/)
-      @past_link = PastLink.find_by(id: params[:past_link_id])
-    end
-
-  end
-
-  def require_past_link
-    if @past_link.nil?
-      raise ActionController::RoutingError.new('Not Found')
-    end
   end
 
   def skip_unauthorized_requests
@@ -293,16 +234,8 @@ class LinksController < ApplicationController
     params.require(:link).permit(:expires, :terms, :blacklist, :friends_only, :never_expires, :theme, :min_score, :custom_url, :response_text, :response_type)
   end
 
-  def past_link_params
-    params.require([:response_type, :past_link_id])
-    return params.permit(:response_type, :past_link_id, :response_text)
-  end
-
   def prevent_public_expired
-    @is_expired = @link.never_expires ? false : @link.expires <= Time.now.utc
-    current_user_is_not_owner = current_user && current_user.id != @link.user.id
-    not_logged_in = current_user.nil?
-    redirect_to root_url, alert: 'That link has expired!' if @is_expired && (current_user_is_not_owner || not_logged_in)
+    redirect_to root_url, alert: 'That link has expired!'
   end
 
   def do_link_request_test
