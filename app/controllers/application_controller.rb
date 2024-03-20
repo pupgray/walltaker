@@ -190,10 +190,10 @@ class ApplicationController < ActionController::Base
   end
 
   def kick_bad_surrender_controllers
-    if cookies.signed[:surrender_id].present?
+    if helpers.is_surrender_controller_session?
       begin
         surrender = Surrender.find(cookies.signed[:surrender_id])
-        if !surrender || surrender.expired?
+        if !surrender || !surrender.active?
           session[:user_id] = nil
           cookies.signed[:surrender_id] = nil
           surrender.destroy if surrender
@@ -207,7 +207,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def authorize_for_surrenderd_accounts
+  def authorize_for_surrendered_accounts
     return redirect_to new_session_url, alert: 'Error 500, service/E621 down?' if current_visit&.banned_ip.present?
 
     return redirect_to new_session_url, alert: 'Not authorized' if current_user.nil?
@@ -216,16 +216,27 @@ class ApplicationController < ActionController::Base
   end
 
   def authorize
-    result = authorize_for_surrenderd_accounts
+    result = authorize_for_surrendered_accounts
     return result if result
 
     result_two = disallow_surrendered_accounts
     return result_two if result_two
+
+    if helpers.is_surrender_controller_session? && request.method == 'GET'
+      begin
+        surrender = Surrender.find(cookies.signed[:surrender_id])
+        surrender.current_page = request.path
+        surrender.save
+      rescue
+      end
+    end
+
+    true
   end
 
   def disallow_surrendered_accounts
     current_surrender = current_user&.current_surrender
-    if cookies.signed[:surrender_id].nil? && current_surrender && !current_surrender.expired?
+    if cookies.signed[:surrender_id].nil? && current_surrender && current_surrender.active?
       return redirect_to current_surrender, alert: "#{current_surrender.user.username} attempted to use walltaker while their account is surrendered."
     end
 
