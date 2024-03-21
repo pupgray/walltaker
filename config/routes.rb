@@ -1,8 +1,12 @@
 Rails.application.routes.draw do
+  get 'errors/not_found'
+  get 'errors/server_error'
+
   get 'users/:user_id/kinks', to: 'kink#users_kinks', as: 'user_kinks'
   get 'kinks/new', to: 'kink#new', as: 'kink_new_form'
   get 'kinks/:id', to: 'kink#show', as: 'kink_show'
   post 'kinks(/:id)', to: 'kink#update', as: 'kink'
+  post 'kinks(/:id)/star', to: 'kink#toggle_star', as: 'kink_toggle_star'
   post 'kinks/:id/test/e621', to: 'kink#test_on_e621', as: 'kink_e621'
   delete 'kinks/:id', to: 'kink#remove', as: 'kink_remove'
 
@@ -13,11 +17,14 @@ Rails.application.routes.draw do
   mount Nuttracker::Engine => "/nut"
   mount Crono::Engine, at: '/pornbot'
   get 'help', to: 'help#index', as: 'help'
+  get 'help/faq', to: 'help#faq', as: 'faq'
+  get 'help/client_guide', to: 'help#client_guide', as: 'client_guide'
   get 'leaderboard', to: 'leaderboard#index', as: 'leaderboard'
   get 'notification/show'
   delete 'notification', to: 'notification#delete_all', as: 'clear_notifications'
   get 'porn_search/index'
   get 'porn_search/search'
+  get 'porn_search/search/kinks_for/:link_id', to: 'kink#search_kinks', as: 'search_kinks'
   post 'porn_search/send_message_and_return/:message_thread', to: 'porn_search#send_message_and_return', as: 'porn_search_send_message_and_return'
   root 'dashboard#index'
   get 'signup', to: 'users#new', as: 'signup'
@@ -90,6 +97,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :surrenders do
+    member do
+      post 'assume', as: :assume
+    end
+  end
+
   get '/settings', to: 'settings#index', as: 'settings'
   post '/settings', to: 'settings#save'
 
@@ -127,4 +140,7 @@ Rails.application.routes.draw do
     get 'ki', as: 'ki'
     get 'taylor', as: 'taylor'
   end
+
+  match "/404", to: "errors#not_found", via: :all
+  match "/500", to: "errors#server_error", via: :all
 end

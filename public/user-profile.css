@@ -104,9 +104,9 @@ h2 > span > .text-charm__medal:hover {
     margin: 0.5rem 0 1rem;
 }
 
-.api-key .danger-button {
-    background: var(--danger);
-    color: #FFF;
+.danger-button {
+    background: var(--danger) !important;
+    color: #FFF !important;
 }
 
 @media screen and (max-width: 475px) {
@@ -194,6 +194,19 @@ form.orgasms .form__row {
     cursor: pointer;
 }
 
+.form__row--stacking {
+    flex-wrap: wrap;
+}
+
+.form__row--checkbox {
+    align-items: flex-start;
+    gap: 1rem;
+
+    & > input[type="checkbox"] {
+        margin-top: 2px;
+    }
+}
+
 .form__row input.full-width {
     width: 100%;
     margin-bottom: 0;
@@ -218,6 +231,11 @@ h2.with-chart #chart-1 {
 .kink_tools {
     font-size: 0.9rem;
     margin-top: 1rem;
+}
+
+#kink_tools {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 .kink_form {
@@ -290,13 +308,17 @@ h2.with-chart #chart-1 {
     margin: 0;
     padding: 0 0.5rem;
     height: 100%;
-    aspect-ratio: 1 / 1;
     font-size: 1.2rem;
-    width: initial !important;
+    width: 39px !important;
+    height: 38px;
 }
 
 .kink__status {
     display: contents;
+}
+
+.kink ion-icon.star {
+    margin-left: 0.5rem;
 }
 
 .user_segments {

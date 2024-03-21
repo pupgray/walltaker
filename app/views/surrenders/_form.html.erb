@@ -1,0 +1,29 @@
+<%# locals: (surrender:, friendship_options:) -%>
+
+<%= form_with model: surrender do |f| %>
+  <%= f.label :friendship, class: 'form__row form__row--stacking' do %>
+    <strong>Surrender To</strong>
+    <%= f.select :friendship, friendship_options, {}, class: 'no-margin' %>
+  <% end %>
+
+  <%= f.label :pending, class: 'form__row form__row--checkbox' do %>
+    <%= f.check_box :pending, class: 'no-margin' %>
+    <span>Let me keep using the site till my account is taken over.</span>
+  <% end %>
+
+  <hr>
+
+  <p>
+    Please check the checkbox below <strong>to confirm you understand the warnings above.</strong>
+  </p>
+
+  <%= f.label :accepted_consequences, class: 'form__row form__row--checkbox' do %>
+    <%= f.check_box :accepted_consequences, class: 'no-margin' %>
+    <span>
+      I’m bad at risk analysis and decision-making, so I accept the consequences of this action that could result in
+      the Very Bad Things™ I just read about.
+    </span>
+  <% end %>
+
+  <%= f.submit "Give them my account for up to 24hrs", class: 'danger-button accent-block__button' %>
+<% end %>

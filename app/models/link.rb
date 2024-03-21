@@ -3,7 +3,7 @@ class Link < ApplicationRecord
   belongs_to :user
   belongs_to :set_by, foreign_key: :set_by_id, class_name: 'User', optional: true
   belongs_to :forked_from, foreign_key: :forked_from_id, class_name: 'Link', inverse_of: :forks, optional: true
-  has_many :forks, foreign_key: :forked_from_id, class_name: 'Link', inverse_of: :forked_from
+  has_many :forks, foreign_key: :forked_from_id, class_name: 'Link', inverse_of: :forked_from, dependent: :nullify
   has_many :viewing_users, foreign_key: :viewing_link_id, class_name: 'User'
   has_many :past_links
   has_many :comments, dependent: :destroy
@@ -75,9 +75,8 @@ class Link < ApplicationRecord
 
   after_update_commit do
     if blacklist_previously_changed? || terms_previously_changed? || theme_previously_changed? || response_text_previously_changed? || last_ping_user_agent_previously_changed? || live_client_started_at_previously_changed? || expires_previously_changed? || never_expires_previously_changed? || friends_only_previously_changed? || post_url_previously_changed?
-      broadcast_update
-
       begin
+        broadcast_update
         link = {}
         link[:success] = true
         link[:id] = self.id

@@ -1,4 +1,18 @@
 class ApplicationController < ActionController::Base
+  before_action :broadcast_flash_message
+
+  def broadcast_flash_message
+    return unless request.format.turbo_stream?
+    return if response.status == 301 || response.status == 302
+    return unless current_user
+
+    flash.each do |type, msg|
+      Turbo::StreamsChannel.broadcast_append_to("#{current_user.username}-flashes",
+                                                target: 'flashes', partial: 'application/flash',
+                                                locals: { msg:, type: })
+    end
+  end
+
   def get_tag_results(tag_string, after, before, link, limit = 15)
     if link.nil?
       append_to_tags = ''
@@ -39,7 +53,7 @@ class ApplicationController < ActionController::Base
         track :error, :e621_posts_api_fail, response: response
         return nil
       end
-  
+
       results = JSON.parse(response.body)['posts']
       if results.present? && results.class == Array
         if /order:random/i =~ padded_tag_string
@@ -47,7 +61,7 @@ class ApplicationController < ActionController::Base
         else
           Rails.cache.write(key, results, expires_in: 45.minutes)
         end
-        
+
         unless link_can_show_videos
           results.filter do |post|
             %w[png jpg bmp webp].include? post['file']['ext']
@@ -78,12 +92,12 @@ class ApplicationController < ActionController::Base
 
       kink_in_query = query.split(' ').any? { |tag| kinks.any? tag }
     end
-    append_to_tags = ''
+    append_to_tags = '-flash '
     append_to_tags += link.theme if (link.theme)
     append_to_tags += ' ' + ((sanitized_blacklist.split.map { |tag| "-#{tag}" }).join ' ') unless (sanitized_blacklist.empty?)
     append_to_tags += ' score:>' + link.min_score.to_s if link.min_score.present? && link.min_score != 0
     append_to_tags += ' -animated' unless link.check_ability 'can_show_videos'
-    append_to_tags += ' ' + link.user.kinks.pluck(:name).map {|name| "~#{name}"}.join(' ') if link.check_ability('is_kink_aligned') && !kink_in_query
+    append_to_tags += ' ' + link.user.kinks.pluck(:name).map { |name| "~#{name}" }.join(' ') if link.check_ability('is_kink_aligned') && !kink_in_query
     append_to_tags
   end
 
@@ -190,10 +204,75 @@ class ApplicationController < ActionController::Base
     link
   end
 
-  def authorize
-    redirect_to new_session_url, alert: 'Not authorized' if current_user.nil?
+  # @param [User] user
+  # @param [Surrender] surrender
+  def log_in_as(user, surrender = nil)
+    session[:user_id] = user.id
+    cookies.signed[:permanent_session_id] = nil
 
-    redirect_to new_session_url, alert: 'Error 500, service/E621 down?' if current_visit&.banned_ip.present?
+    if surrender
+      cookies.signed[:surrender_id] = surrender.id
+      Notification.create user:, notification_type: :surrender_event, link: root_path, text: "#{surrender.controller.username} logged in as you."
+      redirect_to root_path, notice: "#{surrender.controller.username} has logged in as #{ user.username }"
+    else
+      cookies.signed[:surrender_id] = nil
+      redirect_to root_path
+    end
+
+  end
+
+  def kick_bad_surrender_controllers
+    if helpers.is_surrender_controller_session?
+      begin
+        surrender = Surrender.find(cookies.signed[:surrender_id])
+        if !surrender || !surrender.active?
+          session[:user_id] = nil
+          cookies.signed[:surrender_id] = nil
+          surrender.destroy if surrender
+          return redirect_to new_session_url, alert: 'Account surrender for user is over.'
+        end
+      rescue
+        session[:user_id] = nil
+        cookies.signed[:surrender_id] = nil
+        return redirect_to new_session_url, alert: 'Account surrender for user is over.'
+      end
+    end
+  end
+
+  def authorize_for_surrendered_accounts
+    return redirect_to new_session_url, alert: 'Error 500, service/E621 down?' if current_visit&.banned_ip.present?
+
+    return redirect_to new_session_url, alert: 'Not authorized' if current_user.nil?
+
+    return kick_bad_surrender_controllers
+  end
+
+  def authorize
+    result = authorize_for_surrendered_accounts
+    return result if result
+
+    result_two = disallow_surrendered_accounts
+    return result_two if result_two
+
+    if helpers.is_surrender_controller_session? && request.method == 'GET'
+      begin
+        surrender = Surrender.find(cookies.signed[:surrender_id])
+        surrender.current_page = request.path
+        surrender.save
+      rescue
+      end
+    end
+
+    true
+  end
+
+  def disallow_surrendered_accounts
+    current_surrender = current_user&.current_surrender
+    if cookies.signed[:surrender_id].nil? && current_surrender && current_surrender.active?
+      return redirect_to current_surrender, alert: "#{current_surrender.user.username} attempted to use walltaker while their account is surrendered."
+    end
+
+    return kick_bad_surrender_controllers
   end
 
   def authorize_with_admin

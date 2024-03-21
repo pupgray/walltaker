@@ -8,9 +8,11 @@ class User < ApplicationRecord
   has_many :notifications
   has_many :ahoy_visits, :class_name => 'Ahoy::Visit'
   has_many :kink_havers
-  has_many :kinks, through: :kink_havers
+  has_many :kinks, -> { order(is_starred: :desc, id: :desc) }, through: :kink_havers
   attribute :colour_preference, :integer
   belongs_to :viewing_link, foreign_key: :viewing_link_id, class_name: 'Link', optional: true
+
+  has_one :current_surrender, class_name: 'Surrender', dependent: :destroy
 
   validates_uniqueness_of :username
 
@@ -24,6 +26,11 @@ class User < ApplicationRecord
 
   scope :has_friendship_with, ->(other) {
     Friendship.find_friendship(other, self)
+  }
+
+  scope :controllable_by, ->(other) {
+    controllable_user_ids = other.controllable_surrenders.pluck(:user_id).uniq
+    where(id: controllable_user_ids)
   }
 
   # This was implemented so bad lol, should've been a relation.
@@ -53,6 +60,11 @@ class User < ApplicationRecord
   def leave_link
     self.viewing_link_id = nil
     save
+  end
+
+  def controllable_surrenders
+    friendship_ids = Friendship.involving(self).is_confirmed.pluck(:id)
+    Surrender.not_for_user(self).where(id: friendship_ids)
   end
 
   after_commit do

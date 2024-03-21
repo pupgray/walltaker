@@ -944,7 +944,7 @@ aside.comments-sidebar {
     position: fixed;
     top: 0;
     right: 0;
-    height: 100vh;
+    height: 100dvh;
     background: var(--bg);
     border-left: 1px solid var(--border);
     padding: 0 1rem 1rem;
@@ -1053,7 +1053,7 @@ aside.comments-sidebar > button .toggle-badge[data-hidden=true] {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 999;
+    z-index: 90;
 }
 
 .link--anchor-shade-container {

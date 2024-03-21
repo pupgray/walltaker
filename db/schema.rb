@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_20_203708) do
+
+ActiveRecord::Schema[7.1].define(version: 2024_03_12_052021) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -213,6 +214,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_20_203708) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_starred", default: false, null: false
     t.index ["kink_id"], name: "index_kink_havers_on_kink_id"
     t.index ["user_id"], name: "index_kink_havers_on_user_id"
   end
@@ -314,6 +316,20 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_20_203708) do
     t.index ["user_id"], name: "index_past_links_on_user_id"
   end
 
+  create_table "surrenders", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "friendship_id", null: false
+    t.datetime "expires_at", precision: nil
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "accepted_consequences", default: false
+    t.boolean "pending", default: false
+    t.boolean "logged_in", default: false
+    t.string "current_page"
+    t.index ["friendship_id"], name: "index_surrenders_on_friendship_id"
+    t.index ["user_id"], name: "index_surrenders_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email"
     t.string "username"
@@ -354,5 +370,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_20_203708) do
   add_foreign_key "past_links", "links", on_delete: :nullify
   add_foreign_key "past_links", "users"
   add_foreign_key "past_links", "users", column: "set_by_id"
+  add_foreign_key "surrenders", "friendships"
+  add_foreign_key "surrenders", "users"
   add_foreign_key "users", "links", column: "viewing_link_id"
 end
