@@ -1,5 +1,4 @@
 <% target = "link_details_#{link.id}" %>
-<% e621_url = "https://e621.net/posts?md5=#{ CGI.escape(link.post_url[/\w*(?=\.(png|jpg|bmp|webm|gif)$)/]) }" if link.post_url %>
 <% client = link_agent_to_icon link.last_ping_user_agent %>
 <% devices = {
   desktop: :desktop,
@@ -51,7 +50,7 @@
         <img src="<%= link.post_thumbnail_url %>" class="background-sample__image--<%= device %>"/>
       </a>
       <figcaption class="link--description">
-        <%= link_to e621_url, class: 'small' do %>
+        <%= link_to link.booru_page_url, class: 'small' do %>
           Show on E621
           <ion-icon role="presentation" name="arrow-forward"></ion-icon>
         <% end %>

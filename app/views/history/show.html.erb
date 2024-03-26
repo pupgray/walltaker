@@ -1,5 +1,4 @@
 <% past_link = @past_link %>
-<% e621_url = "https://e621.net/posts?md5=#{ CGI.escape(past_link.post_url[/\w*(?=\.(png|jpg|bmp|webm|gif)$)/]) }" %>
 <%= turbo_frame_tag "past_link_modal" do %>
   <h4>
     Previous wallpaper from 
@@ -17,7 +16,7 @@
     <small>
       Set <%= time_ago_in_words past_link.created_at %> ago
     </small>
-    <%= link_to e621_url, class: 'small' do %>
+    <%= link_to past_link.booru_page_url, class: 'small' do %>
       Show on E621
       <ion-icon role="presentation" name="arrow-forward"></ion-icon>
     <% end %>

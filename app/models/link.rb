@@ -82,6 +82,10 @@ class Link < ApplicationRecord
     return past_links&.last
   end
 
+  def booru_page_url
+    return current_past_link&.booru_page_url
+  end
+
   # @return [User | nil]
   def get_set_by_user
     return User.find(self.set_by_id) if self.set_by_id

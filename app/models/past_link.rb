@@ -15,6 +15,10 @@ class PastLink < ApplicationRecord
         })
   end
 
+  # Futureproofing in case we ever support another booru or add a column for the booru page link
+  def booru_page_url
+    return "https://e621.net/posts?md5=#{ CGI.escape(post_url[/\w*(?=\.(png|jpg|bmp|webm|gif)$)/]) }" if post_url
+  end
 
   def set_reaction (response_type, response_text)
     # Make notification for setter
