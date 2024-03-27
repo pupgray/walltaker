@@ -4,15 +4,17 @@
 
 <h2>Previous Wallpapers</h2>
 <div class="mascot-instructional-container">
-<p class="mascot-speech-bubble mascot-speech-bubble-right">
-  Heya hun! Here, you can take a look at the last <%= pluralize(@past_links.length, "wallpaper")%> set for this link!
+<div class="mascot-speech-bubble mascot-speech-bubble-right">
+  <p>
+  Hey hun! Come take a look at the last <%= pluralize(@past_links.length, "wallpaper")%> set for link <%= @link.id %>!
   Click any of 'em to take a look at the original post, and
   <% if current_user == @link.user %>
     send reactions for wallpapers you missed!
   <% else %>
-    see how they reacted!
+    see how <b><%= @link.user.username %></b> reacted!
   <% end %>
-</p>
+  </p>
+</div>
 <%= image_tag 'mascot/TaylorEducator.png', alt: 'Taylor, dressed as a sexy librarian, holding a book named "Porn".', class: 'mascot-instructional-portrait', width: 160 %>
 </div>
 

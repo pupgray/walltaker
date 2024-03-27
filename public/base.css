@@ -1663,6 +1663,12 @@ pre code.hljs {
     transform: translate(0);
 }
 
+.mascot-speech-bubble p {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+
 @media screen and (max-width: 760px) {
   .mascot-speech-bubble {
     border-radius: 1.5rem;
