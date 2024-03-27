@@ -16,10 +16,8 @@
 <%= image_tag 'mascot/TaylorEducator.png', alt: 'Taylor, dressed as a sexy librarian, holding a book named "Porn".', class: 'mascot-instructional-portrait', width: 160 %>
 </div>
 
-
-
-<div class="link-history--list" data-controller="past-reaction">
-  <dialog class="modal link-history--modal" data-past-reaction-target="modal">
+<div class="link-history--list" data-controller="link-history">
+  <dialog class="modal link-history--modal" data-link-history-target="modal">
     <%= turbo_frame_tag "past_link_modal"%>
   </dialog>
   
@@ -27,7 +25,7 @@
     <% unless past_link.post_thumbnail_url.nil? %>
     <div class="link-history--card">
 
-      <a class="link-history--image-link" href=<%= link_past_link_path(link_id: @link.id, id: past_link.id) %> data-turbo-frame="past_link_modal", data-action="click->past-reaction#showReaction">
+      <a class="link-history--image-link" href=<%= link_past_link_path(link_id: @link.id, id: past_link.id) %> data-turbo-frame="past_link_modal", data-action="click->link-history#showReaction">
         <%= image_tag past_link.post_thumbnail_url %>
       </a>
       <div class="link-history--card-footer"> 

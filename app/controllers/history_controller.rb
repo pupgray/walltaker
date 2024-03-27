@@ -29,7 +29,13 @@ class HistoryController < ApplicationController
 
   def update
     @past_link.set_reaction(past_link_params['response_type'], past_link_params['response_text'])
-    redirect_to link_past_link_path(@link, @past_link)
+    unless @past_link.destroyed?
+      redirect_to link_past_link_path(@link, @past_link)
+    else
+      headers['Location'] = link_past_links_path(@link)
+      head :reset_content
+    end
+
   end
 
   def past_link_params

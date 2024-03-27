@@ -1,5 +1,6 @@
 <% past_link = @past_link %>
 <%= turbo_frame_tag "past_link_modal" do %>
+<div data-controller="history-reaction">
   <h4>
     Previous wallpaper from 
     <% unless past_link.set_by.nil? %>
@@ -22,7 +23,7 @@
     <% end %>
   </div>
   <% if current_user == past_link.link.user%>
-      <%= form_with url: link_past_link_path(@link, past_link), method: 'PATCH', class: 'set-post-response' do |form| %>
+      <%= form_with url: link_past_link_path(@link, past_link), data: {action: 'turbo:submit-end->history-reaction#submitEnd'}, method: 'PATCH', class: 'set-post-response' do |form| %>
           <div>
           <%= form.text_field :response_text, placeholder: 'How do you feel about this wallpaper?', autocomplete: 'off' %>
           <%= form.select :response_type, [['Love it!', :horny], ['Hate it!', :disgust], ['I came', :came]] %>
@@ -30,4 +31,5 @@
           </div>
       <% end %>
   <% end %>
+</div>
 <% end %>

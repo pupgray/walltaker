@@ -1,7 +1,7 @@
 import {Controller} from "@hotwired/stimulus"
 import {WithModal} from 'modules/modal'
 
-class PastReactionController extends Controller {
+class LinkHistoryController extends Controller {
     static targets = ["modal"];
 
     showReaction() {
@@ -11,4 +11,4 @@ class PastReactionController extends Controller {
     }
 }
 
-export default WithModal(PastReactionController)
+export default WithModal(LinkHistoryController)
