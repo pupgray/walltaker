@@ -8,12 +8,12 @@
   </div>
   <div class="right">
     <% if action_name == 'index' %>
-      <%if !@user.admin%>
-       <%= link_to surrenders_path, class: 'no-underline' do %>
-           <ion-icon name="ticket"></ion-icon>
-           Surrender
-         <% end %>
+      <% unless @user.admin? %>
+        <%= link_to surrenders_path, class: 'no-underline' do %>
+          <ion-icon name="ticket"></ion-icon>
+          Surrender
         <% end %>
+      <% end %>
       <% if has_requests? %>
         <span class="notice-right">New Requests <ion-icon role="presentation" name="arrow-forward-outline"></ion-icon></span>
       <% end %>
