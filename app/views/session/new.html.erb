@@ -1,5 +1,14 @@
 <% content_for(:html_title) { "Login to Walltaker" } %>
 
+<div class="task-tools">
+  <div class="right">
+    <%= link_to be_evil_path, class: 'no-underline' do %>
+      <ion-icon name="nuclear"></ion-icon>
+      Do something evil
+    <% end %>
+  </div>
+</div>
+
 <h2><ion-icon role="presentation" name="person"></ion-icon> Log In</h2>
 
 <% if @error %>
@@ -26,3 +35,4 @@
   <br/>
   <small><%= link_to 'I forgot my password, please save me ever benevolent walltaker god.', forgor_path %></small>
 <% end %>
+<br/>

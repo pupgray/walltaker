@@ -16,7 +16,7 @@ class SurrendersController < ApplicationController
     friendship = Friendship.involving(current_user).is_confirmed.find(surrender_params[:friendship])
 
     if friendship.present?
-      surrender = current_user.create_current_surrender(expires_at: Time.now + 24.hours, friendship:)
+      surrender = current_user.create_current_surrender(expires_at: Time.now + 24.hours, friendship:, accepted_consequences: surrender_params[:accepted_consequences], pending: surrender_params[:pending])
 
       if surrender.save
         Notification.create user: surrender.controller, notification_type: :surrender_event, link: friendships_path, text: "#{surrender.user.username} has allowed you to log into their account. You can do so in the friends menu."
@@ -42,8 +42,17 @@ class SurrendersController < ApplicationController
   end
 
   def assume
-    return redirect_to root_path, alert: 'Not allowed.' unless Friendship.where(id: @surrender.friendship.id).involving(current_user).is_confirmed.exists?
-    return redirect_to surrender_path(surrender), alert: '... what? How does that even make sense? You chose to surrender your account, then assume your own account?' unless @surrender.user != current_user
+    # It's reallllllly important we don't fuck up here. Each guard on it's own line please.
+
+    return redirect_to root_path, alert: 'Not allowed.' if @surrender.nil?
+    return redirect_to root_path, alert: 'Not allowed.' if @surrender.invalid?
+    return redirect_to root_path, alert: 'Not allowed.' if @surrender.controller != current_user
+    return redirect_to surrender_path(@surrender), alert: '... what? How does that even make sense? You chose to surrender your account, then assume your own account?' if @surrender.user == current_user
+
+    @surrender.logged_in = true
+    @surrender.pending = false if @surrender.pending?
+
+    @surrender.save
 
     log_in_as(@surrender.user, @surrender)
   end
@@ -60,7 +69,7 @@ class SurrendersController < ApplicationController
   end
 
   def surrender_params
-    params.require(:surrender).permit(:friendship)
+    params.require(:surrender).permit(:friendship, :pending, :accepted_consequences)
   end
 
   def protect_own_surrender

@@ -4,4 +4,8 @@ module ApplicationHelper
 
     false
   end
+
+  def is_surrender_controller_session?
+    cookies.signed[:surrender_id].present?
+  end
 end

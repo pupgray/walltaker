@@ -38,9 +38,29 @@ class SessionController < ApplicationController
   def destroy
     track :regular, :logged_out
     session[:user_id] = nil
+    if cookies.signed[:surrender_id].present?
+      begin
+        surrender = Surrender.find(cookies.signed[:surrender_id])
+        surrender.logged_in = false
+        surrender.save
+        rescue
+      end
+    end
     cookies.signed[:surrender_id] = nil
     cookies.delete :permanent_session_id if cookies.signed[:permanent_session_id]
     redirect_to root_path, notice: 'Logged out!'
+  end
+
+  def be_evil
+    evil_user = User.find_by_username('evil')
+    if evil_user
+      cookies.signed[:surrender_id] = nil
+      session[:user_id] = evil_user.id
+
+      redirect_to root_path, notice: "You're logged into a shared account... be evil"
+    else
+      redirect_to login_path, alert: "Evil user is missing."
+    end
   end
 
   private

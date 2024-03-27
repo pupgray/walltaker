@@ -1,6 +1,6 @@
 class KinkController < ApplicationController
   include ActionView::RecordIdentifier
-  before_action :authorize, only: %i[add remove toggle_star]
+  before_action :authorize, only: %i[update remove toggle_star]
 
   def users_kinks
     @user = User.find_by_username(params['user_id'])
