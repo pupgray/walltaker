@@ -166,18 +166,6 @@
 <%= turbo_stream_from "link_details_#{@link.id}" %>
 <%= render 'details', link: @link, set_by: @set_by %>
 
-<% unless @past_links.empty? %>
-  <h3>Previous wallpapers</h3>
-  <%= render partial: 'past_links', locals: { past_links: @past_links } %>
-  <a href="<%=link_past_links_path(link_id: @link.id)%>" class="small see-all-past-wallpapers" %>
-    View More 
-    <% if current_user == @link.user %>
-      and Send Reactions
-    <% end %>
-    <ion-icon role="presentation" name="arrow-forward"></ion-icon>
-  </a>
-<% end %>
-
 <div class="tabs" data-controller="tabs">
   <div class="tabs__charm">
     <ion-icon role="presentation" name="magnet"></ion-icon>
@@ -274,4 +262,16 @@
       </div>
     </div>
   </div>
+<% end %>
+
+<% unless @past_links.empty? %>
+  <h3>Previous wallpapers</h3>
+  <%= render partial: 'past_links', locals: { past_links: @past_links } %>
+  <a href="<%=link_past_links_path(link_id: @link.id)%>" class="small see-all-past-wallpapers" %>
+    View More 
+    <% if current_user == @link.user %>
+      and Send Reactions
+    <% end %>
+    <ion-icon role="presentation" name="arrow-forward"></ion-icon>
+  </a>
 <% end %>
