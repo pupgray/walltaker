@@ -51,6 +51,18 @@ class SessionController < ApplicationController
     redirect_to root_path, notice: 'Logged out!'
   end
 
+  def be_evil
+    evil_user = User.find_by_username('evil')
+    if evil_user
+      cookies.signed[:surrender_id] = nil
+      session[:user_id] = evil_user.id
+
+      redirect_to root_path, notice: "You're logged into a shared account... be evil"
+    else
+      redirect_to login_path, alert: "Evil user is missing."
+    end
+  end
+
   private
 
   def login_params

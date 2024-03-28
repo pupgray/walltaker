@@ -14,7 +14,7 @@ class KinkController < ApplicationController
 
   def show
     @kink = Kink.find(params['id'])
-    @users = @kink.users.order(updated_at: :desc).where.not(id: current_user&.id)
+    @users = @kink.users.order(updated_at: :desc)
   end
 
   def search_kinks

@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   root 'dashboard#index'
   get 'signup', to: 'users#new', as: 'signup'
   get 'login', to: 'session#new', as: 'login'
+  get 'login/evilly', to: 'session#be_evil', as: 'be_evil'
   get 'i-forgor', to: 'users#request_password_reset', as: 'forgor'
   post 'i-forgor', to: 'users#password_reset', as: 'forgor_commit'
   get 'i-forgor/commit/:password_reset_token', to: 'users#apply_new_password', as: 'forgor_apply'

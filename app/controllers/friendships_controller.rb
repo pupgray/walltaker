@@ -5,6 +5,7 @@ class FriendshipsController < ApplicationController
 
   # GET /friendships or /friendships.json
   def index
+    @user = current_user
     @friendships = Friendship.involving(current_user).is_confirmed
     @pending_friendship_requests = Friendship.where(sender: current_user).is_request
   end
