@@ -3,8 +3,8 @@
 </div>
 
 <h2>Previous Wallpapers</h2>
-<div class="mascot-instructional-container">
-<div class="mascot-speech-bubble mascot-speech-bubble-right">
+<div class="mascot-instructional-container mascot-instructional-container-right">
+<div class="mascot-speech-bubble">
   <p>
   Hey hun! Come take a look at the last <%= pluralize(@past_links.length, "wallpaper")%> set for link <%= @link.id %>!
   Click any of 'em to take a look at the original post, and
@@ -15,7 +15,7 @@
   <% end %>
   </p>
 </div>
-<%= image_tag 'mascot/TaylorEducator.png', alt: 'Taylor, dressed as a sexy librarian, holding a book named "Porn".', class: 'mascot-instructional-portrait', width: 160 %>
+<%= image_tag 'mascot/TaylorEducator.png', alt: 'Taylor, dressed as a sexy librarian, holding a book named "Porn".', class: 'mascot-instructional-portrait' %>
 </div>
 
 <div class="link-history--list" data-controller="link-history">

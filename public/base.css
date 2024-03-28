@@ -1642,10 +1642,19 @@ pre code.hljs {
     }
 }
 
+/**
+    Mascot Speech Bubbles
+
+    - "right/left" refers to the side the mascot portrait is on
+    - definitions for left-side bubbles don't exist yet as none are in use, but
+      you should be able to write them by just flipping the right-facing ones
+*/
 .mascot-instructional-container {
     display: flex;
     flex-direction: row;
+    overflow-x: clip;
 }
+
 .mascot-speech-bubble {
     flex-grow: 1;
     display: flex;
@@ -1655,7 +1664,6 @@ pre code.hljs {
     height: fit-content;
     min-height: 3rem;
     margin: 10px;
-    margin-top: 30px;
     align-items: center;
     justify-content: center;
     text-align: center;
@@ -1682,57 +1690,55 @@ pre code.hljs {
   }
 }
 
-.mascot-speech-bubble-left {
-  border-top-left-radius: 0;
-}
-
-.mascot-speech-bubble-left::before {
-  content: '';
-  display: block;
-  width: 0;
-  height: 0;
-  border-right: 1.5rem solid var(--text);
-  border-bottom: 1.5rem solid transparent;
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform: translate(-1.5rem, 0rem);
-}
-
-.mascot-speech-bubble-right {
+.mascot-instructional-container-right .mascot-speech-bubble {
   border-top-right-radius: 0;
 }
 
-.mascot-speech-bubble-right::before {
+.mascot-instructional-container-right .mascot-speech-bubble::before {
   content: '';
   display: block;
   width: 0;
   height: 0;
-  border-left: 1.5rem solid var(--text);
-  border-bottom: 1.5rem solid transparent;
+  border-left: 1.6rem solid var(--text);
+  border-bottom: 1.6rem solid transparent;
   position: absolute;
   top: 0;
   right: 0;
   transform: translate(1.5rem, 0rem);
 }
 
+@media screen and (max-width: 475px) {
+    .mascot-instructional-container-right .mascot-speech-bubble::before {
+        border-left: 1.1rem solid var(--text);
+        border-bottom: 1.1rem solid transparent;
+        transform: translate(1rem, 0rem);
+    }
+}
+
 .mascot-instructional-portrait {
     object-fit: contain;
     width: 200px;
     height: fit-content;
-
+    opacity: 1;
+    position: relative;
+    top: -50px;
+    left: 0px;
+    margin-left: -20px;
+    margin-right: -20px;
+    margin-bottom: -50px;
 }
 
 @media screen and (max-width: 760px) {
     .mascot-instructional-portrait {
-        width: 150px;
-        margin: -15px;
+
+        margin-right: -50px;
+        margin-bottom: -50px;
     }
 }
 
 @media screen and (max-width: 475px) {
     .mascot-instructional-portrait {
-        width: 90px;
-        margin: -15px;
+        width: 120px;
+        top: -30px;
     }
 }
