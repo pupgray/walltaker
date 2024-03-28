@@ -1,11 +1,8 @@
-require "active_support/concern"
-
-module LinkPermissionsChecks
-  extend ActiveSupport::Concern
-
+class LinksControllerBase < ApplicationController
+  protected
   # Use callbacks to share common setup or constraints between actions.
   def set_link(link_id)
-    if link_id.match? /\D+/
+    if link_id.match?(/\D+/)
       @link = Link.find_by(custom_url: link_id)
     else
       @link = Link.find_by(id: link_id)
@@ -22,7 +19,6 @@ module LinkPermissionsChecks
     if past_link_id.match?(/\d+/)
       @past_link = PastLink.find_by(id: past_link_id)
     end
-
   end
 
   def require_past_link
@@ -52,5 +48,4 @@ module LinkPermissionsChecks
       end
     end
   end
-
 end

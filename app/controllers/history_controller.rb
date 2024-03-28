@@ -1,5 +1,4 @@
-class HistoryController < ApplicationController
-  include LinkPermissionsChecks
+class HistoryController < LinksControllerBase
   before_action :authorize, only: %i[update]
 
   # 2. set @link instance var, since a lot of action filters use it
@@ -35,9 +34,9 @@ class HistoryController < ApplicationController
       headers['Location'] = link_past_links_path(@link)
       head :reset_content
     end
-
   end
 
+  private
   def past_link_params
     params.require([:id, :response_type])
     return params.permit(:id, :response_type, :response_text)

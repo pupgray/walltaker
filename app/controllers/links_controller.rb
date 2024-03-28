@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-class LinksController < ApplicationController
-  include LinkPermissionsChecks
+class LinksController < LinksControllerBase
   ######
   # WELCOME TO HELL
   ######
