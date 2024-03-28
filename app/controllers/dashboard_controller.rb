@@ -3,7 +3,7 @@ class DashboardController < ApplicationController
 
   def index
     unless current_user.nil?
-      @recent_posts = PastLink.order(id: :desc).take 6
+      @recent_posts = PastLink.order(id: :desc).take 7
       wallpapers_changed_today = Rails.cache.fetch("v1/totalchangedtoday", expires_in: 2.minutes) { PastLink.where(created_at: Time.now.beginning_of_day..Time.now.end_of_day) }
       @total_wallpapers_changed_today_by_user = Rails.cache.fetch("v1/changedtodaychart", expires_in: 5.minutes) do
         wallpapers_changed_today

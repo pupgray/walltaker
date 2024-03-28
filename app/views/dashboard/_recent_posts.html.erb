@@ -1,7 +1,37 @@
 <%= turbo_frame_tag "recent_posts", target: "_top" do %>
   <% recent_posts.each do |past_link| %>
-    <%= link_to user_path(past_link.user.username) do %>
-      <%= image_tag past_link.post_thumbnail_url %>
-    <% end %>
+    <article>
+      <%= link_to user_path(past_link.user.username), class: 'no-underline' do %>
+        <%= image_tag past_link.post_thumbnail_url %>
+        <strong>
+          <%= past_link.link.user.username.humanize.titleize %>
+          <%= %w[controlling confronting questioning lending helping punishing finger-banging ignoring deciding talking\ to grilling demanding protesting taking\ a\ stand\ against].sample %>
+          <%= %w[the\ economy company corporation money the\ president Venezula Australia Canada The\ UK mines hospitals schools universities Biden Trudeau Ursula\ von\ der\ Leyen Albanese chicken dinner families].sample %>
+          <%= %w[so\ that in\ order\ to hence causing invoking nudging pushing lampooning threatening\ to not\ causing gooning\ for cumming\ on].sample %>
+          <%= %w[water oil sand cattle eggs cheese milk bread the\ economy voters IKEA Loblaws McDonalds CDPQ The\ Bank unstoppable\ force gooners porn Nestlé Big\ Pharma].sample %>
+          <%= %w[explode go\ bankrupt end get\ pricer get\ cheaper succeed moisturize crash selling masturbation inversion goon-state loimu-haze].sample %><%= %w[,\  : \ -\ ].sample + Faker::Marketing.buzzwords %>
+        </strong>
+
+        <div>
+          <%= Faker::FunnyName.name %>
+        </div>
+
+        <div>
+          <% description = past_link.link.post_description.gsub(/\[\/?\w*\]/, '').gsub(/https?:\/\/.*\//, '').gsub(/[^\w\s]/, '').capitalize.truncate_words 100 %>
+          <%= description if description.present? %>
+          <%= Faker::Quote.matz unless description.present? %>
+        </div>
+      <% end %>
+    </article>
   <% end %>
+  <article class="ad">
+    <%= [
+          "Get your #{Faker::Vehicle.year} #{Faker::Vehicle.make_and_model} for only #{rand(1..50)}% APR financing. #{Faker::Company.bs}",
+          "#{Faker::Restaurant.name}: #{Faker::Restaurant.description.truncate_words 40}",
+          "BUY FROM #{Faker::Company.name}! #{Faker::Company.catch_phrase}",
+        "#{Faker::Company.buzzword}, #{Faker::Company.name} #{Faker::Company.bs}"
+        ].sample
+    %>
+    <%= image_tag Faker::Company.logo %>
+  </article>
 <% end %>

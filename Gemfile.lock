@@ -125,6 +125,8 @@ GEM
       ruby2_keywords
     erubi (1.12.0)
     excon (0.102.0)
+    faker (3.2.3)
+      i18n (>= 1.8.11, < 2)
     globalid (1.2.0)
       activesupport (>= 6.1)
     groupdate (6.3.0)
@@ -314,6 +316,7 @@ DEPENDENCIES
   crono
   debug
   excon
+  faker
   groupdate
   importmap-rails
   inline_svg

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'ticker/index'
   get 'errors/not_found'
   get 'errors/server_error'
 

@@ -4,6 +4,10 @@
     --success: #30AA65;
 }
 
+body {
+    font-family: Oxygen, sans-serif;
+}
+
 .as-link {
     display: inline;
     color: var(--accent);
@@ -69,21 +73,16 @@ input[type=checkbox]:checked::after {
     transform: translate(-50%, -50%) rotate(45deg);
 }
 
-h1 > a {
-    text-decoration: none;
-    background: var(--accent);
-    color: var(--bg);
-    padding: 0 1rem;
-}
+h1 {
+    margin: 0 !important;
 
-h1 > a:hover,
-h1 > a:visited {
-    text-decoration: none;
-    color: var(--bg);
-}
+    & > turbo-frame {
+        flex: 1;
 
-h1 > a:hover {
-    color: var(--bg) !important;
+        & > span > a {
+            text-align: center;
+        }
+    }
 }
 
 header h1 .show-desktop {
@@ -106,6 +105,7 @@ body > header {
     padding-top: 0.25rem;
     padding-bottom: 0.25rem;
     position: relative;
+    background: none;
 }
 
 
@@ -129,6 +129,7 @@ body > header h1 span {
                 left: 32px;
                 transform: rotate3d(1.5, 3.9, -0.6, 30deg);
             }
+
             &.nsfw {
                 height: 72px;
                 top: 34px;
@@ -144,6 +145,7 @@ body > header h1 span {
                 left: 37px;
                 transform: rotate3d(-0.3, 0.8, -0.1, 30deg);
             }
+
             &.nsfw {
                 height: 79px;
                 top: 37px;
@@ -159,6 +161,7 @@ body > header h1 span {
                 left: 40px;
                 transform: rotate3d(-1.3, 3.6, -0.5, 30deg);
             }
+
             &.nsfw {
                 height: 97px;
                 top: 53px;
@@ -172,12 +175,12 @@ body > header h1 span {
 body > header h1 span > .mascot {
     position: absolute;
     left: 50%;
-    bottom: -50px;
+    bottom: -57px;
     height: 190px;
-    transform: translateX(calc(-50% - 149px));
+    transform: translateX(calc(-50% - 320px));
     z-index: 0;
 
-    clip-path: inset(0 0 33px 5px);
+    clip-path: inset(0 0 31px 5px);
     transition: all 0.1s ease-out;
 }
 
@@ -218,6 +221,7 @@ header .surrender-status {
             color: var(--danger-text);
             background: var(--danger);
         }
+
         &.surrender-status__circle--pending {
             background: var(--marked);
             color: var(--marked);
@@ -227,6 +231,7 @@ header .surrender-status {
                 filter: brightness(0.3);
             }
         }
+
         &.surrender-status__circle--invalid {
             background: var(--success);
             color: var(--success);
@@ -301,6 +306,23 @@ header .header__inner {
     max-width: 720px;
     margin: 0 auto;
     padding: 0 1rem;
+
+    & h1 {
+        flex: 1 1 100%;
+        justify-content: center;
+
+        & a {
+            background: none;
+            color: var(--text);
+            font-family: Imbue;
+            font-weight: 500;
+            font-size: 4.5rem;
+
+            &:hover {
+                color: var(--text) !important;
+            }
+        }
+    }
 }
 
 header .header__age-warning {
@@ -311,6 +333,7 @@ header .header__age-warning {
 
 header .user-tools {
     flex: 1 1 320px;
+    color: var(--text-light) !important;
 }
 
 header .user-tools .user-tools__nested {
@@ -319,17 +342,26 @@ header .user-tools .user-tools__nested {
 
 header .user-tools, header .user-tools .user-tools__nested {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+    gap: 10px;
+    color: var(--text);
 }
 
 header .user-tools > a {
     white-space: nowrap;
-}
+    color: inherit;
+    font-size: 0.8rem;
 
-header .user-tools > * + * {
-    margin-left: 20px;
+    & + * {
+        display: flex;
+        gap: 10px;
+
+        &:before {
+            content: '|';
+        }
+    }
 }
 
 header h1 {
@@ -387,7 +419,7 @@ header .notification-bell {
     color: var(--text);
     background: none;
     padding: 0;
-    margin: 0 0 0 1rem;
+    margin: 0 !important;
 }
 
 header .notification-bell[data-has-notifs=true] {
@@ -980,7 +1012,7 @@ a.small:hover {
 }
 
 .accent-block__charm {
-    color: var(--border);
+    color: var(--text-light);
     display: flex;
     align-items: center;
     gap: 7px;
@@ -1231,9 +1263,8 @@ header .user-tools turbo-frame {
     display: block;
     position: relative;
     font-size: 1.1rem;
-    height: 1.3rem;
     margin: 0 !important;
-    width: 32px;
+    transform: translateY(1px);
 }
 
 .notifications__empty {
@@ -1568,6 +1599,7 @@ section .then {
     flex-direction: row-reverse;
     gap: 1rem;
     font-size: 0.7rem;
+    margin-bottom: 30px;
 }
 
 .hang a, .hang > div {
@@ -1637,8 +1669,136 @@ pre code.hljs {
     color: var(--bg) !important;
     text-shadow: none !important;
 
-    strong {
+    & strong {
         text-decoration: underline;
     }
 }
 
+a.title {
+    margin-right: 0 !important;
+}
+
+main > article {
+    margin-top: 20px;
+    columns: 2;
+    column-rule: 1px solid var(--border);
+    gap: 2.5rem;
+
+    & h2 {
+        margin-top: 0;
+        break-after: avoid-column;
+    }
+
+    & > * + h2 {
+        margin-top: 40px;
+    }
+
+    & section {
+        break-inside: avoid;
+    }
+}
+
+.subscribe {
+    font-size: 1rem;
+    font-weight: 700;
+    position: absolute;
+    top: 90px;
+    right: 10px;
+    z-index: 9;
+
+    & button {
+        font-size: inherit;
+        border-radius: 0;
+        padding: 6px 8px;
+        margin: 0;
+
+        &:hover {
+            filter: none;
+        }
+
+        &.secondary {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+    }
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(calc(-100% - 0.9rem));
+    }
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.topper {
+    display: flex;
+    justify-content: space-between;
+    grid-column: 1 / 4;
+    padding: 8px 10px;
+    background: var(--text);
+    color: var(--bg);
+    font-size: 0.8rem;
+}
+
+#ticker {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    grid-column: 1 / 4;
+    height: 35px;
+    margin-bottom: 5px;
+    opacity: 0;
+    animation: fade-in 0.1s 0.75s linear 1 forwards;
+    overflow: hidden;
+    border-bottom: 1px solid #DEDEDE;
+
+    & .ticker__content {
+        display: flex;
+        gap: 0.9rem;
+        animation: marquee 40s linear infinite;
+
+        & .symbol {
+            display: flex;
+            gap: 0.5rem;
+
+            & strong {
+                font-weight: 400;
+                color: var(--text);
+            }
+
+            & div {
+                display: flex;
+                gap: 0.25rem;
+
+                & ion-icon {
+                    font-size: 1.2em;
+                    transform: translateY(1px);
+                }
+
+                &.red {
+                    color: var(--danger);
+
+                    ion-icon {
+                        transform: rotate(180deg);
+                    }
+                }
+
+                &.green {
+                    color: var(--success);
+                }
+            }
+        }
+    }
+}
