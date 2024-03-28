@@ -111,6 +111,10 @@ class LinksController < LinksControllerBase
     result_of_link_model_save = if e621_post.nil?
                                   did_save_successfully = false
                                   unless link_params['response_type'].nil?
+                                    if @link.current_past_link.nil?
+                                      redirect_to link_url(@link), alert: 'You don\'t have a wallpaper yet!'
+                                      return
+                                    end
                                     did_save_successfully = @link.set_reaction(link_params['response_type'], link_params['response_text'])
                                   else
                                     @link.assign_attributes(link_params)

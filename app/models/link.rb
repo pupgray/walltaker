@@ -67,7 +67,7 @@ class Link < ApplicationRecord
   end
 
   def set_reaction(reaction_type, reaction_text)
-    current_past_link.set_reaction(reaction_type, reaction_text)
+    current_past_link&.set_reaction(reaction_type, reaction_text)
   end
 
   def response_text

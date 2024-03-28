@@ -74,6 +74,10 @@ class ApiController < ApplicationController
       return render json: { message: 'type must be "horny", "disgust", or "came"' }, status: 400
     end
 
+    if @link.current_past_link.nil?
+      return render json: { message: 'This link doesn\'t have any wallpapers to react to.' }, status: 400
+    end
+
     response_text = params[:text].nil? ? "" : params[:text]
 
     result = @link.set_reaction(response_type, response_text)
