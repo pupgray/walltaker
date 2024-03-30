@@ -180,7 +180,7 @@ body > header h1 span > .mascot {
     transform: translateX(calc(-50% - 320px));
     z-index: 0;
 
-    clip-path: inset(0 0 31px 5px);
+    clip-path: inset(0 0 11px 5px);
     transition: all 0.1s ease-out;
 }
 
@@ -254,8 +254,8 @@ header .surrender-status {
 
 @media screen and (max-width: 900px) {
     body > header h1 span > .mascot {
-        left: 50%;
-        bottom: -50px;
+        left: 18%;
+        bottom: -58px;
         height: 140px;
         transform: translateX(calc(-50% - 120px));
     }
@@ -272,12 +272,10 @@ header .surrender-status {
     }
 
     body > header h1 span > .mascot {
-        height: 165px;
+        height: 131px;
         transform: none;
-        bottom: -80px;
-        left: -61px;
-        z-index: -1;
-        opacity: 0.8;
+        left: -80px;
+        bottom: -29px;
     }
 }
 
@@ -288,12 +286,11 @@ header .surrender-status {
 
     body > header h1 span > .mascot {
         position: absolute;
-        left: -70px;
-        bottom: -50px;
+        left: -77px;
+        bottom: -22px;
         transform: none;
-        height: 100px;
-        clip-path: inset(0 0 38px 16px);
-        z-index: -1;
+        height: 125px;
+        clip-path: inset(0 0 18px 0);
     }
 }
 
@@ -333,6 +330,7 @@ header .header__age-warning {
 
 header .user-tools {
     flex: 1 1 320px;
+    height: 40px;
     color: var(--text-light) !important;
 }
 

@@ -282,6 +282,10 @@
     margin: 0.5rem 0 0;
 }
 
+.chart > div > div {
+    width: 100% !important;
+}
+
 .dashboard__users-viewing-links em {
     text-align: center;
     display: block;
