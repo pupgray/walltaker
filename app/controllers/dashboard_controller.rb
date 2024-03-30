@@ -15,7 +15,22 @@ class DashboardController < ApplicationController
       end
       @total_wallpapers_changed_all = Rails.cache.fetch("v1/totallinkchanges", expires_in: 45.minutes) { PastLink.count }
       @your_total_wallpapers_changed_all = PastLink.where(user_id: current_user.id).count if current_user
-      @total_wallpapers_changed_grouped_by_day = Rails.cache.fetch('v1/totalwallpapersgroupedbydaychart', expires_in: 10.minutes) { PastLink.group_by_day(:created_at, range: 1.weeks.ago.midnight..Time.now).count }
+      @total_wallpapers_changed_grouped_by_day = PastLink.group_by_minute(:created_at, range: (2.5).days.ago..Time.now).count.inject ({}) do |acc, minute|
+        record_time = minute[0]
+        record_count = minute[1]
+
+        hour = acc[record_time.beginning_of_hour] || [0, 0, 999, 0]
+        last_hour = acc[record_time.beginning_of_hour - 1.hour] || [hour[0], hour[0], 999, 0]
+
+        hour[1] = last_hour[0]
+
+        sum_of_averages = ((hour[0] * record_time.min * 60) + record_count)
+        hour[0] = sum_of_averages / ((record_time.min.to_f * 60) + 1)
+
+        hour[2] = [hour[2], record_count].min
+        hour[3] = [hour[3], record_count].max
+        { **acc, record_time.beginning_of_hour => hour }
+      end
       @newest_user = User.last
       @online_links_count = Rails.cache.fetch("v1/onlinelinkcount", expires_in: 5.minutes) do
         Link.all

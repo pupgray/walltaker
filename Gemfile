@@ -88,3 +88,5 @@ gem 'inline_svg'
 gem 'crono'
 gem 'wicked'
 gem 'faker'
+
+gem "rails_charts"

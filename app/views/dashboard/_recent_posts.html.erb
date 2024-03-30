@@ -17,7 +17,7 @@
         </div>
 
         <div>
-          <% description = past_link.link.post_description.gsub(/\[\/?\w*\]/, '').gsub(/https?:\/\/.*\//, '').gsub(/[^\w\s]/, '').capitalize.truncate_words 100 %>
+          <% description = past_link.link.post_description&.gsub(/\[\/?\w*\]/, '')&.gsub(/https?:\/\/.*\//, '')&.gsub(/[^\w\s]/, '')&.capitalize&.truncate_words 100 %>
           <%= description if description.present? %>
           <%= Faker::Quote.matz unless description.present? %>
         </div>

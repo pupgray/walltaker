@@ -108,7 +108,7 @@
                 font-size: 0.7rem;
             }
 
-            img {
+            & img {
                 max-width: 120px;
             }
         }
@@ -116,14 +116,14 @@
         & a {
             text-align: left;
 
-            img {
+            & img {
                 max-width: 150px;
                 float: left;
                 margin-right: 1rem;
                 margin-bottom: 1rem;
             }
 
-            strong {
+            & strong {
                 font-weight: 300;
                 font-family: Imbue;
                 font-size: 1.8rem;
@@ -131,7 +131,7 @@
                 line-height: 2.2rem;
             }
 
-            div {
+            & div {
                 color: var(--text);
 
             }

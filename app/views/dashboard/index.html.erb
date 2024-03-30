@@ -30,16 +30,16 @@
     <div class="dashboard__updates">
       <h2>Changes</h2>
       <div class="chart">
-        <%= area_chart @total_wallpapers_changed_grouped_by_day, colors: ["#606575"], legend: false, height: "60px", library: {
-          scales: {
-            x: {
-              display: false,
-            },
-            y: {
-              display: false,
-            },
-          }
-        } %>
+
+        <%= candlestick_chart @total_wallpapers_changed_grouped_by_day, class: 'box',
+                              theme: 'roma',
+                              options: {
+                                xAxis: {
+                                  axisTick: {
+                                    alignWithLabel: true
+                                  }
+                                }
+                              } %>
       </div>
       <div class="dashboard__updates__content">
         <table>
