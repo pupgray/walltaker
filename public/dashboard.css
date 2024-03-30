@@ -117,10 +117,11 @@
             text-align: left;
 
             & img {
-                max-width: 150px;
+                max-width: 130px;
                 float: left;
                 margin-right: 1rem;
-                margin-bottom: 1rem;
+                margin-bottom: 0;
+                border: 1px solid var(--text);
             }
 
             & strong {
@@ -129,6 +130,7 @@
                 font-size: 1.8rem;
                 color: var(--text);
                 line-height: 2.2rem;
+                hyphens: auto;
             }
 
             & div {
@@ -298,4 +300,108 @@ turbo-frame#users_viewing_links strong {
 .explainer_graphic {
     padding: 2rem 0 0;
     color: var(--text-light);
+}
+@media screen and (max-width: 1000px) and (min-width: 700px) {
+    main > article {
+        columns: initial !important;
+    }
+
+    .dashboard__recent__content turbo-frame {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        grid-template-areas:
+        'one two'
+        'three two'
+        'four four'
+        'ad five'
+        'six five'
+        'seven seven';
+
+        gap: 1rem 2rem;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    main > article {
+        columns: initial !important;
+    }
+    .dashboard__recent__content turbo-frame {
+        display: grid;
+        grid-template-columns: 100%;
+        grid-template-areas:
+        'one'
+        'two'
+        'three'
+        'ad'
+        'four'
+        'five'
+        'six'
+        'seven';
+
+        gap: 1rem 2rem;
+
+        & article {
+            position: relative;
+            gap: 1rem;
+
+            &:nth-child(1) { grid-area: one }
+            &:nth-child(2) { grid-area: two }
+            &:nth-child(3) { grid-area: three }
+            &:nth-child(4) { grid-area: four }
+            &:nth-child(5) { grid-area: five }
+            &:nth-child(6) { grid-area: six }
+            &:nth-child(7) { grid-area: seven }
+            &.ad {
+                grid-area: ad;
+                background: var(--accent-bg);
+                min-height: 200px;
+                border-radius: 5px;
+                padding: 30px 20px;
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+
+                &:before {
+                    content: 'ad';
+                    background: var(--accent);
+                    color: var(--bg);
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    padding: 2px 7px;
+                    font-size: 0.7rem;
+                }
+
+                & img {
+                    max-width: 120px;
+                }
+            }
+
+            & a {
+                text-align: left;
+
+                & img {
+                    max-width: 150px;
+                    float: left;
+                    margin-right: 1rem;
+                    margin-bottom: 1rem;
+                }
+
+                & strong {
+                    font-weight: 300;
+                    font-family: Imbue;
+                    font-size: 1.8rem;
+                    color: var(--text);
+                    line-height: 2.2rem;
+                }
+
+                & div {
+                    color: var(--text);
+
+                }
+            }
+        }
+    }
 }

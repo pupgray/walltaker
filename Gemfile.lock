@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/faker-ruby/faker.git
+  revision: e15e606d7afcac499f08e0b88fab3f494239174f
+  branch: main
+  specs:
+    faker (3.3.0)
+      i18n (>= 1.8.11, < 2)
+
 PATH
   remote: nuttracker
   specs:
@@ -125,8 +133,6 @@ GEM
       ruby2_keywords
     erubi (1.12.0)
     excon (0.102.0)
-    faker (3.2.3)
-      i18n (>= 1.8.11, < 2)
     globalid (1.2.0)
       activesupport (>= 6.1)
     groupdate (6.3.0)
@@ -160,6 +166,7 @@ GEM
       net-pop
       net-smtp
     marcel (1.0.2)
+    markov_chains (0.1.1)
     matrix (0.4.2)
     mini_mime (1.1.5)
     mini_portile2 (2.8.5)
@@ -322,12 +329,13 @@ DEPENDENCIES
   crono
   debug
   excon
-  faker
+  faker!
   groupdate
   importmap-rails
   inline_svg
   jbuilder
   lograge
+  markov_chains
   nuttracker!
   pg
   pg_search (~> 2.3)
