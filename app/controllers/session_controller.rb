@@ -51,6 +51,7 @@ class SessionController < ApplicationController
     redirect_to root_path, notice: 'Logged out!'
   end
 
+
   def be_evil
     evil_user = User.find_by_username('evil')
     if evil_user
