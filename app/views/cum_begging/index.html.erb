@@ -1,0 +1,17 @@
+<%= turbo_frame_tag :cum_begging do %>
+  <div class="cum-begging__content">
+    <h1>Before you goon...</h1>
+    <h3>A personal appeal from Ki Pornlizard:</h3>
+    <p>
+      <%= image_tag("mascot/kimmywales.png", alt: 'A desperate plea from Ki to blow your loads.', class: 'cum-begging--mascot') %>
+      For over two years now, The Wall Taker Journal has proudly and independently served the masses with spontaneous unsolicited furry porn, free from the corrupting influence of outside sponsors and investment funding. However, being independent from outside influences doesn't mean we don't depend on you, our readers. Your support is what allows us to continue providing you with the same high-quality degenerate freakishness you've <em>cum</em> to expect from us.
+    </p>
+    <p>
+      We don't ask for much. By simply cumming for us, you can donate the energy and nutrition necessary to feed and nurture our web server, keeping it alive and running for another year. The Wall Taker Journal answers to the public alone—which is why we <em>ask</em> the public alone, too. Will you join us in continuing to provide the world with sudden flashes of yiff from complete strangers?
+    </p>
+    <h4>Current goal: <%= @current_cumcount %>/200 orgasms</h4>
+    <% if @current_cumcount >= 200 %>
+      <h4>Thank you for making this donation drive a success!</h4>
+    <% end %>
+  </div>
+<% end %>

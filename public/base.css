@@ -1800,3 +1800,25 @@ main > article {
         }
     }
 }
+.cum-begging--mascot {
+    width: 150px;
+    background-color: #ddd;
+    float:left;
+    margin: 10px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: black;
+}
+.cum-begging__content p {
+    text-align: justify;
+    line-height: 1.2rem;
+}
+.cum-begging__content h4 {
+    margin-top: 10px;
+}
+.cum-begging__content {
+    border-width: 2px;
+    border-color: red;
+    border-style: solid;
+    padding: 10px;
+}

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   get 'ticker/index'
+  get 'cum_begging/index'
   get 'errors/not_found'
   get 'errors/server_error'
 
