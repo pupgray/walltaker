@@ -1,0 +1,15 @@
+<%= turbo_frame_tag :ticker do %>
+  <% 2.times do %>
+    <div class="ticker__content">
+      <% @symbols.each do |symbol| %>
+        <%= link_to symbol[2], class: 'symbol no-underline', target: '_top' do %>
+          <strong><%= symbol[0] %></strong>
+          <div class="<%= symbol[3] %>">
+            <%= symbol[1] %>
+            <ion-icon name="arrow-up-outline"></ion-icon>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

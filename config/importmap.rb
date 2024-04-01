@@ -12,3 +12,5 @@ pin "Chart.bundle", to: "Chart.bundle.js"
 
 pin "@rails/actioncable", to: "actioncable.esm.js"
 pin_all_from "app/javascript/channels", under: "channels"
+pin "echarts", to: "echarts.min.js"
+pin "echarts/theme/dark", to: "echarts/theme/dark.js"

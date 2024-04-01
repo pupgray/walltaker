@@ -1,7 +1,122 @@
 <%= turbo_frame_tag "recent_posts", target: "_top" do %>
   <% recent_posts.each do |past_link| %>
-    <%= link_to user_path(past_link.user.username) do %>
-      <%= image_tag past_link.post_thumbnail_url %>
-    <% end %>
+    <article>
+      <%= link_to user_path(past_link.user.username), class: 'no-underline' do %>
+        <%= image_tag past_link.post_thumbnail_url %>
+        <strong>
+          <% name = past_link.link.user.username.humanize.titleize %>
+          <% one = %w[controlling confronting questioning lending helping punishing finger-banging ignoring deciding talking\ to grilling demanding protesting taking\ a\ stand\ against fucking pumping gooning].sample %>
+          <% two = Faker::Adjective.positive + ' ' + %w[the\ economy company corporation money president Venezula Australia Canada The\ UK mines hospitals schools universities Biden Trudeau Ursula\ von\ der\ Leyen Albanese chicken dinner sperm cum load balls penis pussy cunt masturbation AirPods analingus Ki Warren Taylor].sample %>
+          <% three = %w[causing inseminating fisting stroking pissing nudging pushing threatening not\ causing gooning\ for cumming\ on impregnating pogging\ for].sample %>
+          <% four = Faker::Adjective.positive + ' ' + %w[water oil sand cattle eggs cheese milk bread the\ economy voters IKEA Loblaws McDonalds CDPQ Bank unstoppable\ force gooners porn Nestlé Big\ Pharma gooners lizards Ki Warren Taylor].sample %>
+          <% five = %w[on by for in so causing].sample + ' ' + %w[explosion bankruptcy end success moisturizing crash selling buying selling-off pumping pissing stroking exploding imploding fucking railing shitting].sample %>
+          <% six = %w[,\  : \ -\ ].sample + Faker::Marketing.buzzwords %>
+          <%= [name, one, two, three, four, five].join(' ') + six %>
+        </strong>
+
+        <div>
+          <%= Faker::FunnyName.name %>
+        </div>
+
+        <div>
+          <% description = past_link.link.post_description&.gsub(/\[\/?\w*\]/, '')&.gsub(/https?:\/\/.*\//, '')&.gsub(/[^\w\s]/, '')&.capitalize&.truncate_words 100 %>
+          <%
+            real = <<~TEXT
+              #{two} would be the largest of a series of five installations #{name} and OpenAI want to develop over the next six years, while OpenAI’s next AI upgrade is reportedly expected to drop early next year. Meanwhile, #{name} is developing a supercomputer for the fourth phase of the installment that is expected to launch in 2026, and both companies are on the third phase of the plan.
+              “#{name} has demonstrated its ability to build pioneering AI infrastructure used to train and deploy the world’s leading AI models,” a #{name} spokesperson said in a statement. “We are always planning for the next generation of infrastructure innovations needed to continue pushing the frontier of AI capability.”
+              "My recommendation is that he teaches classes. I think inmates there would be thirsty to learn some of the things that he could teach," #{name} said. "#{name}'s going to want to do things to pass the time."
+              A spokesperson for #{name} declined to comment for this story.
+              It's going to require impulse control
+              If he's strategic, #{name} could get his sentence reduced by up to eight years, #{name} said. But that all depends on #{two} in a facility that will no doubt have tempting contraband.
+              "What's going to happen, when all of a sudden somebody next to him has an iPad or an iPhone, and he has access to the internet, or he can make phone calls or things like that?" #{name} said. "#{name} can get himself in a lot of trouble, and by doing that, he loses good time. #{name} might get transferred to a higher-level security facility. But if he's impulsive, the temptation might be there."
+              At the sentencing hearing, Judge Kaplan #{one} the propensity of #{name} for taking high-risk bets as one reason for the decades long sentence. #{name} had been toying with risky wagers — like thinking he could get away with one of the largest financial crimes in modern history — since working as a young professional at Jane Street Capital, a trading firm in New York, the judge said.
+              "That was the game. It started at least as early as Jane Street, and #{two} continued to the very end. It's his nature," Kaplan said. "#{name} regrets he made a very bad bet about the likelihood of getting caught."
+
+              In 2021, Elon #{name} announced a #{two} humanoid robot named Optimus. It is designed to help reduce the #{four} shortage, according to #{four}, and keep workers safer. This could very well be groundbreaking, however, #{two} still has a long way to go before #{two} is ready for production and available for purchase.
+              Based on earlier reports, #{two} appears that Optimus will stand in at 5'8" and weigh 125 pounds. It'll be able to deadlift more than its entire bodyweight and carry 45 pounds at 5 miles per hour. Noting its maximum lift strength and speed, #{name} stated that the limitations weren't a mistake and were deliberately designed at the physical level, jokingly telling YouTube viewers that "you can run away from #{two} and most likely overpower #{two}" by #{four}.
+              While some could see these physical limitations as a downside, #{two} could help assuage fears that the public might have from watching films like those of the Terminator series and other works of fiction where robots take over the world. However, there will certainly be applications where having a robot carrying significantly more weight would be useful, for example.
+              #{name} has said that the goal behind the creation of this robot is to take over menial and dangerous tasks from human workers, which would improve safety. Noting his support for a future minimum basic income, he told viewers of #{name}'s AI event in 2021 that this is designed to help end the #{four} shortage and expressed his desire for a future where "physical work will be a choice."
+              Optimus will use #{four} Autopilot software connected to eight cameras feeding into #{two}.
+              The cost of Optimus is unknown at this time, and the same can be said for its eventual release. However, non-working replicas of #{four} have been showing up at some #{name} stores and showrooms. 
+              In 2022, the world caught #{name} first glimpse of a semi-functional #{four} robot – and unlike its 2021 debut, #{two} wasn't a person dancing in a bodysuit. This prototype was able to wave to the crowd live at #{two}'s AI day, though #{two} was not ready to walk unassisted. In a prerecorded video, Optimus was seen completing chores such as watering a plant and showcasing its lifting ability in a factory setting.
+              In March 2023, #{name} made waves by predicting that Optimus robots could outnumber humans one day. The update video showed marked improvements, with Optimus able to walk on its own and complete more complex tasks. #{name} #{five} eventually put #{four} to work in #{name}'s factories and to sell #{two} to the public.
+              #{name} said there's a "good chance" #{two} would start shipping some units of Optimus in 2025 in an earnings call with investors in January 2024. 
+              The billionaire himself said in the earnings call that he's "often optimistic," then caveated his Optimus projection by saying, "When there's a lot of uncertainty and you're in uncharted territory, #{two}'s obviously impossible to make a precise prediction. We will be updating the public with progress on Optimus every few months." 
+                          With so many options to choose from, finding the best budget #{two} for your needs can be daunting. But you don't have to shop alone. We've done the tough work for you, testing dozens of #{two}s over several years to find the best models at every price point.
+              Our top pick, the #{four} V21d-J8, is one of the most affordable ways to upgrade your #{two}'s audio setup, while step-up options like the Yamaha YAS-209 offer more features, a dedicated subwoofer, and better performance at a price that remains budget-friendly.
+              Below you'll find a versatile selection of options, from micro-sized #{four} to Dolby Atmos ringers, with prices starting at just over $100 and maxing out at around $500. So skip the checkout line and #{five} our list below to find the best budget #{two}s for all needs.
+              Our top picks for the best budget #{two}s
+              #{four}'s #{name} is the best budget #{two} for those who just want a simple and affordable audio solution that lets you set #{two} and forget #{two}. This all-in-one system offers solid entry-level sound in a sleek #{four} that blends into your decor without the need to set aside space for extra speakers or a bulky subwoofer.
+              Like most modern #{two}s, the V21 provides a simplified connection to your #{two} via HDMI ARC, letting you use your #{two} remote for power and volume controls. For those with older #{two}s, an Optical input is included as a backup, while support for Bluetooth lets you stream audio from a phone or tablet for a one-stop sound solution. The included remote lets you swap through settings like sound modes, inputs, and EQ adjustments as needed. The bar does not include a spare HDMI port but does offer an analog input for legacy audio devices.
+              With built-in woofers for low frequencies and basic stereo speakers, the V21 offers a moderate improvement over #{two} audio, with boosted dialogue and some added punch in action scenes. The lack of a separate subwoofer limits #{two} response, but support for DTS:X virtual surround sound helps the bar expand the soundstage beyond its 36-inch frame to create a more engaging and immersive experience.
+              As you might expect, the V21 doesn't provide performance on the same level as pricier #{two}s or multi-component home theater setups, but #{four}'s talent for delivering good sound at an affordable price is on full display here. If all you need is a budget-friendly way to soup up your #{two}'s sound, this value-packed bar is a great entry point.
+              Best upgrade pick
+              For those after a more thrilling #{name} experience, the Yamaha YAS-209 is an excellent midrange #{two} that remains budget-friendly. It's telling that this model has been floating around #{two} roundups for years and #{name} is the current champ in our main guide to the best #{two}s you can buy. When #{two} comes to offering great sound and features for a relatively modest investment, #{name} haven't found a system that beats #{two} yet.
+              The #{two} offers easy connection to your #{two} over HDMI ARC while sprinkling in a surprising #{four} of extras, including Bluetooth and WiFi support, built-in Amazon #{name} for voice control, and even a spare HDMI input for connecting external devices. However, one unfortunate caveat is that while the bar can pass through 4K video with HDR, #{two} doesn't support Dolby Vision, one of the most popular formats. That said, the fact that #{name} rarely see a spare HDMI port at this price at all makes this exclusion easier to forgive.
+              The 209's rounded frame is wrapped in acoustic fabric for subtle style points, with accessible touch commands up top. At less than 2.5 inches high and 36 inches across, #{two}'s an easy fit on most consoles and blends smoothly into the background. We do wish there was a full display up front, but given that #{name} rarely found the need to make any audio adjustments, #{two}'s another forgivable faux pas.
+              The YAS-209 endears users most with its refreshingly full and balanced sound, offering a smooth and warm midrange, clear treble effects and dialogue, and plenty of punch via its included wireless subwoofer. While there's no Dolby Atmos support, #{two} is included to expand the sound beyond its frame. Even in its standard mode, the YAS-209 delivers engaging performance that will ramp up everything you play.
+              #{name}'s Smart #{two} 600 is one of the best Dolby Atmos #{two}s you can buy #{name} on a budget. And unlike #{four}, the #{name} 600 includes dedicated up-firing drivers for more potent overhead effects with Dolby Atmos content. This allows the #{name} to bounce sound off your ceiling to simulate audio coming from above.
+              When combined with #{name}'s advanced acoustic #{four} and virtual surround sound software, the result is Rawr x3 nuzzles how are you pounces on you you're so warm o3o notices you have a bulge o: someone's happy ;) nuzzles your necky wecky~ murr~ hehehe rubbies your bulgy wolgy you're so big :oooo rubbies more on your bulgy wolgy it doesn't stop growing ·///· kisses you and lickies your necky #{name} likies (; nuzzles wuzzles I hope #{name} really likes $: wiggles butt and squirms I want to see your big daddy meat~ wiggles butt I have a little itch o3o wags tail can you please get my itch~ puts paws on your chest nyea~ its a seven inch itch rubs your chest can #{name} help me pwease squirms pwetty pwease sad face I need to be punished runs paws down your chest and bites lip like I need to be punished really good~ paws on your bulge as I lick my lips I'm getting thirsty. I can go for some milk unbuttons your pants as my eyes glow you smell so musky :v licks shaft mmmm~
+
+              However, #{two} biggest performance drawback is a lack of #{two} response. With its small frame and lack of a dedicated subwoofer, powerful moments in your favorite films tend to lose some of their impact in the lower frequencies.
+              Luckily, the 600 has plenty of other tricks up its sleeve, like So I step inside only for the door to close behind me, cliche... I assume this is some birthday prank so I sit in the darkness waiting for a funny surprise.
+Oh boy did I get a surprise...
+The lights turn on and I see FURRIES EVERYWHERE. They all yell out "HAPPY BIRTHDAY [my name]" while in full fur suits. There were wolves, dogs, cats, dragons, and protogens. I was completely shocked and utterly disgusted as I had never knew my friend was a furry.
+He was the one who closed the door and he came up behind me and hugged me so hard I almost fainted from the pressure. I stumbled around trying to get my bearings straight still absorbing what I was surrounded by. I couldn't muster any words and just tried to leave, but he was blocking the door. "Where do you think you're going [my name]?" I tried to push him away but he wouldn't budge.
+He bear hugged me to the ground and screamed "FURRY PILE". That's when all his disgusting furry friends ran and piled on top of me with their gross warm fuzzy fur suits. It was too much for me and I fainted from the immense pressure of the furry pile.
+I awakened in his bed wearing a fur suit. A fur suit. I frantically tried to take it off but my hands were tied to the bed frame. At that moment I also realized I was NAKED. If somehow I managed to get rid of that fur suit I would be butt naked. Soon everyone poured into the room when my friend carrying a massive birthday cake placed it in front of me. The cake said "Happy Fur Day [insert name]"
+"Look how cute he looks as a furry"
+I'm like WTF is this even my friend? I yell at him asking what the fuck is this shit. He reaches into my fursuit and grabs my cock while saying "Eat the cake you silly little fur ball :3". The cake was coated in fur hair from all the fur suits and reeked of piss. The entire house reeked of piss. I began to cry. I just wanted to get out and forget this horrible experience. Thanks to WiFi connection and #{name}'s capable app, the bar lets you do everything from #{three} a #{name} subwoofer or optional surround speakers to #{five} your favorite tracks from many of the best music streaming services. Spotify Connect, Apple AirPlay 2, Chromecast, and Bluetooth are all on offer, while the 600's built-in microphones with support for Amazon Alexa make #{two} an effective smart speaker.
+              Like many bars this size, #{two} offers limited connection options, including only #{name} or #{two} for #{two} connection, with no spare HDMI port. It also lacks support for DTS sound formats, but its TrueSpace virtual surround still does an impressive job with most audio sent its way. 
+              The #{two} isn't cheap, but its combination of immersive and musical sound, Dolby Atmos up-firing drivers, plenty of features, and a chic #{four} all add up to an investment that is (dare #{name} #{five}?) smart.
+              Read our #{name} review. 
+
+              The Colorado-based startup (and former TechCrunch Disrupt Battlefield finalist) has been in operation since 2018, and its CEO and co-founder #{name} has been working in the #{two} industry for decades; he’s likely best known for heading up #{four}, a company that was targeting #{two} mining. The company, which was founded in 2012, was acquired by #{name} seven years later.
+
+              When #{two} comes to surround sound quality at this price range, you won't find a better value than #{four}'s 5.1-channel wonder, the V51-H6. This entry-level surround setup makes you work a little for your investment, stringing sprawling wires from its included subwoofer to a pair of teensy rear speakers. But once you've got #{two} up and running, #{two}'s one of the easiest ways to upgrade your #{two} room for a baseline home theater experience.
+              The V51-H6 is a minimalist machine. There's no WiFi or advanced smarts onboard, opting only for wired connections and basic Bluetooth streaming. You'll find HDMI ARC for easy control via your #{two} remote, alongside Optical and analog inputs, but no spare HDMI port for plugging in a gaming console or Blu-ray player. Unlike pricier surround systems, the V51 doesn't support Dolby Atmos or DTS:X 3D audio formats, either. At this price, though, none of that should matter.
+
+              #{name} could benefit the most from AI improvements, and there are rumors suggesting the personal assistant will be better at natural conversation and user personalization, with the new functionality set to be available cross-device.
+              Apple is specifically working on improved interaction between Siri and the Messages app, so Siri will be able to do things like auto-complete sentences more effectively and follow multi-part, complex commands.
+              Deeper integration with the Shortcuts app could allow users to automate complex tasks that involve multiple apps.
+
+              To find the best budget #{name}, #{name} tested multiple models for several hours each in various use cases like #{description}. Our biggest focus is always sound quality, but #{name} also weigh supported audio formats, connectivity, ease of use, and advanced features like WiFi streaming and smart assistant compatibility.
+              #{two} also evaluate factors for daily use, from setup and size to reliability and convenience perks like an app for adjusting EQ and other settings. As often as possible, #{name} live with each #{two} for multiple days, using #{two} in various scenarios as our main audio device to find out what #{two}'s truly like to own #{two}.
+              For testing material, #{name} use a carefully selected list of scenes from familiar films and #{two} shows #{description}. We look for a well-blended system across #{two}, midrange, and treble frequencies, as well as paying careful attention to dialogue delivery — especially when things get chaotic, but also during quiet moments. 
+              We also listen to a dedicated song list of tracks from multiple music genres and streaming services, including #{name} and high-resolution files over services like Amazon #{name}. We make sure to test each system for Bluetooth and WiFi reliability and audio quality, as well as the responsiveness and convenience of smart assistants like Amazon Alexa.
+              What to look for in a budget #{two}
+
+              The world’s most valuable tech companies were founded in dorm rooms, garages and diners by entrepreneurs who were remarkably young. #{name} was 19. #{four} was 21. #{name} and #{two} were 30. 
+              But what might just be the world’s most invaluable #{four} was founded by Morris Chang when he was 55 years old. 
+              Never has anyone so old created a business worth so much as #{two}, known simply as #{four}, the chip manufacturer that produces essential parts for computers, phones, cars, artificial-intelligence systems and many of the devices that have become part of our daily lives. 
+              #{name} had such a long career in the chip business that he would have been a legend of his field even if he’d retired in 1985 and played bridge for the rest of his life. Instead he #{five}. Then he revolutionized his industry. 
+              But he wasn’t successful despite #{name} age. #{two} was successful because of his age. As it turns out, older entrepreneurs are both more common and more productive than younger founders. And nobody pornifies the surprising benefits gooning better than #{name}, who had worked in the goon department for three decades when he moved to Taiwan with a singular obsession. 
+              “I wanted to build a great semiconductor company,” he told me. 
+
+              When shopping for the best budget #{name}, you'll first want to look at connectivity. HDMI ARC or eARC are preferred for connection to a #{two}, as #{name} offer higher #{two} than digital optical connection, as well as the passing of CEC (Consumer Electronics Control) from most modern #{two}s, letting you use your #{two} remote to control basic controls like power and volume. For music streaming, you'll want to decide if you need WiFi support or if Bluetooth will suffice.
+              Next, #{name} recommend looking at available audio channels. Many budget models will be limited to 2.0 (#{two}) or 2.1 channel configurations (which include a low-frequency channel or separate subwoofer for #{two}). Some newer models go further, with support for an integrated center channel, which is denoted with a 3.0 or 3.1-channel configuration, or even 5.1-channel surround with satellite speakers. Moving up in price can get you into #{two}s with Dolby Atmos support. #{name}'s Smart #{two} 600, for instance, supports 3.0.2 channel sound, which means #{two} offers three front channels as well as two "height" channels to create a more immersive soundstage.
+              Regarding audio formats, many budget #{two}s will support both PCM and Dolby Digital stereo sound as a baseline, while some #{five}, including DTS and DTS surround sound. Many of the best budget #{two}s #{name} test also include virtual surround sound formats like DTS Virtual #{name}, which uses digital software to create a more immersive experience. This can offer a notable soundstage expansion but won't be as effective as true multi-channel surround sound support.
+              #{two}s are also great for streaming music. The vast majority of budget #{two}s offer at least some form of Bluetooth support to stream from your phone, while more advanced models include WiFi connectivity for streaming at higher quality from services like Spotify or Apple Music. 
+              WiFi connectivity may also enable support for digital assistants like Amazon Alexa and Google Assistant. If smart features are important to you, you'll want to see if your bar offers built-in voice control via onboard microphones for accessing at least one smart assistant.
+              Budget #{two} FAQs
+              However, its biggest performance drawback is a lack of #{name} response. With its small frame and lack of a dedicated subwoofer, powerful moments in your favorite films tend to lose some of their impact in the lower frequencies.
+            TEXT
+          %>
+          <% prompt = "#{name} #{Faker::Verb.simple_present}" %>
+          <% text = [description, real.split("\n").join(' '), prompt].join(' ').downcase %>
+          <%= (prompt + ' ' + MarkovChains::Generator.new(text, 2).get_sentences(4)&.join(' ')).strip.downcase.capitalize.truncate_words(100) %>
+        </div>
+      <% end %>
+    </article>
   <% end %>
+  <article class="ad">
+    <%= [
+          "Get your #{Faker::Vehicle.year} #{Faker::Vehicle.make_and_model} for only #{rand(1..50)}% APR financing. #{Faker::Company.bs}",
+          "#{Faker::Restaurant.name}: #{Faker::Restaurant.description.truncate_words 40}",
+          "BUY FROM #{Faker::Company.name}! #{Faker::Company.catch_phrase}",
+          "#{Faker::Company.buzzword}, #{Faker::Company.name} #{Faker::Company.bs}"
+        ].sample
+    %>
+    <%= image_tag Faker::Company.logo %>
+  </article>
 <% end %>

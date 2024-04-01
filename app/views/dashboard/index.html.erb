@@ -13,7 +13,6 @@
   <div class="dashboard">
     <div class="dashboard__recent">
       <div class="dashboard__recent__content">
-        <%= turbo_stream_from "dashboard_recent_posts" %>
         <%= render 'recent_posts', recent_posts: @recent_posts %>
       </div>
     </div>
@@ -31,16 +30,16 @@
     <div class="dashboard__updates">
       <h2>Changes</h2>
       <div class="chart">
-        <%= area_chart @total_wallpapers_changed_grouped_by_day, colors: ["#606575"], legend: false, height: "60px", library: {
-          scales: {
-            x: {
-              display: false,
-            },
-            y: {
-              display: false,
-            },
-          }
-        } %>
+
+        <%= candlestick_chart @total_wallpapers_changed_grouped_by_day, class: 'box',
+                              theme: 'roma',
+                              options: {
+                                xAxis: {
+                                  axisTick: {
+                                    alignWithLabel: true
+                                  }
+                                }
+                              } %>
       </div>
       <div class="dashboard__updates__content">
         <table>
@@ -89,113 +88,129 @@
   </div>
 <% end %>
 
-<h2>What is it?</h2>
-<p>
-  First off:
-  <strong>Walltaker is an app built by adults, for adults. You must be over the age of 18 to use it.</strong>
-  Walltaker is inspired by the <a href="https://www.wallclaimer.com/">WallClaimer</a> app, which allows you to set the
-  wallpaper of your friend's phones. This however leads to some weird cases where people post stuff that'd be on
-  your metaphorical blacklist. With that in mind, I wanted it to be restricted to <a href="https://e621.net">e621.net</a>
-  results, with an enforced blacklist. This keeps you in control, but not <em>too much</em> control.
-</p>
+<article>
+  <h2>What is it?</h2>
+  <p>
+    First off:
+    <strong>Walltaker is an app built by adults, for adults. You must be over the age of 18 to use it.</strong>
+    Walltaker is inspired by the <a href="https://www.wallclaimer.com/">WallClaimer</a> app, which allows you to set the
+    wallpaper of your friend's phones. This however leads to some weird cases where people post stuff that'd be on
+    your metaphorical blacklist. With that in mind, I wanted it to be restricted to
+    <a href="https://e621.net">e621.net</a>
+    results, with an enforced blacklist. This keeps you in control, but not <em>too much</em> control.
+  </p>
 
-<h2 id="what-do-i-need">What do I need?</h2>
-<p>
-  Walltaker requires you to <strong>make an account on the website (here!) first.</strong> Once you have an account, you can generate
-  links to send to friends/enemies, which will enqueue new wallpapers for your account. When you want to start seeing
-  these new wallpapers, <strong>then you can download the companion apps listed below</strong> which is able to listen to wallpaper changes to any
-  account. Enter your username, and then go about your day!
-</p>
+  <h2 id="what-do-i-need">What do I need?</h2>
+  <p>
+    Walltaker requires you to <strong>make an account on the website (here!) first.</strong> Once you have an account,
+    you can generate
+    links to send to friends/enemies, which will enqueue new wallpapers for your account. When you want to start seeing
+    these new wallpapers, <strong>then you can download the companion apps listed below</strong> which is able to listen
+    to wallpaper changes to any
+    account. Enter your username, and then go about your day!
+  </p>
 
-<%= inline_svg_tag "wt.svg", class: "explainer_graphic", aria: true, title: "A flow chart, showing links pushing updates to devices running walltaker clients.", width: '100%' %>
+  <%= inline_svg_tag "wt.svg", class: "explainer_graphic", aria: true, title: "A flow chart, showing links pushing updates to devices running walltaker clients.", width: '100%' %>
 
-<h2 id="companion-apps">Clients</h2>
-<table>
-  <thead>
-  <tr>
-    <th>Client</th>
-    <th>Platform</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr>
-    <td><a href="https://github.com/Lycraon/Walltaker-for-WallpaperEngine" target="_blank">Lycraon's Wallpaper Engine
-      Client</a></td>
-    <td><a href="https://store.steampowered.com/app/431960/Wallpaper_Engine/">Wallpaper Engine for Windows</a></td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/dogkisser/walltaker-engine/releases" target="_blank">Chewtoy's Walltaker Engine</a>
-    </td>
-    <td>Windows</td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/gios2/Walltaker-Changer/releases/latest" target="_blank">Gios' Client</a></td>
-    <td>Android 7+</td>
-  </tr>
-  <tr>
-    <td><a href="https://llamalab.com/automate/community/flows/46470" target="_blank">Arson's Automate Client</a></td>
-    <td><a href="https://llamalab.com/automate/">Automate App for Android</a></td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/Deanskond/walltaker_automate" target="_blank">Deanskond's Automate Client</a></td>
-    <td><a href="https://llamalab.com/automate/">Automate App for Android</a></td>
-  </tr>
-  <tr>
-    <td><a href="https://gitlab.com/JBerliner/walltaker-client" target="_blank">JBerliner's Walltaker.sh</a></td>
-    <td>Linux</td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/PawCorp/walltaker-macos/releases/latest" target="_blank">macOS Client</a></td>
-    <td>macOS</td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/PawCorp/walltaker/blob/main/ios.md#ios-widget" target="_blank">iOS Widget</a></td>
-    <td>iOS</td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/PawCorp/walltaker-android-client/releases/latest" target="_blank" style="color: var(--text-light)">Android
-      Client</a>
-      <strong>(Unmaintained)</strong>
-    <td>Android 12+</td>
-  </tr>
-  <tr>
-    <td><a href="https://github.com/PawCorp/walltaker-desktop-client/releases/latest" target="_blank" style="color: var(--text-light)">Desktop
-      Client</a>
-      <strong>(Unmaintained)</strong>
-    </td>
-    <td>Windows / Linux</td>
-  </tr>
-  </tbody>
-</table>
-Please try using clients that are still being maintained before trying unmaintained clients.
-
-<h2 id="extra-apps">Companion/Explorer Apps</h2>
-<p>Extra tools that tie into Walltaker's site. These should help to integrate walltaker better or make the user experience cleaner.</p>
-
-<table>
-  <thead>
-  <tr>
-    <th>Client</th>
-    <th>Platform</th>
+  <section>
+    <h2 id="companion-apps">Clients</h2>
+    <table>
+      <thead>
       <tr>
-    <td><a href="https://github.com/gios2/Walltaker-Explorer/releases/latest">Gios' Explorer</a>
-    </td>
-    <td>Android 7+</td>
-  </tr>
-  </tbody>
-</table>
+        <th>Client</th>
+        <th>Platform</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>
+          <a href="https://github.com/Lycraon/Walltaker-for-WallpaperEngine" target="_blank">Lycraon's Wallpaper Engine
+            Client</a></td>
+        <td><a href="https://store.steampowered.com/app/431960/Wallpaper_Engine/">Wallpaper Engine for Windows</a></td>
+      </tr>
+      <tr>
+        <td>
+          <a href="https://github.com/dogkisser/walltaker-engine/releases" target="_blank">Chewtoy's Walltaker
+            Engine</a>
+        </td>
+        <td>Windows</td>
+      </tr>
+      <tr>
+        <td><a href="https://github.com/gios2/Walltaker-Changer/releases/latest" target="_blank">Gios' Client</a></td>
+        <td>Android 7+</td>
+      </tr>
+      <tr>
+        <td><a href="https://llamalab.com/automate/community/flows/46470" target="_blank">Arson's Automate Client</a>
+        </td>
+        <td><a href="https://llamalab.com/automate/">Automate App for Android</a></td>
+      </tr>
+      <tr>
+        <td><a href="https://github.com/Deanskond/walltaker_automate" target="_blank">Deanskond's Automate Client</a>
+        </td>
+        <td><a href="https://llamalab.com/automate/">Automate App for Android</a></td>
+      </tr>
+      <tr>
+        <td><a href="https://gitlab.com/JBerliner/walltaker-client" target="_blank">JBerliner's Walltaker.sh</a></td>
+        <td>Linux</td>
+      </tr>
+      <tr>
+        <td><a href="https://github.com/PawCorp/walltaker-macos/releases/latest" target="_blank">macOS Client</a></td>
+        <td>macOS</td>
+      </tr>
+      <tr>
+        <td><a href="https://github.com/PawCorp/walltaker/blob/main/ios.md#ios-widget" target="_blank">iOS Widget</a>
+        </td>
+        <td>iOS</td>
+      </tr>
+      <tr>
+        <td>
+          <a href="https://github.com/PawCorp/walltaker-android-client/releases/latest" target="_blank" style="color: var(--text-light)">Android
+            Client</a>
+          <strong>(Unmaintained)</strong>
+        <td>Android 12+</td>
+      </tr>
+      <tr>
+        <td>
+          <a href="https://github.com/PawCorp/walltaker-desktop-client/releases/latest" target="_blank" style="color: var(--text-light)">Desktop
+            Client</a>
+          <strong>(Unmaintained)</strong>
+        </td>
+        <td>Windows / Linux</td>
+      </tr>
+      </tbody>
+    </table>
+    Please try using clients that are still being maintained before trying unmaintained clients.
+  </section>
 
-<h2>Help us out!</h2>
-<p>
-  <%= image_tag 'mascot/TaylorNSFW.png', alt: 'Taylor, a gray and yellow lizard with tits, shaking them at you', class: 'mascot float-right', width: 195 %>
-  We'll be upfront! The site pretty cheap to operate. We have very little in running costs, and I am somewhat OK with
-  paying the ~$40 a month it costs in bandwidth and compute that it takes to keep this service online; however, a few
-  folks have asked if they can help out or compensate our time as a tip, so we set up a Ko-Fi!
-</p>
+  <h2 id="extra-apps">Companion/Explorer Apps</h2>
+  <p>Extra tools that tie into Walltaker's site. These should help to integrate walltaker better or make the user
+    experience cleaner.</p>
 
-<a href="https://ko-fi.com/pawcorp" target="_blank" class="kofi-button">
-  <button>
-    <ion-icon role="presentation" name="cafe"></ion-icon>
-    Just the tip!
-  </button>
-</a>
+  <table>
+    <thead>
+    <tr>
+      <th>Client</th>
+      <th>Platform</th>
+    <tr>
+      <td><a href="https://github.com/gios2/Walltaker-Explorer/releases/latest">Gios' Explorer</a>
+      </td>
+      <td>Android 7+</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <h2>Help us out!</h2>
+  <p>
+    <%= image_tag 'mascot/TaylorNSFW.png', alt: 'Taylor, a gray and yellow lizard with tits, shaking them at you', class: 'mascot float-right', width: 195 %>
+    We'll be upfront! The site pretty cheap to operate. We have very little in running costs, and I am somewhat OK with
+    paying the ~$40 a month it costs in bandwidth and compute that it takes to keep this service online; however, a few
+    folks have asked if they can help out or compensate our time as a tip, so we set up a Ko-Fi!
+  </p>
+
+  <a href="https://ko-fi.com/pawcorp" target="_blank" class="kofi-button">
+    <button>
+      <ion-icon role="presentation" name="cafe"></ion-icon>
+      Just the tip!
+    </button>
+  </a>
+</article>

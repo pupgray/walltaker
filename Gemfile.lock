@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/faker-ruby/faker.git
+  revision: e15e606d7afcac499f08e0b88fab3f494239174f
+  branch: main
+  specs:
+    faker (3.3.0)
+      i18n (>= 1.8.11, < 2)
+
 PATH
   remote: nuttracker
   specs:
@@ -158,6 +166,7 @@ GEM
       net-pop
       net-smtp
     marcel (1.0.2)
+    markov_chains (0.1.1)
     matrix (0.4.2)
     mini_mime (1.1.5)
     mini_portile2 (2.8.5)
@@ -176,6 +185,8 @@ GEM
     nio4r (2.5.9)
     nokogiri (1.15.4)
       mini_portile2 (~> 2.8.2)
+      racc (~> 1.4)
+    nokogiri (1.15.4-aarch64-linux)
       racc (~> 1.4)
     nokogiri (1.15.4-arm64-darwin)
       racc (~> 1.4)
@@ -225,6 +236,8 @@ GEM
     rails-html-sanitizer (1.6.0)
       loofah (~> 2.21)
       nokogiri (~> 1.14)
+    rails_charts (0.0.6)
+      rails
     railties (7.1.2)
       actionpack (= 7.1.2)
       activesupport (= 7.1.2)
@@ -266,6 +279,7 @@ GEM
       sprockets (>= 3.0.0)
     sqlite3 (1.6.4)
       mini_portile2 (~> 2.8.0)
+    sqlite3 (1.6.4-aarch64-linux)
     sqlite3 (1.6.4-arm64-darwin)
     sqlite3 (1.6.4-x86_64-linux)
     stimulus-rails (1.2.2)
@@ -300,6 +314,7 @@ GEM
     zeitwerk (2.6.11)
 
 PLATFORMS
+  aarch64-linux
   arm64-darwin-22
   ruby
   x86_64-linux
@@ -314,17 +329,20 @@ DEPENDENCIES
   crono
   debug
   excon
+  faker!
   groupdate
   importmap-rails
   inline_svg
   jbuilder
   lograge
+  markov_chains
   nuttracker!
   pg
   pg_search (~> 2.3)
   puma (~> 5.0)
   rack-cors
   rails (~> 7.1.2, >= 7.0.2.2)
+  rails_charts
   rbs_rails
   redis
   selenium-webdriver

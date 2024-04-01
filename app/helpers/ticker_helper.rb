@@ -1,0 +1,2 @@
+module TickerHelper
+end

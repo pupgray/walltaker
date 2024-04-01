@@ -1,6 +1,6 @@
 <% mascot = current_user&.mascot || 'ki' %>
 <!DOCTYPE html>
-<html class="<%= current_user ? "force-#{current_user.colour_preference}" : "" %>">
+<html class="force-light">
 <head>
   <title><%= content_for?(:html_title) ? yield(:html_title) : "Walltaker" %></title>
   <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1">
@@ -8,6 +8,10 @@
   <%= favicon_link_tag 'mascot/KiHead.png' if mascot == 'ki' %>
   <%= favicon_link_tag 'mascot/WarrenHead.png' if mascot == 'warren' %>
   <%= favicon_link_tag 'mascot/TaylorHead.png' if mascot == 'taylor' %>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Imbue:opsz,wght@10..100,100..900&family=Oxygen:wght@300;400;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="/simple.min.css">
   <link rel="stylesheet" href="/base.css?x=<%= ENV['HEROKU_SLUG_COMMIT'] %>"/>
   <link rel="stylesheet" href="/link.css?x=<%= ENV['HEROKU_SLUG_COMMIT'] %>"/>
@@ -29,10 +33,25 @@
 </head>
 
 <body>
+
+<div class="topper">
+  <span><span id="age-warning__icon">🔞</span> This is an app for adults over the age of 18 only.</span>
+  <span>April 1st 2024</span>
+</div>
+
+<%= turbo_frame_tag :ticker, src: ticker_index_path %>
+
+
+<div class="subscribe">
+  <% if current_user %>
+    <%= button_to 'Logout', logout_path, target: '_top', method: :get %>
+  <% else %>
+    <%= button_to 'Login', login_path, target: '_top', method: :get %>
+    <%= button_to 'Sign Up', signup_path, class: 'secondary', target: '_top', method: :get %>
+  <% end %>
+</div>
+
 <header>
-  <div class="header__age-warning">
-    <span id="age-warning__icon">🔞</span> This is an app for adults over the age of 18 only.
-  </div>
 
   <% if !is_surrender_controller_session? && current_user&.current_surrender %>
     <%= turbo_stream_from current_user.current_surrender %>
@@ -41,9 +60,7 @@
 
   <div class="header__inner">
     <h1>
-      <a href="/">
-        <%= render 'layouts/title', mascot: mascot, pervert: current_user&.pervert || false %>
-      </a>
+      <%= render 'layouts/title', mascot: mascot, pervert: current_user&.pervert || false %>
     </h1>
     <div class="user-tools">
       <% if current_user %>
@@ -51,7 +68,6 @@
           <%= current_user.username %>
         </a>
         <a href="<%= url_for :action => :browse, :controller => :links %>">
-          <ion-icon role="presentation" name="sparkles"></ion-icon>
           Browse
         </a>
         <%= link_to 'Links', links_path %>
@@ -67,7 +83,6 @@
         </div>
       <% else %>
         <a href="<%= url_for :action => :browse, :controller => :links %>">
-          <ion-icon role="presentation" name="sparkles"></ion-icon>
           Browse
         </a>
         <%= link_to 'Sign Up', signup_path %>
@@ -146,5 +161,6 @@
         dateFormat: 'Z'
     });
 </script>
+<%= javascript_include_tag "https://www.gstatic.com/charts/loader.js" %>
 </body>
 </html>

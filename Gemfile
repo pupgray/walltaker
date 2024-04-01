@@ -87,3 +87,7 @@ gem "pg_search", "~> 2.3"
 gem 'inline_svg'
 gem 'crono'
 gem 'wicked'
+gem 'faker', :git => 'https://github.com/faker-ruby/faker.git', :branch => 'main'
+
+gem "rails_charts"
+gem 'markov_chains'
