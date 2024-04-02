@@ -27,8 +27,8 @@ class DashboardController < ApplicationController
         sum_of_averages = ((hour[0] * record_time.min * 60) + record_count)
         hour[0] = sum_of_averages / ((record_time.min.to_f * 60) + 1)
 
-        hour[2] = [hour[2], record_count / 2].min
-        hour[3] = [hour[3], record_count / 2].max
+        hour[2] = [hour[2], record_count].min
+        hour[3] = [hour[3], record_count].max
         { **acc, record_time.beginning_of_hour => hour }
       end
       @newest_user = User.last
