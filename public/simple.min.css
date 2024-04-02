@@ -5,11 +5,11 @@
 
 :root:not(.force-dark) {
     --bg: #fff;
-    --accent-bg: #f2f2f2;
-    --text: #222;
-    --text-light: #555;
-    --border: #ccc;
-    --accent: #0274b6;
+    --accent-bg: #f5f7ff;
+    --text: #212121;
+    --text-light: #585858;
+    --border: #5b658a;
+    --accent: #0d47a1;
     --code: #d81b60;
     --preformatted: #444;
     --marked: #ffdd33;
@@ -57,7 +57,7 @@ body {
     font-size: 1.15rem;
     line-height: 1.5;
     display: grid;
-    grid-template-columns: 1fr min(1080px, 90vw) 1fr;
+    grid-template-columns:1fr min(45rem, 90%) 1fr;
     margin: 0
 }
 

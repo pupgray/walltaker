@@ -3,9 +3,9 @@
   pervert ||= false
 %>
 
-<%= turbo_frame_tag 'title', target: '_top' do %>
+<%= turbo_frame_tag 'title' do %>
   <span class="show-desktop">
-    <%= link_to 'THE WALL TAKER JOURNAL.', root_path, class: 'no-underline title', target: '_top' %>
+    <%= is_surrender_controller_session? ? 'Walltaken' : 'Walltaker' %>
 
     <div class="mascot">
       <%= image_tag("marx.png", class: ["mascot__under-cover", mascot, pervert ? 'nsfw' : 'sfw']) if is_surrender_controller_session? %>
@@ -20,7 +20,7 @@
     </div>
   </span>
   <span class="show-mobile">
-    <%= link_to 'WTJ', root_path, class: 'no-underline', target: '_top' %>
+    WT
 
     <%= image_tag("mascot/Ki#{pervert ? 'NSFW' : ''}.png", alt: 'A suave little lizard welcoming you to the website.', class: 'mascot', height: 100) if mascot == 'ki' %>
     <%= image_tag("mascot/Warren#{pervert ? 'N' : ''}SFW.png", alt: 'A suave little lizard welcoming you to the website.', class: 'mascot', height: 100) if mascot == 'warren' %>
