@@ -129,6 +129,7 @@ body > header h1 span {
                 left: 32px;
                 transform: rotate3d(1.5, 3.9, -0.6, 30deg);
             }
+
             &.nsfw {
                 height: 72px;
                 top: 34px;
@@ -144,6 +145,7 @@ body > header h1 span {
                 left: 37px;
                 transform: rotate3d(-0.3, 0.8, -0.1, 30deg);
             }
+
             &.nsfw {
                 height: 79px;
                 top: 37px;
@@ -159,6 +161,7 @@ body > header h1 span {
                 left: 40px;
                 transform: rotate3d(-1.3, 3.6, -0.5, 30deg);
             }
+
             &.nsfw {
                 height: 97px;
                 top: 53px;
@@ -218,6 +221,7 @@ header .surrender-status {
             color: var(--danger-text);
             background: var(--danger);
         }
+
         &.surrender-status__circle--pending {
             background: var(--marked);
             color: var(--marked);
@@ -227,6 +231,7 @@ header .surrender-status {
                 filter: brightness(0.3);
             }
         }
+
         &.surrender-status__circle--invalid {
             background: var(--success);
             color: var(--success);
@@ -1642,3 +1647,6 @@ pre code.hljs {
     }
 }
 
+.spacer {
+    height: 30px;
+}

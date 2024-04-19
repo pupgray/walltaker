@@ -88,6 +88,7 @@ Rails.application.routes.draw do
       get :walltaker, to: 'links#export'
       post 'abilities/:ability', to: 'links#toggle_ability', as: 'toggle_link_ability'
       post 'fork', to: 'links#fork', as: 'fork_link'
+      get 'embed'
     end
 
     resources :comments

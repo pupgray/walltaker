@@ -1,0 +1,44 @@
+<% mascot = current_user&.mascot || 'ki' %>
+<!DOCTYPE html>
+<html class="<%= current_user ? "force-#{current_user.colour_preference}" : "" %>">
+<head>
+  <title><%= content_for?(:html_title) ? yield(:html_title) : "Walltaker" %></title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1">
+  <meta name="rating" content="adult"/>
+  <%= favicon_link_tag 'mascot/KiHead.png' if mascot == 'ki' %>
+  <%= favicon_link_tag 'mascot/WarrenHead.png' if mascot == 'warren' %>
+  <%= favicon_link_tag 'mascot/TaylorHead.png' if mascot == 'taylor' %>
+  <link rel="stylesheet" href="/simple.min.css">
+  <link rel="stylesheet" href="/base.css?x=<%= ENV['HEROKU_SLUG_COMMIT'] %>"/>
+  <link rel="stylesheet" href="/link.css?x=<%= ENV['HEROKU_SLUG_COMMIT'] %>"/>
+  <link rel="stylesheet" href="/dashboard.css?x=<%= ENV['HEROKU_SLUG_COMMIT'] %>"/>
+  <link rel="stylesheet" href="/user-profile.css?x=<%= ENV['HEROKU_SLUG_COMMIT'] %>"/>
+  <link rel="stylesheet" href="/member-editor.css?x=<%= ENV['HEROKU_SLUG_COMMIT'] %>"/>
+  <link rel="stylesheet" href="/messages.css?x=<%= ENV['HEROKU_SLUG_COMMIT'] %>"/>
+  <%= yield :stylesheets %>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= action_cable_meta_tag %>
+
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
+  <%= javascript_importmap_tags %>
+</head>
+
+<body>
+
+<%= content_for?(:body) ? yield(:body) : yield %>
+
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script>
+    flatpickr('.flatpickr', {
+        enableTime: true,
+        dateFormat: 'Z'
+    });
+</script>
+</body>
+</html>

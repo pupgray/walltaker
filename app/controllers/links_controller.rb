@@ -9,7 +9,7 @@ class LinksController < ApplicationController
   before_action :authorize, only: %i[index new edit create destroy]
 
   # 2. set @link instance var, since a lot of action filters use it
-  before_action :set_link, only: %i[show edit update destroy export toggle_ability]
+  before_action :set_link, only: %i[show edit update destroy export toggle_ability embed]
 
   # 3. protect link-specific buisness rules
   before_action :prevent_public_expired, only: %i[show update]
@@ -17,7 +17,10 @@ class LinksController < ApplicationController
   before_action :skip_unauthorized_requests, only: %i[update toggle_ability], if: -> { update_request_unsafe? }
   before_action :disallow_surrendered_accounts, only: %i[update]
 
-  # 4. save presence + analytics
+  # 4. Layout for the embedded view has no nav or footer
+  layout 'base', only: %i[embed]
+
+  # 5. save presence + analytics
   after_action :log_presence, only: %i[show]
   after_action :track_visit, only: %i[index browse new show edit]
 
@@ -201,6 +204,24 @@ class LinksController < ApplicationController
     else
       track :error, :failed_to_create_new_link_fork, errors: @link.errors, source: params['id']
       render :new, status: :unprocessable_entity
+    end
+  end
+
+  def embed
+    @link_shown = true
+    @details_shown = true
+    @form_shown = true
+
+    if params['type'].present?
+      if params['type'] === 'form'
+        @link_shown = false
+        @details_shown = false
+      elsif params['type'] === 'short'
+        @details_shown = false
+      elsif params['type'] === 'link'
+        @details_shown = false
+        @form_shown = false
+      end
     end
   end
 

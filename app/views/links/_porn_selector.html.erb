@@ -1,0 +1,71 @@
+<div class="tabs" data-controller="tabs">
+  <div class="tabs__charm">
+    <ion-icon role="presentation" name="magnet"></ion-icon>
+    Select wallpaper via...
+  </div>
+
+  <% seconds_since_last_wallpaper = link.past_links.last.present? ? Time.now - link.past_links.last.created_at : 9999 %>
+
+  <div
+    class="tab"
+    data-tabs-target="tab"
+    data-title="Search"
+    data-controller="porn-search"
+    data-porn-search-seconds-since-last-wallpaper-value="<%= seconds_since_last_wallpaper %>"
+  >
+    <dialog class="modal" data-porn-search-target="modal">
+      <h4>Confirm Wallpaper</h4>
+      <p>This link's wallpaper was changed less than a minute ago, are you sure you want to overwrite it so soon?</p>
+      <div class="modal__buttons">
+        <%= button_tag class: 'no-underline primary', data: { 'link-target': 'cancel', action: 'click->porn-search#cancel' } do %>
+          <ion-icon role="presentation" name="close"></ion-icon>
+          Cancel
+        <% end %>
+        <%= button_tag "Yes, Use This Wallpaper", class: 'no-underline secondary', data: { action: 'click->porn-search#confirm' } %>
+      </div>
+    </dialog>
+    <div class="link--flashes">
+      <% flash.each do |type, msg| %>
+        <% unless type === 'notice' %>
+          <div class="flash--danger">
+            <%= msg %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+    <p>
+      Enter some e621 tags, click search, then click any post to
+      set <%= link.user.username %>'s wallpaper.
+    </p>
+
+    <% unless link.theme.nil? || link.theme&.empty? %>
+      <p class="subdued">
+        The theme tag <strong>
+        <ion-icon role="presentation" name="pricetag-outline"></ion-icon> <%= link.theme %></strong> is being
+        automatically applied.
+      </p>
+    <% end %>
+
+    <% if link.check_ability 'can_show_videos' %>
+      <p class="subdued">
+        You can select
+        <strong>
+          <ion-icon class="video-icon" role="presentation" name="videocam"></ion-icon>
+          videos
+        </strong>
+        on this link.
+      </p>
+    <% end %>
+
+    <%= turbo_frame_tag "pornsearch", src: porn_search_index_path({ link: link.id }) do %>
+      <div>
+        Loading
+      </div>
+    <% end %>
+  </div>
+
+  <div class="tab" data-tabs-target="tab" data-title="Post ID">
+    <%= render 'submit', link: link %>
+  </div>
+
+</div>
