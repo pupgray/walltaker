@@ -185,6 +185,7 @@ strong.search-heading {
     z-index: -10;
     opacity: 0.3;
 }
+
 .link > .link--backdrop::before {
     content: '';
     display: block;
@@ -197,6 +198,7 @@ strong.search-heading {
     filter: brightness(0.2);
     z-index: 10;
 }
+
 .link > .link--backdrop img {
     width: 100%;
     height: 100%;
@@ -273,6 +275,7 @@ a:hover > .link {
 strong.online {
     color: var(--success);
 }
+
 strong.online ion-icon {
     transform: translateY(2px);
     font-size: 1.1em;
@@ -316,7 +319,7 @@ strong.offline {
 }
 
 .link--theme span,
-.link--abilities span{
+.link--abilities span {
     white-space: initial;
 }
 
@@ -624,12 +627,15 @@ label {
     margin-bottom: 1.5rem;
     margin-top: 0.5rem;
 }
+
 .link--form--min_score label {
     flex: 1 1 100%;
 }
+
 .link--form--min_score input {
     margin: 0;
 }
+
 .link--form--min_score output {
     color: var(--border);
 }
@@ -673,6 +679,7 @@ turbo-frame#pornsearch_results .pornsearch_results__buttons,
     border-radius: 0.3rem;
     overflow-x: hidden;
 }
+
 turbo-frame#pornsearch_results .pornsearch_results__buttons a,
 .linksearch_results__buttons a {
     padding: 0.5rem 1rem 0.5rem;
@@ -1168,5 +1175,79 @@ h4.forks-header + p {
 @media screen and (max-width: 480px) {
     .forks-list {
         grid-template-columns: repeat(1, auto);
+    }
+}
+
+.embed__preview {
+    position: absolute;
+    inset: 0;
+
+    & .embed__text {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        min-height: 100px;
+        z-index: 999;
+        background-image: linear-gradient(180deg, transparent 0%, var(--bg) 120%);
+
+        & .embed__text__content {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            font-size: 1.1rem;
+            padding: 1.4rem 1.7rem;
+        }
+
+        & > time {
+            font-size: 0.9rem;
+        }
+
+        & > #link_comments {
+            position: fixed;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background-image: linear-gradient(90deg, transparent 0%, var(--bg) 120%);
+            padding: 2rem;
+            flex-direction: column-reverse;
+            display: flex;
+            gap: 0.5rem;
+            overflow: hidden;
+
+            & .comment {
+                display: block;
+                opacity: 0.8;
+                font-size: 0.8rem;
+            }
+
+            & strong {
+                display: block;
+            }
+
+            & p {
+                text-align: right;
+                max-width: 180px;
+            }
+
+            & img {
+                display: none;
+            }
+        }
+    }
+
+
+    & img {
+        opacity: 1;
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        object-fit: cover;
+    }
+
+    &.contain img {
+        object-fit: contain;
     }
 }

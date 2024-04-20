@@ -211,17 +211,39 @@ class LinksController < ApplicationController
     @link_shown = true
     @details_shown = true
     @form_shown = true
+    @preview_shown = false
+    @text_shown = true
+    @fit_mode = 'cover'
+    @background = nil
 
     if params['type'].present?
-      if params['type'] === 'form'
+      case params['type']
+      when 'form'
         @link_shown = false
         @details_shown = false
-      elsif params['type'] === 'short'
+      when 'short'
         @details_shown = false
-      elsif params['type'] === 'link'
+      when 'link'
         @details_shown = false
         @form_shown = false
+      when 'wallpaper'
+        @link_shown = false
+        @details_shown = false
+        @form_shown = false
+        @preview_shown = true
       end
+    end
+
+    if params['fit_mode'].present? && %w[cover contain].include?(params['fit_mode'])
+      @fit_mode = params['fit_mode']
+    end
+
+    if params['background'].present? && (/[\dA-Fa-f]+/).match?(params['background'])
+        @background = '#' + params['background']
+    end
+
+    if params['hide_text'].present? && params['hide_text'] == 'true'
+      @text_shown = false
     end
   end
 

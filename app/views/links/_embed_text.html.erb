@@ -1,0 +1,4 @@
+<%# locals: (link:) -%>
+
+Set by: <%= link.set_by&.username || 'anon' %>
+<%= time_tag link.past_links.last.created_at %>

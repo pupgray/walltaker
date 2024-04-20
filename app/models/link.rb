@@ -77,6 +77,8 @@ class Link < ApplicationRecord
     if blacklist_previously_changed? || terms_previously_changed? || theme_previously_changed? || response_text_previously_changed? || last_ping_user_agent_previously_changed? || live_client_started_at_previously_changed? || expires_previously_changed? || never_expires_previously_changed? || friends_only_previously_changed? || post_url_previously_changed?
       begin
         broadcast_update
+        broadcast_update_to "link_preview_#{id}_image", target: "preview_image", partial: 'links/embed_image', locals: { link: self }
+        broadcast_update_to "link_preview_#{id}_text", target: "preview_text", partial: 'links/embed_text', locals: { link: self }
         link = {}
         link[:success] = true
         link[:id] = self.id
