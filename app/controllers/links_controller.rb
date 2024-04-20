@@ -24,6 +24,10 @@ class LinksController < ApplicationController
   after_action :log_presence, only: %i[show]
   after_action :track_visit, only: %i[index browse new show edit]
 
+  content_security_policy only: %i[embed] do |policy|
+    policy.frame_ancestors :self, "*"
+  end
+
   # GET /links or /links.json (only your links)
   def index
     @links = User.find(current_user.id).link
