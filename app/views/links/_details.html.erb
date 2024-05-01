@@ -42,14 +42,21 @@
   <% if link.post_thumbnail_url && link.post_url %>
     <figure>
       <a href="<%= link.post_url %>" target="_blank" class="background-sample">
-        <% case device %>
-        <% when :desktop %>
-          <ion-icon role="presentation" name="laptop-outline" class="background-sample__icon--desktop"></ion-icon>
-        <% when :mobile %>
+        <% force_preview = link.check_ability 'force_preview' %>
+
+        <% if !force_preview%>
+          <% case device%>
+           <% when :desktop %>
+            <img src="<%= link.post_thumbnail_url %>" class="background-sample__image--<%= device %>"/>
+            <ion-icon role="presentation" name="laptop-outline" class="background-sample__icon--desktop"></ion-icon>
+           <% when :mobile %>
+            <ion-icon role="presentation" name="phone-portrait-outline" class="background-sample__icon--mobile"></ion-icon>
+          <% end %>
+        <% else %>
+          <img src="<%= link.post_thumbnail_url %>" class="background-sample__image--mobile"/>
           <ion-icon role="presentation" name="phone-portrait-outline" class="background-sample__icon--mobile"></ion-icon>
         <% end %>
-
-        <img src="<%= link.post_thumbnail_url %>" class="background-sample__image--<%= device %>"/>
+        
       </a>
       <figcaption class="link--description">
         <%= link_to e621_url, class: 'small' do %>
