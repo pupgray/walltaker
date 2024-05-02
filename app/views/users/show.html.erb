@@ -27,35 +27,39 @@
   <% if current_user && current_user.id == @user.id %>
     <div class="right">
       <%= link_to '/settings' do %>
-            <p>settings</p>
-          <% end %>
-        </div>
-      <%= button_to "New link", new_link_path, method: :get %>
+        <p>settings</p>
+      <% end %>
     </div>
-  <% end %>
+    <%= button_to "New link", new_link_path, method: :get %>
+  </div>
+<% end %>
 </div>
-
 <h2 class="one-line <%= @total_orgasms_by_day.present? ? 'with-chart' : '' %>">
+
   <ion-icon role="presentation" name="person" class="big"></ion-icon>
+
   <span data-controller="user-reference" data-user-reference-hide-online-value><%= @user.username %></span>
   <% if @any_links_online %>
     <strong class="online" title="User is online"></strong>
   <% end %>
-  <small>
+  <small style="text-align:left;">
     <%= link_to user_sets_path(@user.username) do %>
       Set <%= @user.set_count %> wallpapers
     <% end %>
+    <span style="float:right;">
+      <% if @user.username == 'gray' %>
+        Caused <%= pluralize @total_orgasms_caused, 'orgasm' %>, technically.
+      <% else %>
+        Caused <%= pluralize @total_orgasms_caused, 'orgasm' %>
+      <% end %>
+    </span>
   </small>
-  <small>
-    <% if @user.username == 'gray' %>
-      Caused <%= pluralize @total_orgasms_caused, 'orgasm' %>, technically.
-    <% else %>
-      Caused <%= pluralize @total_orgasms_caused, 'orgasm' %>
-    <% end %>
-  </small>
-  <small>
+  <small >
     Last online
     <%= @most_recent_pinged_link && @most_recent_pinged_link[0].last_ping ? time_tag(@most_recent_pinged_link[0].last_ping, (time_ago_in_words @most_recent_pinged_link[0].last_ping) + ' ago') : 'never' %>
+    <span style="float:right;">
+      Had <%= @total_orgasms %> orgasms in the last 7 days
+    </span>
   </small>
   <% if @user.viewing_link %>
     <small>
@@ -94,7 +98,6 @@
     <ion-icon role="presentation" name="arrow-forward"></ion-icon>
   <% end %>
 <% end %>
-
 
 <% if @is_current_user %>
   <div class="two-col">
