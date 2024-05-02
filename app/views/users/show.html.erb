@@ -36,7 +36,13 @@
 </div>
 <h2 class="one-line <%= @total_orgasms_by_day.present? ? 'with-chart' : '' %>">
 
-  <ion-icon role="presentation" name="person" class="big"></ion-icon>
+  <% if @user.username == 'gios' %>
+    <ion-icon role="presentation" name="logo-octocat" class="big"></ion-icon>
+  <%elsif @user.username == 'gray' %>
+    <ion-icon role="presentation" name="train-outline" class="big"></ion-icon>
+  <%else%>
+    <ion-icon role="presentation" name="person" class="big"></ion-icon>
+  <%end%>
 
   <span data-controller="user-reference" data-user-reference-hide-online-value><%= @user.username %></span>
   <% if @any_links_online %>
