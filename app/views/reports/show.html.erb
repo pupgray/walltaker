@@ -1,0 +1,13 @@
+<div class="task-tools">
+  <div class="left">
+    <%= link_to "Report Queue", mod_tools_reports_path %>
+  </div>
+</div>
+
+<h2>
+  <ion-icon role="presentation" name="nuclear" class="big"></ion-icon>
+  <%= @report.reporter.username %>'s <%= @report.reportable_type %> Report
+  <small>Gray trusts you.</small>
+</h2>
+
+<%= render 'report', report: @report %>

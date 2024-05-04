@@ -1,0 +1,15 @@
+<div class="task-tools">
+  <div class="left">
+    <%= link_to "Cancel", mod_tools_index_path %>
+  </div>
+</div>
+
+<h2>
+  <ion-icon role="presentation" name="nuclear" class="big"></ion-icon>
+  Reports
+  <small>Gray trusts you.</small>
+</h2>
+
+<% @reports.each do |report| %>
+  <%= render 'report', report: %>
+<% end %>

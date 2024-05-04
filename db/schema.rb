@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_12_052021) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_04_164017) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -315,6 +315,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_12_052021) do
     t.index ["user_id"], name: "index_past_links_on_user_id"
   end
 
+  create_table "reports", force: :cascade do |t|
+    t.bigint "reporter_id", null: false
+    t.string "reportable_type"
+    t.bigint "reportable_id"
+    t.boolean "is_closed", default: false
+    t.string "snapshot"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reportable_type", "reportable_id"], name: "index_reports_on_reportable"
+    t.index ["reporter_id"], name: "index_reports_on_reporter_id"
+  end
+
   create_table "surrenders", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "friendship_id", null: false
@@ -369,6 +381,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_12_052021) do
   add_foreign_key "past_links", "links", on_delete: :nullify
   add_foreign_key "past_links", "users"
   add_foreign_key "past_links", "users", column: "set_by_id"
+  add_foreign_key "reports", "users", column: "reporter_id"
   add_foreign_key "surrenders", "friendships"
   add_foreign_key "surrenders", "users"
   add_foreign_key "users", "links", column: "viewing_link_id"

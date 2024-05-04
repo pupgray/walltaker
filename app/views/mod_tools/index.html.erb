@@ -35,6 +35,9 @@
   <small>Gray trusts you. The highlighted button in each category is the most useful.</small>
 </h2>
 
+<%= button_to "Report Queue (#{Report.where(is_closed: false).count})", mod_tools_reports_path, method: :get %>
+<%= button_to "Closed tickets", mod_tools_reports_path, method: :get, params: {closed: true}, class: 'secondary' %>
+
 <section>
   <h3>Account issues</h3>
   <%= button_to "They forgot their password", mod_tools_passwords_index_path, method: :get %>

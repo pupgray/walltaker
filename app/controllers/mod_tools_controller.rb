@@ -93,7 +93,8 @@ class ModToolsController < ApplicationController
     user.quarantined = user.quarantined ? false : true
     result = user.save
 
-    redirect_to mod_tools_quarantine_index_path(anchor: helpers.dom_id(user))
+    return redirect_to mod_tools_quarantine_index_path(anchor: helpers.dom_id(user)) unless params["return_to"]
+    return redirect_to params["return_to"]
   end
 
   def update_ipban
@@ -109,7 +110,8 @@ class ModToolsController < ApplicationController
       BannedIp.create(ip_address: ip, banned_by: current_user)
     end
 
-    redirect_to mod_tools_quarantine_index_path(anchor: helpers.dom_id(user))
+    redirect_to mod_tools_quarantine_index_path(anchor: helpers.dom_id(user)) unless params["return_to"]
+    return redirect_to params["return_to"], notice: 'ip banned!'
   end
 
   def show_recent_events

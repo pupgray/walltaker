@@ -1650,3 +1650,24 @@ pre code.hljs {
 .spacer {
     height: 30px;
 }
+
+.reports {
+    & pre {
+        overflow: scroll;
+        width: auto;
+        white-space: break-spaces;
+        max-height: 300px;
+    }
+}
+
+#report_button {
+    display: inline-block;
+
+    & form {
+        display: inline-block;
+    }
+
+    & input[type=submit] {
+        width: initial;
+    }
+}

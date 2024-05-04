@@ -57,7 +57,9 @@ Rails.application.routes.draw do
   post 'api/mascot/next', to: 'api#update_mascot'
   post 'api/pervert/toggle', to: 'api#update_perviness'
 
-  resources :users
+  resources :users do
+    resources :reports, only: %i[new create]
+  end
   resources :session
   resources :message_thread, path: 'messages' do
     member do
@@ -91,6 +93,7 @@ Rails.application.routes.draw do
       get 'embed'
     end
 
+    resources :reports, only: %i[new create]
     resources :comments
     resources :link_wizard, controller: 'link_wizard', path: :wizard, as: :wizard do
       member do
@@ -112,6 +115,8 @@ Rails.application.routes.draw do
 
   scope path: :mod_tools, as: 'mod_tools' do
     get '/', to: 'mod_tools#index', as: 'index'
+
+    resources :reports, except: %i[new create]
 
     scope path: :passwords, as: 'passwords' do
       get '/', to: 'mod_tools#show_password_reset', as: 'index'

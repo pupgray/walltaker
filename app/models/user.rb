@@ -11,6 +11,10 @@ class User < ApplicationRecord
   has_many :kinks, -> { order(is_starred: :desc, id: :desc) }, through: :kink_havers
   attribute :colour_preference, :integer
   belongs_to :viewing_link, foreign_key: :viewing_link_id, class_name: 'Link', optional: true
+  has_many :message_thread_participants
+  has_many :message_threads, through: :message_thread_participants
+  has_many :messages, through: :message_threads
+  has_many :reports, as: :reportable
 
   has_one :current_surrender, class_name: 'Surrender', dependent: :destroy
 
@@ -65,6 +69,24 @@ class User < ApplicationRecord
   def controllable_surrenders
     friendship_ids = Friendship.involving(self).is_confirmed.pluck(:id)
     Surrender.not_for_user(self).where(id: friendship_ids)
+  end
+
+  def snapshot
+    <<~OUT.strip
+      #{username}
+      #{details}
+
+      Recent messages:
+      #{messages.limit(6).map {|message| "=> (to #{message.message_thread&.users&.map(&:username).join(',')}) #{message.content}"}.join("\n")}
+
+      Recent wallpapers set for others:
+      #{past_links.limit(6).map {|pl| "=> (for #{pl.link&.user&.username} on ##{pl.link&.id}) #{pl.post_url}"}.join("\n")}
+
+      All links:
+
+      ======= LINK ========
+      #{link.map(&:snapshot).join("\n\n======= LINK ========\n")}
+    OUT
   end
 
   after_commit do

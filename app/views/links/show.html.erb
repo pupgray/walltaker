@@ -45,6 +45,10 @@
       </div>
     <% end %>
     <div class="right">
+      <% if current_user %>
+        <%= turbo_frame_tag :report_button, src: new_polymorphic_path([@link, Report]) %>
+      <% end %>
+
       <% if !@has_friendship %>
         <a href="<%= url_for :action => :new, :controller => :friendships, :params => { :with => @link.user.username } %>" title="Become friends" class="no-underline">
           <ion-icon role="presentation" name="person-add"></ion-icon>

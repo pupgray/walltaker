@@ -16,6 +16,8 @@ class Link < ApplicationRecord
   validates :min_score, comparison: { greater_than: -1, less_than: 301 }
   validates :custom_url, format: { with: /\A[a-zA-Z\-_]*\z/, message: 'must be a valid in a url, with no spaces or special characters' }
   validates_uniqueness_of :custom_url, allow_nil: true, unless: ->(l) { l.custom_url.blank? }
+  has_many :reports, as: :reportable
+
   visitable :ahoy_visit
 
   pg_search_scope :search_positive, against: %i[terms theme custom_url response_text post_description], associated_against: {
@@ -103,5 +105,19 @@ class Link < ApplicationRecord
         link
       )
     end
+  end
+
+  def snapshot
+    <<~OUT.strip
+      ##{id}
+      Creator: #{user.username}
+      #{terms}
+
+      Theme: #{theme}
+      Blacklist: #{blacklist}
+      Post URL: #{post_url}
+      Set By: #{set_by&.username || 'anon or no one'}
+      Response Text: #{response_text}
+    OUT
   end
 end

@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  reporter: one
+  reportable: one
+  snapshot: MyString
+
+two:
+  reporter: two
+  reportable: two
+  snapshot: MyString

@@ -8,6 +8,9 @@
   <% end %>
   <% if (!current_user || !@has_friendship) && (!@is_current_user || !current_user) %>
     <div class="right">
+      <% if current_user %>
+        <%= turbo_frame_tag :report_button, src: new_polymorphic_path([@user, Report]) %>
+      <% end %>
       <a href="<%= url_for :action => :new, :controller => :friendships, :params => { :with => @user.username } %>" title="Become friends" class="no-underline">
         <ion-icon role="presentation" name="person-add"></ion-icon>
         Send Friend Request
@@ -17,6 +20,9 @@
 
   <% if (current_user && @has_friendship) && !@is_current_user %>
     <div class="right">
+      <% if current_user %>
+        <%= turbo_frame_tag :report_button, src: new_polymorphic_path([@user, Report]) %>
+      <% end %>
       <a href="<%= resolve_message_thread_index_path(user_id: @user.id) %>" title="Become friends" class="no-underline">
         <ion-icon role="presentation" name="mail"></ion-icon>
         Send message
