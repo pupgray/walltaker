@@ -14,7 +14,7 @@
         </div>
         <div>Reported a <%= report.reportable_type %>.</div>
         <% if report.reportable %>
-          <%= link_to polymorphic_path(report.reportable) %>
+          <%= link_to polymorphic_path(report.reportable), polymorphic_path(report.reportable) %>
         <% end %>
       </td>
     </tr>
