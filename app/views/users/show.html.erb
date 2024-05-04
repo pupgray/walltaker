@@ -1,11 +1,14 @@
 <% content_for(:html_title) { "Walltaker #{@user.username}" } %>
 
 <div class="task-tools">
-  <% if _filtered_referrer %>
-    <div class="left">
-      <%= link_to "Back", :back %>
-    </div>
-  <% end %>
+  <div class="left">
+    <% if current_user.admin? %>
+      <%= link_to mod_tools_users_assume_path(@user), target: '_top', class: 'no-underline' do %>
+        <ion-icon role="presentation" name="key"></ion-icon>
+        Log in as <%= @user.username %>
+      <% end %>
+    <% end %>
+  </div>
   <% if (!current_user || !@has_friendship) && (!@is_current_user || !current_user) %>
     <div class="right">
       <% if current_user %>
