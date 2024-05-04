@@ -46,6 +46,9 @@
               <% end %>
               <%= button_to "IP Ban #{report.reportable&.username}", mod_tools_quarantine_ipban_path(report.reportable), params: {return_to: request.path} %>
             <% when 'Link' %>
+              <%= button_to mod_tools_users_index_url, method: :get, params: {email: report.reportable&.user&.email}, class: 'secondary' do %>
+                Edit <%= report.reportable&.user&.username %>
+              <% end %>
               <%= button_to "Delete Link ##{report.reportable&.id}", link_path(report.reportable), method: :delete %>
               <% if report.reportable&.user&.quarantined %>
                 <%= button_to "Revive #{report.reportable&.user&.username} (link owner)", mod_tools_quarantine_update_path(report.reportable&.user), params: {return_to: request.path} %>
