@@ -22,7 +22,8 @@
     max-height: 200px;
 }
 
-h2 > small {
+h2 > small,
+h2 > .gios-user-grid > small {
     color: var(--border);
     display: block;
     font-size: 0.35em;
@@ -389,4 +390,29 @@ h2.with-chart #chart-1 {
 
 .user_segment h3 .text-charm {
     transform: translateY(-10px);
+}
+
+.gios-user-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: auto;
+    gap: 0.2rem;
+
+    @media screen and (max-width: 600px) {
+        grid-template-columns: 1fr;
+
+        & > small:last-child {
+            text-align: left !important;
+        }
+    }
+
+    & > small {
+        display: grid !important;
+        gap: 0.4rem;
+        grid-template-columns: subgrid;
+
+        &:last-child {
+            text-align: right;
+        }
+    }
 }
