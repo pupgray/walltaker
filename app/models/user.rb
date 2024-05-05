@@ -14,6 +14,7 @@ class User < ApplicationRecord
   has_many :message_thread_participants
   has_many :message_threads, through: :message_thread_participants
   has_many :messages, through: :message_threads
+  has_one :wall
   has_many :reports, as: :reportable
 
   has_one :current_surrender, class_name: 'Surrender', dependent: :destroy

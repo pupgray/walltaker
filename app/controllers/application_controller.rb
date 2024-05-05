@@ -13,6 +13,18 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def broadcast_notice(message)
+    Turbo::StreamsChannel.broadcast_append_to("#{current_user.username}-flashes",
+                                              target: 'flashes', partial: 'application/flash',
+                                              locals: { msg: message, type: 'notice'})
+  end
+
+  def broadcast_alert(message)
+    Turbo::StreamsChannel.broadcast_append_to("#{current_user.username}-flashes",
+                                              target: 'flashes', partial: 'application/flash',
+                                              locals: { msg: message, type: 'alert'})
+  end
+
   def get_tag_results(tag_string, after, before, link, limit = 15)
     if link.nil?
       append_to_tags = ''

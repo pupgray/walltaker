@@ -1,0 +1,3 @@
+<%= turbo_frame_tag :wall do %>
+  <%= sanitize @wall.content, scrubber: WallScrubber.new %>
+<% end %>

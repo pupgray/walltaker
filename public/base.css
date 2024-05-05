@@ -1671,3 +1671,66 @@ pre code.hljs {
         width: initial;
     }
 }
+
+.wall_editor {
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-template-rows: auto auto;
+    grid-column: 1 / -1;
+    gap: 1rem;
+
+    & .editor {
+        min-height: 100dvh;
+        grid-row: 2;
+        grid-column: 1 / -2;
+    }
+
+    & .preview {
+        min-height: 100dvh;
+        grid-row: 2;
+        grid-column: 3 / -1;
+    }
+}
+
+main.full-width {
+    grid-column: 1 / span 3;
+    display: grid;
+    grid-template-columns: subgrid;
+}
+
+@media screen and (max-width: 1000px) {
+    main.full-width {
+        & .wall_editor {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        & .task-tools__editor {
+            grid-column: 1 / -1;
+            padding: 0 1rem;
+        }
+    }
+}
+
+@media screen and (max-width: 780px) {
+    main.full-width {
+        & .wall_editor {
+            grid-template-columns: repeat(1, 1fr);
+
+            & .editor {
+                min-height: 90dvh;
+                grid-row: 3;
+                grid-column: 1 / -1;
+            }
+
+            & .preview {
+                min-height: 60dvh;
+                grid-row: 2;
+                grid-column: 1 / -1;
+            }
+        }
+    }
+}
+
+.task-tools__editor {
+    grid-column: 2 / span 1;
+}

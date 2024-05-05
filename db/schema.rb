@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_04_164017) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_04_234127) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -361,6 +361,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_04_164017) do
     t.index ["set_count"], name: "index_users_on_set_count", order: :desc
     t.index ["username"], name: "unique_usernames", unique: true
     t.index ["viewing_link_id"], name: "index_users_on_viewing_link_id"
+  end
+
+  create_table "walls", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "title", default: "My Wall"
+    t.string "content", default: ""
+    t.integer "hits", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_walls_on_user_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

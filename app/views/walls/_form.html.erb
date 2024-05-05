@@ -1,0 +1,26 @@
+<%# locals: (wall:, new_record: false) -%>
+
+<div data-controller="hotkeys wall-editor"
+     data-hotkeys-bindings-value='{"ctrl+s, command+s": "wall-editor#save:prevent"}'
+     data-wall-editor-save-url-value="<%= wall_path %>"
+     class="wall_editor"
+>
+  <template data-wall-editor-target="template"><%= sanitize wall.content, scrubber: WallScrubber.new %></template>
+
+  <div class="task-tools task-tools__editor">
+    <div class="left">
+      <%= link_to "Back to dashboard", root_path %>
+    </div>
+
+    <div class="right">
+      <%= button_tag data: {action: 'click->wall-editor#save'} do %>
+        <ion-icon name="save-sharp"></ion-icon>
+        <span data-wall-editor-target="saveBtnText">Save</span>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="editor" data-wall-editor-target="editor"></div>
+
+  <%= turbo_frame_tag :wall, src: wall_path, class: 'preview', data: { 'wall-editor-target': 'preview' } %>
+</div>

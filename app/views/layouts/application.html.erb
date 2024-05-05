@@ -75,9 +75,8 @@
     </div>
   <% end %>
 
-  <main>
-    <%= yield %>
-    <%= yield :content %>
+  <main class="<%= content_for?(:main_class) ? yield(:main_class) : "" %>">
+    <%= content_for?(:content) ? yield(:content) : yield %>
   </main>
 
   <footer>
