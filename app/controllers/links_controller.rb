@@ -154,7 +154,7 @@ class LinksController < ApplicationController
 
   # DELETE /links/1 or /links/1.json
   def destroy
-    if current_user.id != @link.user.id || current_user.admin? == false
+    if current_user.id != @link.user.id
       redirect_to link_url(@link), alert: 'Not authorized.'
       track :nefarious, :delete_others_link
       return
