@@ -2,7 +2,7 @@
 
 <div class="task-tools">
   <div class="left">
-    <% if current_user.admin? %>
+    <% if current_user&.admin? %>
       <%= link_to mod_tools_users_assume_path(@user), target: '_top', class: 'no-underline' do %>
         <ion-icon role="presentation" name="key"></ion-icon>
         Log in as <%= @user.username %>
