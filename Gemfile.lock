@@ -125,7 +125,7 @@ GEM
       ruby2_keywords
     erubi (1.12.0)
     excon (0.102.0)
-    fatcow (0.1.2)
+    fatcow (0.1.5)
       nokogiri (~> 1.8)
       rails (~> 7)
     globalid (1.2.0)
@@ -317,7 +317,7 @@ DEPENDENCIES
   crono
   debug
   excon
-  fatcow (> 0.1.1)
+  fatcow (> 0.1.4)
   groupdate
   importmap-rails
   inline_svg

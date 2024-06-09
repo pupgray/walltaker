@@ -6,21 +6,10 @@
 
 .fatcow-icon {
     transform: translateY(4px);
+    height: 32px;
 
     & img {
         border-radius: 0 !important;
-    }
-}
-
-.friendship__names {
-    & .fatcow-icon {
-        height: 20px;
-        width: 20px;
-
-        & img {
-            height: 100%;
-            width: 100%;
-        }
     }
 }
 

@@ -1,6 +1,6 @@
 class Link < ApplicationRecord
   include PgSearch::Model
-  has_icon :image, show: { key: -> { friends_only? }, error: -> { expired? } }
+  has_icon :image, show: { key: -> { friends_only? }, error: -> { expired? } }, form: { wand: -> { wizard_page != nil } }
   belongs_to :user
   belongs_to :set_by, foreign_key: :set_by_id, class_name: 'User', optional: true
   belongs_to :forked_from, foreign_key: :forked_from_id, class_name: 'Link', inverse_of: :forks, optional: true

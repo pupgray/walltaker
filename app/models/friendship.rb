@@ -1,5 +1,5 @@
 class Friendship < ApplicationRecord
-  has_icon :yellow_submarine, show: { up: -> { !confirmed? } }
+  has_icon :yellow_submarine, show: { go: -> { !confirmed? } }
   has_many :surrenders, dependent: :destroy
   belongs_to :sender, foreign_key: :sender_id, class_name: 'User'
   belongs_to :receiver, foreign_key: :receiver_id, class_name: 'User', optional: true
