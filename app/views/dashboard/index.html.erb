@@ -89,7 +89,7 @@
   </div>
 <% end %>
 
-<h2>What is it?</h2>
+<h2><%= fci :help %> What is it?</h2>
 <p>
   First off:
   <strong>Walltaker is an app built by adults, for adults. You must be over the age of 18 to use it.</strong>
@@ -99,7 +99,7 @@
   results, with an enforced blacklist. This keeps you in control, but not <em>too much</em> control.
 </p>
 
-<h2 id="what-do-i-need">What do I need?</h2>
+<h2 id="what-do-i-need"><%= fci :shopping, :help %> What do I need?</h2>
 <p>
   Walltaker requires you to <strong>make an account on the website (here!) first.</strong> Once you have an account, you can generate
   links to send to friends/enemies, which will enqueue new wallpapers for your account. When you want to start seeing
@@ -109,7 +109,7 @@
 
 <%= inline_svg_tag "wt.svg", class: "explainer_graphic", aria: true, title: "A flow chart, showing links pushing updates to devices running walltaker clients.", width: '100%' %>
 
-<h2 id="companion-apps">Clients</h2>
+<h2 id="companion-apps"><%= fci :port %> Clients</h2>
 <table>
   <thead>
   <tr>
@@ -173,11 +173,10 @@
 </table>
 Please try using clients that are still being maintained before trying unmaintained clients.
 
-<h2 id="extra-apps">Companion/Explorer Apps</h2>
+<h2 id="extra-apps"><%= fci :multitool %> Companion/Explorer Apps</h2>
 <p>Extra tools that tie into Walltaker's site. These should help to integrate walltaker better or make the user experience cleaner.</p>
 
 <table>
-  <thead>
   <tr>
     <th>Client</th>
     <th>Platform</th>
@@ -189,7 +188,7 @@ Please try using clients that are still being maintained before trying unmaintai
   </tbody>
 </table>
 
-<h2>Help us out!</h2>
+<h2><%= fci :moneybox %> Help us out!</h2>
 <p>
   <%= image_tag 'mascot/TaylorNSFW.png', alt: 'Taylor, a gray and yellow lizard with tits, shaking them at you', class: 'mascot float-right', width: 195 %>
   We'll be upfront! The site pretty cheap to operate. We have very little in running costs, and I am somewhat OK with
