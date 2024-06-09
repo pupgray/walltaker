@@ -1,4 +1,5 @@
 class MessageThread < ApplicationRecord
+  has_icon :comment, form: { wrench: -> { true }, edit: -> { false }, add: -> {false} }
   has_many :message_thread_participants
   has_many :users, through: :message_thread_participants
   has_many :messages

@@ -5,7 +5,7 @@
 </div>
 
 <h2 class="one-line">
-  <ion-icon name="people"></ion-icon>
+  <%= @message_thread.form_icon %>
   Edit <%= @message_thread.name ? @message_thread.name : 'Thread' %>
 </h2>
 
@@ -62,7 +62,7 @@
   thread can add their own friends, regardless if other members are friends with them or not.
 </div>
 
-<h2>Change thread name</h2>
+<h3>Change thread name</h3>
 <%= form_with model: @message_thread do |form| %>
   <div class="form__row">
     <%= form.text_field :name, class: 'full-width' %>

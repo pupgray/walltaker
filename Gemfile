@@ -87,4 +87,4 @@ gem "pg_search", "~> 2.3"
 gem 'inline_svg'
 gem 'crono'
 gem 'wicked'
-gem 'fatcow'
+gem 'fatcow', '> 0.1.1'

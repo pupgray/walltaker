@@ -177,7 +177,7 @@
 <% if @link.forks.count.positive? %>
   <div class="accent-block accent-block__charm--accordion" data-controller="accordion">
     <div class="accent-block__charm accent-block__charm--accordion-header" data-action="click->accordion#toggle" tabindex="0">
-      <ion-icon role="presentation" name="git-branch"></ion-icon>
+      <%= fci :sitemap_image %>
       <%= pluralize @link.forks.count, 'fork' %> will also be changed
       <ion-icon class="accent-block__charm--accordion-header__indicator" name="chevron-down"></ion-icon>
     </div>

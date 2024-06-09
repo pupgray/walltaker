@@ -2,11 +2,11 @@
 
 <% if @user.username.last.downcase == 's' %>
   <h2>
-    <ion-icon role="presentation" name="person"></ion-icon> <%= @user.username %>' settings
+    <%= fci :multitool %> <%= @user.username %>' settings
   </h2>
 <% else %>
   <h2>
-    <ion-icon role="presentation" name="person"></ion-icon> <%= @user.username %>'s settings
+    <%= fci :multitool %> <%= @user.username %>'s settings
   </h2>
 <% end %>
 

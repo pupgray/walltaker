@@ -9,6 +9,7 @@
       <% end %>
     <% end %>
   </div>
+
   <% if (!current_user || !@has_friendship) && (!@is_current_user || !current_user) %>
     <div class="right">
       <% if current_user %>
@@ -26,7 +27,7 @@
       <% if current_user %>
         <%= turbo_frame_tag :report_button, src: new_polymorphic_path([@user, Report]) %>
       <% end %>
-      <a href="<%= resolve_message_thread_index_path(user_id: @user.id) %>" title="Become friends" class="no-underline">
+      <a href="<%= resolve_message_thread_index_path(user_id: @user.id) %>" title="Send them a message! It's nice!" class="no-underline">
         <ion-icon role="presentation" name="mail"></ion-icon>
         Send message
       </a>
@@ -36,7 +37,7 @@
   <% if current_user && current_user.id == @user.id %>
     <div class="right">
       <%= link_to '/settings' do %>
-        <p>settings</p>
+        Settings
       <% end %>
     </div>
     <%= button_to "New link", new_link_path, method: :get %>
