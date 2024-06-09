@@ -19,7 +19,7 @@
 
   <!-- markup -->
   <div class="friendship__names">
-    <ion-icon role="presentation" name="heart"></ion-icon>
+    <%= friendship.show_icon %>
     <%= link_to other_user.username, user_path(other_user.username), data: { controller: "user-reference" } %>
     since
     <%= friendship.updated_at.strftime('%d/%m/%Y') %>

@@ -1,5 +1,6 @@
 class Link < ApplicationRecord
   include PgSearch::Model
+  has_icon :image, show: { key: -> { friends_only? }, error: -> { expired? } }
   belongs_to :user
   belongs_to :set_by, foreign_key: :set_by_id, class_name: 'User', optional: true
   belongs_to :forked_from, foreign_key: :forked_from_id, class_name: 'Link', inverse_of: :forks, optional: true
@@ -41,6 +42,11 @@ class Link < ApplicationRecord
       where('expires > ?', Time.now).or(where(never_expires: true))
     )
   }
+
+  def expired?
+    return false if never_expires?
+    expires.past?
+  end
 
   def is_online?
     is_ios = last_ping_user_agent&.match(/widgetExtension/) || false

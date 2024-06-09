@@ -22,7 +22,7 @@
 
   <!-- markup -->
   <div class="friendship__names">
-    <ion-icon role="presentation" name="send"></ion-icon>
+    <%= friendship.show_icon %>
     <%= link_to other_user.username, user_path(other_user.username), data: { controller: "user-reference" } %>
     sent <%= time_ago_in_words friendship.updated_at %> ago
   </div>
