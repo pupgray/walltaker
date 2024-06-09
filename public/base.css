@@ -6,7 +6,8 @@
 
 .fatcow-icon {
     transform: translateY(4px);
-    height: 32px;
+    &:not(.fatcow-icon--small) { height: 32px; }
+    &.fatcow-icon--small { height: 16px; }
 
     & img {
         border-radius: 0 !important;
