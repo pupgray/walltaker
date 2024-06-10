@@ -1,0 +1,10 @@
+<% content_for :body do %>
+  <header>
+    <%= link_to 'Go back to Walltaker', root_path %>
+  </header>
+  <main class="full-width">
+    <%= yield %>
+  </main>
+<% end %>
+
+<%= render template: 'layouts/base' %>

@@ -1,10 +1,10 @@
 class WallsController < ApplicationController
   before_action :authorize, except: %i[index show]
   before_action :set_wall, only: %i[show edit update destroy]
-  layout 'full_width'
 
   def show
     redirect_to new_wall_path unless @wall
+    render layout: 'thin'
   end
 
   def new
@@ -27,7 +27,7 @@ class WallsController < ApplicationController
   end
 
   def edit
-
+    render layout: 'full_width'
   end
 
   def update
