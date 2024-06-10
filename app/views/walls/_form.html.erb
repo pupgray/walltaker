@@ -8,14 +8,107 @@
   <template data-wall-editor-target="template"><%= sanitize wall.content, scrubber: WallScrubber.new %></template>
 
   <div class="task-tools task-tools__editor">
-    <div class="left">
-    </div>
+    <div class="left wall_editor__toolbar">
 
-    <div class="right">
-      <%= button_tag data: {action: 'click->wall-editor#save'} do %>
-        <ion-icon name="save-sharp"></ion-icon>
-        <span data-wall-editor-target="saveBtnText">Save</span>
-      <% end %>
+      <div class="ribbon__group">
+        <div class="ribbon__group__label">
+          <%= fci :shape_square, :link, size: :small %>
+          Embeds
+        </div>
+
+        <div class="ribbon__group__actions">
+          <%= link_to wall_path, target: '_blank', class: 'no-underline core-button' do %>
+            <%= fci :picture, :link %> Porn
+          <% end %>
+
+          <%= link_to wall_path, target: '_blank', class: 'no-underline' do %>
+            <%= fci :book, :link, size: :small %> Guestbook
+          <% end %>
+
+          <%= link_to wall_path, target: '_blank', class: 'no-underline' do %>
+            <%= fci :chart_line, :link, size: :small %> Stats
+          <% end %>
+
+          <%= link_to wall_path, target: '_blank', class: 'no-underline' do %>
+            <%= fci :image, :link, size: :small %> Link
+          <% end %>
+
+          <%= link_to wall_path, target: '_blank', class: 'no-underline' do %>
+            <%= fci :real_estate, size: :small %> Rental
+          <% end %>
+        </div>
+      </div>
+
+      <div class="ribbon__group">
+        <div class="ribbon__group__label">
+          <%= fci :layout, size: :small %>
+          Layout
+        </div>
+        <div class="ribbon__group__actions">
+          <%= link_to '#', class: 'no-underline core-button' do %>
+            <%= fci :shape_square, :back %>
+            Float
+          <% end %>
+
+          <%= link_to wall_path, target: '_blank', class: 'no-underline' do %>
+            <%= fci :billboard_picture, size: :small %> Banner
+          <% end %>
+
+          <%= link_to wall_path, target: '_blank', class: 'no-underline' do %>
+            <%= fci :layouts_select, :select, size: :small %> Sidebar
+          <% end %>
+
+          <%= link_to wall_path, target: '_blank', class: 'no-underline' do %>
+            <%= fci :layouts_footer, :select, size: :small %> Footer
+          <% end %>
+
+          <%= link_to wall_path, target: '_blank', class: 'no-underline' do %>
+            <%= fci :table, :add, size: :small %> Grid
+          <% end %>
+        </div>
+      </div>
+
+      <div class="ribbon__group">
+        <div class="ribbon__group__label">
+          <%= fci :paint_tube, size: :small %>
+          Properties
+        </div>
+
+        <div class="ribbon__group__actions">
+          <%= link_to wall_path, target: '_blank', class: 'no-underline core-button' do %>
+            <%= fci :link, :edit %> Change
+          <% end %>
+
+          <%= link_to wall_path, target: '_blank', class: 'no-underline' do %>
+            <%= fci :spray, size: :small %> Colour
+          <% end %>
+
+          <%= link_to wall_path, target: '_blank', class: 'no-underline' do %>
+            <%= fci :paintcan, size: :small %> Background
+          <% end %>
+
+          <%= link_to wall_path, target: '_blank', class: 'no-underline' do %>
+            <%= fci :stamp_pattern, size: :small %> Pattern
+          <% end %>
+
+          <%= link_to wall_path, target: '_blank', class: 'no-underline' do %>
+            <%= fci :label, size: :small %> Font
+          <% end %>
+        </div>
+      </div>
+
+      <div class="ribbon__group">
+        <%= link_to wall_path, target: '_blank', class: 'no-underline core-button' do %>
+          <%= fci :horoscopes %> Preview
+        <% end %>
+      </div>
+
+      <div class="ribbon__group">
+        <%= link_to '#', data: { action: 'click->wall-editor#save' }, class: 'no-underline core-button' do %>
+          <%= fci :diskette %>
+          <span data-wall-editor-target="saveBtnText">Save</span>
+        <% end %>
+      </div>
     </div>
   </div>
 

@@ -6,8 +6,14 @@
 
 .fatcow-icon {
     transform: translateY(4px);
-    &:not(.fatcow-icon--small) { height: 32px; }
-    &.fatcow-icon--small { height: 16px; }
+
+    &:not(.fatcow-icon--small) {
+        height: 32px;
+    }
+
+    &.fatcow-icon--small {
+        height: 16px;
+    }
 
     & img {
         border-radius: 0 !important;
@@ -1702,6 +1708,85 @@ pre code.hljs {
     }
 }
 
+.wall_editor__toolbar {
+    padding: 0.4rem 0.1rem;
+    margin: 0;
+    flex: 1 1 100%;
+    border: 1px solid var(--disabled);
+    border-radius: 10px;
+
+    display: grid;
+    gap: 0.8rem 0.2rem;
+
+    grid-auto-rows: auto;
+    grid-template-rows: repeat(auto-fill, auto);
+    grid-template-columns: repeat(5, auto);
+
+    & + .right {
+        flex: 0 1 auto !important;
+    }
+}
+
+.ribbon__group {
+    display: grid;
+    grid-column-end: span 1;
+    grid-row-end: span 3;
+    grid-template-rows: 30px;
+    grid-auto-rows: auto;
+    grid-template-columns: repeat(4, auto);
+    gap: 0.4rem;
+    padding: 0 0.4rem;
+
+    & .fatcow-icon {
+        image-rendering: initial;
+    }
+
+    & .ribbon__group__label {
+        grid-row-end: span 1;
+        grid-column: 1 / -1;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.2rem 0.4rem;
+        border-bottom: 1px solid var(--disabled);
+        color: var(--text-light);
+
+        & .fatcow-icon {
+            transform: none;
+        }
+    }
+
+
+    & .ribbon__group__actions {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        display: grid;
+        grid-template-columns: auto auto auto auto;
+        grid-template-rows: auto;
+    }
+
+    & a {
+        display: block;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        transition: transform 30ms ease-out;
+    }
+
+    & .core-button {
+        grid-row-end: span 2;
+        padding: 0.2rem 0.6rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        align-items: center;
+
+        & .fatcow-icon {
+            max-width: 32px;
+        }
+    }
+}
+
 main.full-width {
     grid-column: 1 / span 3;
     display: grid;
@@ -1742,5 +1827,12 @@ main.full-width {
 }
 
 .task-tools__editor {
-    grid-column: 2 / span 1;
+    grid-column: 1 / -1;
+    height: initial;
+    display: flex;
+    justify-content: center;
+
+    & > * {
+        flex: 0 1 auto !important;
+    }
 }
