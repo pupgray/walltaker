@@ -9,6 +9,12 @@
     </div>
   <% end %>
 
+  <h2>
+    <%= fci link.form_icon %>
+    <%= "Link #{link.id}" if link.id %>
+    <%= "New link" unless link.id %>
+  </h2>
+
   <div class="link--form__section">
     <h3>
       <ion-icon name="newspaper"></ion-icon>

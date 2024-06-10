@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   include ActiveModel::SecurePassword
   has_secure_password
+  has_icon :xfn, show: { burn: -> { quarantined } }
   has_many :link
   has_many :past_links, foreign_key: :set_by_id
   has_many :orgasms, foreign_key: :user_id, class_name: 'Nuttracker::Orgasm'

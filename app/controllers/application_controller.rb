@@ -189,6 +189,7 @@ class ApplicationController < ActionController::Base
     notification_text = "#{link.user.username} loved your post!" if link.response_type == 'horny'
     notification_text = "#{link.user.username} did not like your post." if link.response_type == 'disgust'
     notification_text = "#{link.user.username} came to your post!" if link.response_type == 'came'
+    notification_text = "#{link.user.username} says thanks" if link.response_type == 'ok'
     notification_text = "#{notification_text} \"#{link.response_text}\"" unless link.response_type.nil?
     Notification.create user_id: link.set_by_id, notification_type: :post_response, text: notification_text, link: "/links/#{link.id}"
 
@@ -196,6 +197,7 @@ class ApplicationController < ActionController::Base
     comment_text = "> loved it! #{ link.post_url }" if link.response_type == 'horny'
     comment_text = "> hated it. #{ link.post_url }" if link.response_type == 'disgust'
     comment_text = "> came to it! #{ link.post_url }" if link.response_type == 'came'
+    comment_text = "> liked it #{ link.post_url }" if link.response_type == 'ok'
     Comment.create user_id: link.user.id, link_id: link.id, content: comment_text
     Comment.create user_id: link.user.id, link_id: link.id, content: link.response_text unless link.response_type.nil?
 

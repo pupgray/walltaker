@@ -79,7 +79,7 @@
     <%= form_with model: @link, method: 'PATCH', class: 'set-post-response' do |form| %>
       <div>
         <%= form.text_field :response_text, placeholder: 'How do you feel about this wallpaper?', autocomplete: 'off' %>
-        <%= form.select :response_type, [['Love it!', :horny], ['Hate it!', :disgust], ['I came', :came]] %>
+        <%= form.select :response_type, [['Love it!', :horny], ['Hate it!', :disgust], ['I came', :came], ['Thanks', :ok]] %>
         <%= form.submit 'Reply' %>
       </div>
     <% end %>
@@ -177,7 +177,7 @@
 <% if @link.forks.count.positive? %>
   <div class="accent-block accent-block__charm--accordion" data-controller="accordion">
     <div class="accent-block__charm accent-block__charm--accordion-header" data-action="click->accordion#toggle" tabindex="0">
-      <ion-icon role="presentation" name="git-branch"></ion-icon>
+      <%= fci :sitemap_image %>
       <%= pluralize @link.forks.count, 'fork' %> will also be changed
       <ion-icon class="accent-block__charm--accordion-header__indicator" name="chevron-down"></ion-icon>
     </div>

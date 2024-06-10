@@ -11,7 +11,7 @@
 </div>
 
 <h2 class="one-line">
-  <ion-icon name="chatbubbles"></ion-icon>
+  <%= fci @message_thread.show_icon %>
   <% if @message_thread.name.nil? %>
     <%= @message_thread.users.all.map(&:username).map(&:capitalize).join ', ' %>
   <% else %>

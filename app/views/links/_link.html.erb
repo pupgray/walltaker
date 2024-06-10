@@ -190,6 +190,8 @@
         <%= link.user.username %>
         <% if link.horny? %>
           😍:
+        <% elsif link.ok? && link.response_text == '' %>
+          says thanks
         <% elsif link.came? %>
           💦 said while cumming:
         <% end %>
