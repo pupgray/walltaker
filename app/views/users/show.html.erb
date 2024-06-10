@@ -51,7 +51,7 @@
     <% elsif @user.username == 'gray' %>
       <ion-icon role="presentation" name="train-outline" class="big"></ion-icon>
     <% else %>
-      <%= @user.show_icon %>
+      <%= fci @user.show_icon %>
     <% end %>
 
     <span data-controller="user-reference" data-user-reference-hide-online-value><%= @user.username %></span>
