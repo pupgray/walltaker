@@ -4,14 +4,12 @@
     Select wallpaper via...
   </div>
 
-  <% seconds_since_last_wallpaper = link.past_links.last.present? ? Time.now - link.past_links.last.created_at : 9999 %>
-
   <div
     class="tab"
     data-tabs-target="tab"
     data-title="Search"
     data-controller="porn-search"
-    data-porn-search-seconds-since-last-wallpaper-value="<%= seconds_since_last_wallpaper %>"
+    data-porn-search-seconds-since-last-wallpaper-value="<%= link.seconds_since_last_set %>"
   >
     <dialog class="modal" data-porn-search-target="modal">
       <h4>Confirm Wallpaper</h4>

@@ -75,6 +75,10 @@ class Link < ApplicationRecord
     nil unless self.set_by_id
   end
 
+  def seconds_since_last_set
+    past_links.last.present? ? Time.now - past_links.last.created_at : 99999
+  end
+
   after_update_commit do
     if blacklist_previously_changed? || terms_previously_changed? || theme_previously_changed? || response_text_previously_changed? || last_ping_user_agent_previously_changed? || live_client_started_at_previously_changed? || expires_previously_changed? || never_expires_previously_changed? || friends_only_previously_changed? || post_url_previously_changed?
       begin

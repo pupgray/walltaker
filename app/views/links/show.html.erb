@@ -69,6 +69,16 @@
 <%= turbo_stream_from @link %>
 <%= render @link %>
 
+<% if @link.seconds_since_last_set < 2.minutes %>
+  <div class="accent-block">
+    <div class="accent-block__charm inline">
+      <ion-icon role="presentation" name="hourglass"></ion-icon>
+      Wallpaper was just changed
+      <%= link_to 'Try another link', show_similar_link_path(@link), class: 'right-side' %>
+    </div>
+  </div>
+<% end %>
+
 <% if @is_current_user %>
   <div class="accent-block">
     <div class="accent-block__charm">

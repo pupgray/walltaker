@@ -984,6 +984,10 @@ a.small:hover {
     padding: 1.8rem 1.5rem;
 }
 
+.accent-block:has(> .inline) {
+    padding: 0.25rem 1.5rem;
+}
+
 .accent-block__charm {
     color: var(--border);
     display: flex;
@@ -992,6 +996,21 @@ a.small:hover {
     position: absolute;
     top: 0;
     height: 55px;
+
+    &.inline {
+        position: initial;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        min-height: 35px;
+        height: initial;
+        padding: 10px 0;
+    }
+
+    & .right-side {
+        flex: 1 1 auto;
+        display: flex;
+        justify-content: flex-end;
+    }
 }
 
 .accent-block__charm--accordion {

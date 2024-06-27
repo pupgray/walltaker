@@ -9,7 +9,7 @@ class LinksController < ApplicationController
   before_action :authorize, only: %i[index new edit create destroy]
 
   # 2. set @link instance var, since a lot of action filters use it
-  before_action :set_link, only: %i[show edit update destroy export toggle_ability embed]
+  before_action :set_link, only: %i[show edit update destroy export toggle_ability embed show_similar]
 
   # 3. protect link-specific buisness rules
   before_action :prevent_public_expired, only: %i[show update]
@@ -31,6 +31,15 @@ class LinksController < ApplicationController
   # GET /links or /links.json (only your links)
   def index
     @links = User.find(current_user.id).link
+  end
+
+  def show_similar
+    query = Link.order('RANDOM()').where.not(id: @link.id)
+    random_link = nil
+    random_link = query.is_online.find_by(theme: @link.theme) if @link.theme
+    random_link = query.is_online.includes(:user, user: [:kinks]).find_by(user: { kinks: @link.user.kinks.pluck(:id) }) if @link.user.kinks.count > 0 && random_link.nil?
+    random_link = query.take if random_link.nil?
+    redirect_to link_path(random_link)
   end
 
   # GET /browse (all online links)
@@ -243,7 +252,7 @@ class LinksController < ApplicationController
     end
 
     if params['background'].present? && (/[\dA-Fa-f]+/).match?(params['background'])
-        @background = '#' + params['background']
+      @background = '#' + params['background']
     end
 
     if params['hide_text'].present? && params['hide_text'] == 'true'
