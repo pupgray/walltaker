@@ -1,6 +1,8 @@
 class LinkListsController < ApplicationController
   def index
-    @pagy, @kinks = pagy(Kink.joins(:kink_havers, :links).where(links: Link.is_public).having('count(links) > 0').group(:id).order('count(kink_havers) desc'), items: 5)
+    query = Kink.joins(:kink_havers, :links).where(links: Link.is_public).having('count(links) > 0').group(:id).order('count(kink_havers) desc') if params[:filter].nil?
+    query = Kink.joins(:kink_havers, :links).where(links: Link.is_public, id: current_user.kinks.pluck(:id)).having('count(links) > 0').group(:id).order('count(kink_havers) desc') if params[:filter] == 'mine'
+    @pagy, @kinks = pagy(query, items: 5)
   end
 
   def show
