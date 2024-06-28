@@ -4,7 +4,7 @@
   </div>
 
   <div class="right">
-    <% if params[:filter].nil? %>
+    <% if params[:filter].nil? && current_user.present? %>
       <%= button_to link_lists_path, method: :get, params: { filter: :mine } do %>
         <ion-icon role="presentation" name="person"></ion-icon>
         Just my kinks
