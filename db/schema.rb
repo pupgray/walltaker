@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_04_164017) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_11_183634) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -357,6 +357,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_04_164017) do
     t.boolean "pervert"
     t.boolean "quarantined", default: false
     t.integer "colour_preference", default: 0
+    t.boolean "flagged", default: false
     t.index ["email"], name: "unique_emails", unique: true
     t.index ["set_count"], name: "index_users_on_set_count", order: :desc
     t.index ["username"], name: "unique_usernames", unique: true
