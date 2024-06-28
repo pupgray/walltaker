@@ -46,6 +46,8 @@ Rails.application.routes.draw do
   get 'search', to: 'search#index', as: 'search'
   get 'search/query', to: 'search#results', as: 'results'
 
+  resources :link_lists, only: %i[show index]
+
   defaults format: :json do
     get 'api/links/:id.json', to: 'api#show_link'
     get 'api/links.json', to: 'api#all_links'

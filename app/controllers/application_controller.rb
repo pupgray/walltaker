@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include Pagy::Backend
+
   before_action :broadcast_flash_message
 
   def broadcast_flash_message

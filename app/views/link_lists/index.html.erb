@@ -1,0 +1,19 @@
+<h2>
+  <ion-icon role="presentation" name="documents" class="big"></ion-icon>
+  Browse by Kink
+  <small>Links grouped by profile kinks of the link's user. This list doesn't take into account theme tags!</small>
+</h2>
+<%= turbo_frame_tag :link_lists do %>
+  <% @kinks.each do |kink| %>
+    <div class="accent-block no-charm">
+      <%= render 'kink', kink:, sample: true %>
+    </div>
+  <% end %>
+
+  <br/>
+
+  <div class="center">
+    <%== pagy_info(@pagy, item_name: 'kink'.pluralize(@pagy.count)) %>
+    <%== pagy_nav(@pagy) %>
+  </div>
+<% end %>
