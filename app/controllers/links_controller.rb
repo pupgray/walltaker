@@ -40,6 +40,9 @@ class LinksController < ApplicationController
     random_link = query.is_online.includes(:user, user: [:kinks]).find_by(user: { kinks: @link.user.kinks.pluck(:id) }) if @link.user.kinks.count > 0 && random_link.nil?
     random_link = query.is_online.take if random_link.nil?
     random_link = query.take if random_link.nil?
+
+    return redirect_back_or_to root_path, alert: 'No other link was found... somehow.' if random_link.nil?
+
     redirect_to link_path(random_link)
   end
 
