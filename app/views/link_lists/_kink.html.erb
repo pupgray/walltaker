@@ -9,15 +9,16 @@
 <%= link_to(sample ? link_list_path(kink) : kink_path(kink), class: 'no-underline', target: '_top') do %>
   <%= tag.send(sample ? :h3 : :h2) do %>
     <%= kink.name.capitalize %>
-    <small><%= pluralize count, 'link' %>, across <%= pluralize (sample ? kink.links.is_public : links).pluck(:user_id).uniq.count, 'user' %>.</small>
+    <small><%= pluralize count, 'link' %>,
+      across <%= pluralize (sample ? kink.links.is_public : links).pluck(:user_id).uniq.count, 'user' %>.</small>
     </h3>
   <% end %>
 <% end %>
 
 <% links.each do |link| %>
-  <%= link_to link, class: 'no-underline' do %>
+  <div data-controller="go" data-go-to-value="<%= link_url(link) %>">
     <%= render 'links/link', link: %>
-  <% end %>
+  </div>
 <% end %>
 
 <%= link_to "See more #{kink.name} links", link_list_path(kink), class: 'button-like no-underline center-button', target: '_top' if sample && count > 1 %>
