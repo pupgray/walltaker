@@ -3,7 +3,8 @@
 <% links = kink.links.is_public.order('RANDOM()').limit(2) if sample %>
 <% links = kink.links.is_public.order(:updated_at).limit(30) if !sample && preloaded_links.nil? %>
 <% links = preloaded_links if !sample && preloaded_links.present? %>
-<% count = links.count %>
+
+<% count = sample ? kink.links.is_public.count : links.count %>
 
 <%= link_to(sample ? link_list_path(kink) : kink_path(kink), class: 'no-underline', target: '_top') do %>
   <%= tag.send(sample ? :h3 : :h2) do %>
