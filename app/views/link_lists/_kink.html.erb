@@ -9,7 +9,7 @@
 <%= link_to(sample ? link_list_path(kink) : kink_path(kink), class: 'no-underline', target: '_top') do %>
   <%= tag.send(sample ? :h3 : :h2) do %>
     <%= kink.name.capitalize %>
-    <small><%= pluralize count, 'link' %>, across <%= pluralize links.pluck(:user_id).uniq.count, 'user' %>.</small>
+    <small><%= pluralize count, 'link' %>, across <%= pluralize (sample ? kink.links.is_public : links).pluck(:user_id).uniq.count, 'user' %>.</small>
     </h3>
   <% end %>
 <% end %>
