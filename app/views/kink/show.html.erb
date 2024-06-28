@@ -7,7 +7,7 @@
   <div class="right">
     <%= render 'kink/e621_status', kink: @kink %>
 
-    <%= button_to search_path, method: :get, params: {q: "!#{@kink.name}"} do %>
+    <%= button_to link_list_path(@kink), method: :get do %>
       <ion-icon role="presentation" name="search-sharp"></ion-icon>
       Find Links
     <% end %>

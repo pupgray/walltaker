@@ -6,9 +6,13 @@
   </div>
 
   <div class="right">
+    <%= button_to link_lists_path, method: :get do %>
+      <ion-icon role="presentation" name="bookmark"></ion-icon>
+      By Kinks
+    <% end %>
     <%= button_to search_path, method: :get do %>
       <ion-icon role="presentation" name="search-sharp"></ion-icon>
-      Search
+      By Search
     <% end %>
   </div>
 </div>
