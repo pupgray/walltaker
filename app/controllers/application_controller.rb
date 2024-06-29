@@ -208,6 +208,15 @@ class ApplicationController < ActionController::Base
     link
   end
 
+  def surrender_controller
+    return nil unless helpers.is_surrender_controller_session?
+    begin
+      Surrender.find(cookies.signed[:surrender_id])&.controller
+    rescue
+      nil
+    end
+  end
+
   # @param [User] user
   # @param [Surrender] surrender
   def log_in_as(user, surrender = nil)

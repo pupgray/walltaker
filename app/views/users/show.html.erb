@@ -35,8 +35,9 @@
 
   <% if current_user && current_user.id == @user.id %>
     <div class="right">
-      <%= link_to '/settings' do %>
-        <p>settings</p>
+      <%= link_to 'History', history_events_path %>
+      <%= link_to settings_path do %>
+        Settings
       <% end %>
     </div>
     <%= button_to "New link", new_link_path, method: :get %>

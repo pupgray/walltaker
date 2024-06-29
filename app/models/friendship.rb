@@ -15,6 +15,7 @@ class Friendship < ApplicationRecord
   end
 
   def self.find_friendship_request(person_a, person_b)
+    return Friendship.none if person_a.nil? || person_b.nil?
     self.where(sender_id: [person_a.id, person_b.id], receiver_id: [person_b.id, person_a.id])
   end
 

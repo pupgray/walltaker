@@ -17,6 +17,7 @@ class Link < ApplicationRecord
   validates :custom_url, format: { with: /\A[a-zA-Z\-_]*\z/, message: 'must be a valid in a url, with no spaces or special characters' }
   validates_uniqueness_of :custom_url, allow_nil: true, unless: ->(l) { l.custom_url.blank? }
   has_many :reports, as: :reportable
+  has_many :history_events, dependent: :destroy
 
   visitable :ahoy_visit
 
@@ -123,5 +124,9 @@ class Link < ApplicationRecord
       Set By: #{set_by&.username || 'anon or no one'}
       Response Text: #{response_text}
     OUT
+  end
+
+  def to_s
+    "Link ##{id}"
   end
 end

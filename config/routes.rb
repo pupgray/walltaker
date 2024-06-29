@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :history_events, path: 'history'
   get 'errors/not_found'
   get 'errors/server_error'
 

@@ -72,6 +72,9 @@ class LinksController < ApplicationController
     @has_friendship = Friendship.find_friendship(current_user, @link.user).exists? if current_user
     @set_by = User.find(@link.set_by_id) if @link.set_by_id && request.format == :json
     @is_current_user = (current_user && (current_user.id == @link.user.id))
+
+    HistoryEvent.record(current_user, :looked_at, @link, nil, current_visit) if current_user && !surrender_controller
+    HistoryEvent.record(current_user, :looked_at, @link, surrender_controller, current_visit) if surrender_controller
   end
 
   # GET /links/new
@@ -146,6 +149,8 @@ class LinksController < ApplicationController
                                   if current_user&.current_surrender
                                     Notification.create user: current_user, notification_type: :surrender_event, link: link_path(@link), text: "#{current_user.current_surrender.controller.username} set a new wallpaper for #{@link.user.username}"
                                   end
+                                  HistoryEvent.record(current_user, :set_wallpaper, @link, nil, current_visit) if current_user && !surrender_controller
+                                  HistoryEvent.record(current_user, :set_wallpaper, @link, surrender_controller, current_visit) if surrender_controller
                                   assign_e621_post_to_self e621_post, @link
                                 end
 

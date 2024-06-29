@@ -1731,3 +1731,33 @@ pre code.hljs {
         width: initial;
     }
 }
+
+.history, .history ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.history > li > .accent-block > ul > li {
+    & h4 {
+        margin-top: 0;
+        font-size: 1.2rem;
+    }
+
+    & > ul {
+        display: grid;
+        grid-template-columns: repeat(3, max-content);
+        justify-content: center;
+        gap: 1ex 1rem;
+        padding: 1.25rem 0 2rem 1rem;
+
+        & > li {
+            grid-column: 1 / -1;
+        }
+    }
+}
+
+.history__record {
+    display: grid;
+    grid-template-columns: subgrid;
+    justify-items: center;
+}
