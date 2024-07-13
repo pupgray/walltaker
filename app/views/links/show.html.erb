@@ -69,7 +69,7 @@
 <%= turbo_stream_from @link %>
 <%= render @link %>
 
-<% if current_user == @link.user && @link.blacklist.split(' ').length > 36 %>
+<% if current_user == @link.user && (@link.blacklist || '').split(' ').length > 36 %>
   <div class="accent-block accent-block--warning spaced">
     <ion-icon role="presentation" name="warning" class="scare-charm"></ion-icon>
     <div class="accent-block__charm">
