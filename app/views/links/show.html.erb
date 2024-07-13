@@ -78,7 +78,7 @@
     </div>
     <p>Your link has a really long blacklist! I know I ask that you fill out your blacklist as fully as you can, but we can only make requests to e621 with a maximum number of tags. Your link still works, this is just a warning.</p>
     <br>
-    <p><%= @link.blacklist.split(' ').length %> blacklist tags <%= @link.theme ? "+ 1 theme tag": "" %> = only <%= pluralize(45 - (@link.blacklist.split(' ').length + (@link.theme ? 1 : 0)), 'tag') %> a user can search with.</p>
+    <p><%= (@link.blacklist || '').split(' ').length %> blacklist tags <%= @link.theme ? "+ 1 theme tag": "" %> = only <%= pluralize(45 - ((@link.blacklist || '').split(' ').length + (@link.theme ? 1 : 0)), 'tag') %> a user can search with.</p>
   </div>
 <% end %>
 

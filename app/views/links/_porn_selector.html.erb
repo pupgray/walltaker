@@ -33,7 +33,7 @@
     </div>
 
 
-    <% if @link.blacklist.split(' ').length > 36 %>
+    <% if (@link.blacklist || '').split(' ').length > 36 %>
       <div class="accent-block accent-block--warning spaced">
         <div class="accent-block__charm">
           <ion-icon role="presentation" name="warning"></ion-icon>
