@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_28_225030) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_14_221032) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -220,6 +220,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_28_225030) do
     t.index ["link_id"], name: "index_history_events_on_link_id"
     t.index ["surrender_controller_id"], name: "index_history_events_on_surrender_controller_id"
     t.index ["user_id"], name: "index_history_events_on_user_id"
+  end
+
+  create_table "keys", force: :cascade do |t|
+    t.string "purpose", null: false
+    t.text "public", null: false
+    t.text "private", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["purpose"], name: "index_keys_on_purpose", unique: true
   end
 
   create_table "kink_havers", force: :cascade do |t|

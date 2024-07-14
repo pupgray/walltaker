@@ -1,0 +1,2 @@
+module WebFingerActorHelper
+end
