@@ -4,6 +4,8 @@ class ActorController < ApplicationController
   def show
     @user = User.find_by_username(params[:id])
     @public_key = Key.find_by_purpose(:activity_pub)&.public
+
+    render content_type: 'application/jrd+json'
   end
 
   private

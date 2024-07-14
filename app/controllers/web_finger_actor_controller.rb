@@ -13,6 +13,8 @@ class WebFingerActorController < ApplicationController
 
   def show
     @user = User.find_by_username(params[:id])
+
+    render content_type: 'application/jrd+json'
   end
 
   private
