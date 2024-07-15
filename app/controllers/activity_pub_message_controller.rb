@@ -11,7 +11,7 @@ class ActivityPubMessageController < ApplicationController
     case type
     when 'Follow'
       ApFollower.create(user:, url: actor)
-      AcceptFollowJob.perform_later(actor, id, user, actor_url(user.username, anchor: 'main-key'))
+      AcceptFollowJob.perform_later(actor, id, user, actor_url(user.username), actor_url(user.username, anchor: 'main-key'))
     end
 
     render content_type: 'application/activity+json'
