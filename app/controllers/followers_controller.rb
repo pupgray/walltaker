@@ -4,7 +4,7 @@ class FollowersController < ApplicationController
   def show
     @user = User.find_by_username(params[:actor_id])
 
-    render content_type: 'application/jrd+json'
+    render content_type: 'application/ld+json'
   end
 
   private
