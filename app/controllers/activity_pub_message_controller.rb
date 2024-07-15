@@ -36,10 +36,10 @@ class ActivityPubMessageController < ApplicationController
       logger.debug "GUH!7 #{header}"
 
       result = Excon.post(inbox, body: document, headers: { 'Content-Type': 'application/activity+json', 'Date': date, 'Signature': header, 'Digest': digest })
-      logger.debug "GUH!8 #{result.status} #{result.body}"
-    end
+      logger.info "GUH!8 #{result.status} #{result.body}"
 
-    render content_type: 'application/jrd+json', json: JSON.parse(result.body)
+      render content_type: 'application/jrd+json', json: JSON.parse(result.body)
+    end
   end
 
   private
