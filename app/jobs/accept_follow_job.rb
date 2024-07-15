@@ -18,7 +18,7 @@ class AcceptFollowJob < ApplicationJob
     logger.fatal "AHHH! #{signed_string}"
     signature = Base64.strict_encode64(keypair.sign(OpenSSL::Digest::SHA256.new, signed_string))
     header = 'keyId="' + key_path + '",headers="(request-target) host date digest",signature="' + signature + '"'
-    query = Excon.new(inbox, body: document, debug: true, ssl_verify_peer: false, headers: { 'Content-Type': 'application/activity+json', 'Date': date, 'Signature': header, 'Digest': digest })
+    query = Excon.new(inbox, body: document, debug: true, ssl_verify_peer: false, headers: { Host: URI.parse(inbox).host, 'Content-Type': 'application/activity+json', 'Date': date, 'Signature': header, 'Digest': digest })
     result = query.post
     logger.fatal "GUH!!!!" + result.body
   end
