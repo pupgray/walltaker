@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  resources :web_finger_actor, only: %i[index show], path: '.well-known/webfinger'
+  resources :actor, only: %i[show] do
+    resource :follower, only: %i[show create destroy], path: 'followers'
+    resources :activity_pub_message, only: %i[create], path: 'inbox'
+  end
+  resources :history_events, path: 'history'
   get 'errors/not_found'
   get 'errors/server_error'
 
@@ -46,6 +52,8 @@ Rails.application.routes.draw do
   get 'search', to: 'search#index', as: 'search'
   get 'search/query', to: 'search#results', as: 'results'
 
+  resources :link_lists, only: %i[show index]
+
   defaults format: :json do
     get 'api/links/:id.json', to: 'api#show_link'
     get 'api/links.json', to: 'api#all_links'
@@ -91,6 +99,7 @@ Rails.application.routes.draw do
       post 'abilities/:ability', to: 'links#toggle_ability', as: 'toggle_link_ability'
       post 'fork', to: 'links#fork', as: 'fork_link'
       get 'embed'
+      get 'show_similar', as: 'show_similar'
     end
 
     resources :reports, only: %i[new create]

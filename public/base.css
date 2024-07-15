@@ -420,6 +420,26 @@ h2.one-line {
     text-overflow: ellipsis;
 }
 
+h3:has(> small) {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.6rem 1rem;
+    background: var(--accent-bg);
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+    font-weight: bold;
+
+    & > small {
+        flex: 1 1 auto;
+        display: flex;
+        justify-content: flex-end;
+        font-size: 0.6em;
+        color: var(--text);
+        font-weight: normal;
+    }
+}
+
 a span.beta-tag,
 .as-link span.beta-tag,
 h2 span.beta-tag,
@@ -901,6 +921,16 @@ a.small:hover {
     margin-top: 2.25rem;
     display: block;
     position: relative;
+
+    &.no-charm {
+        padding-top: 1rem !important;
+        padding-bottom: 0.25rem !important;
+
+        & > h3,
+        & > a > h3 {
+            margin: 0;
+        }
+    }
 }
 
 .accent-block > .scare-charm {
@@ -984,6 +1014,10 @@ a.small:hover {
     padding: 1.8rem 1.5rem;
 }
 
+.accent-block:has(> .inline) {
+    padding: 0.25rem 1.5rem;
+}
+
 .accent-block__charm {
     color: var(--border);
     display: flex;
@@ -992,6 +1026,21 @@ a.small:hover {
     position: absolute;
     top: 0;
     height: 55px;
+
+    &.inline {
+        position: initial;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        min-height: 35px;
+        height: initial;
+        padding: 10px 0;
+    }
+
+    & .right-side {
+        flex: 1 1 auto;
+        display: flex;
+        justify-content: flex-end;
+    }
 }
 
 .accent-block__charm--accordion {
@@ -1117,6 +1166,17 @@ footer small a {
     color: var(--text);
     padding: .5rem .9rem;
     margin: 0.2rem 0;
+}
+
+.center-button {
+    text-align: center;
+    max-width: 180px;
+    margin: 1.5rem auto;
+    display: block !important;
+
+    &:hover {
+        background: var(--accent-bg);
+    }
 }
 
 .modal__buttons > a:hover {
@@ -1670,4 +1730,34 @@ pre code.hljs {
     & input[type=submit] {
         width: initial;
     }
+}
+
+.history, .history ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.history > li > .accent-block > ul > li {
+    & h4 {
+        margin-top: 0;
+        font-size: 1.2rem;
+    }
+
+    & > ul {
+        display: grid;
+        grid-template-columns: repeat(3, max-content);
+        justify-content: center;
+        gap: 1ex 1rem;
+        padding: 1.25rem 0 2rem 1rem;
+
+        & > li {
+            grid-column: 1 / -1;
+        }
+    }
+}
+
+.history__record {
+    display: grid;
+    grid-template-columns: subgrid;
+    justify-items: center;
 }

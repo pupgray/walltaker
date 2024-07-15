@@ -9,7 +9,7 @@ class LinksController < ApplicationController
   before_action :authorize, only: %i[index new edit create destroy]
 
   # 2. set @link instance var, since a lot of action filters use it
-  before_action :set_link, only: %i[show edit update destroy export toggle_ability embed]
+  before_action :set_link, only: %i[show edit update destroy export toggle_ability embed show_similar]
 
   # 3. protect link-specific buisness rules
   before_action :prevent_public_expired, only: %i[show update]
@@ -31,6 +31,19 @@ class LinksController < ApplicationController
   # GET /links or /links.json (only your links)
   def index
     @links = User.find(current_user.id).link
+  end
+
+  def show_similar
+    query = Link.order('RANDOM()').where.not(id: @link.id).is_public
+    random_link = nil
+    random_link = query.is_online.find_by(theme: @link.theme) if @link.theme
+    random_link = query.is_online.includes(:user, user: [:kinks]).find_by(user: { kinks: @link.user.kinks.pluck(:id) }) if @link.user.kinks.count > 0 && random_link.nil?
+    random_link = query.is_online.take if random_link.nil?
+    random_link = query.take if random_link.nil?
+
+    return redirect_back_or_to root_path, alert: 'No other link was found... somehow.' if random_link.nil?
+
+    redirect_to link_path(random_link)
   end
 
   # GET /browse (all online links)
@@ -59,6 +72,9 @@ class LinksController < ApplicationController
     @has_friendship = Friendship.find_friendship(current_user, @link.user).exists? if current_user
     @set_by = User.find(@link.set_by_id) if @link.set_by_id && request.format == :json
     @is_current_user = (current_user && (current_user.id == @link.user.id))
+
+    HistoryEvent.record(current_user, :looked_at, @link, nil, current_visit) if current_user && !surrender_controller
+    HistoryEvent.record(current_user, :looked_at, @link, surrender_controller, current_visit) if surrender_controller
   end
 
   # GET /links/new
@@ -133,6 +149,8 @@ class LinksController < ApplicationController
                                   if current_user&.current_surrender
                                     Notification.create user: current_user, notification_type: :surrender_event, link: link_path(@link), text: "#{current_user.current_surrender.controller.username} set a new wallpaper for #{@link.user.username}"
                                   end
+                                  HistoryEvent.record(current_user, :set_wallpaper, @link, nil, current_visit) if current_user && !surrender_controller
+                                  HistoryEvent.record(current_user, :set_wallpaper, @link, surrender_controller, current_visit) if surrender_controller
                                   assign_e621_post_to_self e621_post, @link
                                 end
 
@@ -243,7 +261,7 @@ class LinksController < ApplicationController
     end
 
     if params['background'].present? && (/[\dA-Fa-f]+/).match?(params['background'])
-        @background = '#' + params['background']
+      @background = '#' + params['background']
     end
 
     if params['hide_text'].present? && params['hide_text'] == 'true'

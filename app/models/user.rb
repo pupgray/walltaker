@@ -1,7 +1,9 @@
 class User < ApplicationRecord
   include ActiveModel::SecurePassword
   has_secure_password
-  has_many :link
+  has_many :link, dependent: :destroy
+  has_many :ap_followers, dependent: :destroy
+  has_many :history_events, dependent: :destroy
   has_many :past_links, foreign_key: :set_by_id
   has_many :orgasms, foreign_key: :user_id, class_name: 'Nuttracker::Orgasm'
   has_many :caused_orgasms, foreign_key: :caused_by_user_id, class_name: 'Nuttracker::Orgasm'
@@ -88,6 +90,11 @@ class User < ApplicationRecord
       #{link.map(&:snapshot).join("\n\n======= LINK ========\n")}
     OUT
   end
+
+  def to_s
+    username
+  end
+
 
   after_commit do
     if viewing_link_id

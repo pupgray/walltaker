@@ -48,6 +48,7 @@ class SessionController < ApplicationController
     end
     cookies.signed[:surrender_id] = nil
     cookies.delete :permanent_session_id if cookies.signed[:permanent_session_id]
+    reset_session
     redirect_to root_path, notice: 'Logged out!'
   end
 

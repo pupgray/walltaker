@@ -4,14 +4,12 @@
     Select wallpaper via...
   </div>
 
-  <% seconds_since_last_wallpaper = link.past_links.last.present? ? Time.now - link.past_links.last.created_at : 9999 %>
-
   <div
     class="tab"
     data-tabs-target="tab"
     data-title="Search"
     data-controller="porn-search"
-    data-porn-search-seconds-since-last-wallpaper-value="<%= seconds_since_last_wallpaper %>"
+    data-porn-search-seconds-since-last-wallpaper-value="<%= link.seconds_since_last_set %>"
   >
     <dialog class="modal" data-porn-search-target="modal">
       <h4>Confirm Wallpaper</h4>
@@ -33,6 +31,18 @@
         <% end %>
       <% end %>
     </div>
+
+
+    <% if (@link.blacklist || '').split(' ').length > 36 %>
+      <div class="accent-block accent-block--warning spaced">
+        <div class="accent-block__charm">
+          <ion-icon role="presentation" name="warning"></ion-icon>
+          Link has long blacklist.
+        </div>
+        <p>Some searches may fail! You'll have to search with a lower number of tags.</p>
+      </div>
+    <% end %>
+
     <p>
       Enter some e621 tags, click search, then click any post to
       set <%= link.user.username %>'s wallpaper.

@@ -21,6 +21,8 @@ class CommentsController < ApplicationController
       if @link.user != current_user
         Notification.create user: @link.user, notification_type: :comment_on_your_link, text: "#{current_user.username} said \"#{@comment.content&.truncate(100)}\"", link: link_path(@link, anchor: 'comments')
       end
+      HistoryEvent.record(current_user, :commented_on, @link, nil, current_visit) if current_user && !surrender_controller
+      HistoryEvent.record(current_user, :commented_on, @link, surrender_controller, current_visit) if surrender_controller
       redirect_to new_link_comment_url(@link)
     else
       render :new, status: :unprocessable_entity

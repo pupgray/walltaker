@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_04_164017) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_15_011308) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -104,6 +104,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_04_164017) do
     t.datetime "started_at"
     t.index ["user_id"], name: "index_ahoy_visits_on_user_id"
     t.index ["visit_token"], name: "index_ahoy_visits_on_visit_token", unique: true
+  end
+
+  create_table "ap_followers", force: :cascade do |t|
+    t.text "url", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_ap_followers_on_user_id"
   end
 
   create_table "banned_ips", force: :cascade do |t|
@@ -206,6 +214,29 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_04_164017) do
     t.index ["receiver_id"], name: "index_friendships_on_receiver_id"
     t.index ["sender_id", "receiver_id"], name: "index_friendships_on_sender_id_and_receiver_id", unique: true
     t.index ["sender_id"], name: "index_friendships_on_sender_id"
+  end
+
+  create_table "history_events", force: :cascade do |t|
+    t.integer "did_what", default: 0, null: false
+    t.bigint "ahoy_visit_id"
+    t.bigint "user_id", null: false
+    t.bigint "surrender_controller_id"
+    t.bigint "link_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ahoy_visit_id"], name: "index_history_events_on_ahoy_visit_id"
+    t.index ["link_id"], name: "index_history_events_on_link_id"
+    t.index ["surrender_controller_id"], name: "index_history_events_on_surrender_controller_id"
+    t.index ["user_id"], name: "index_history_events_on_user_id"
+  end
+
+  create_table "keys", force: :cascade do |t|
+    t.string "purpose", null: false
+    t.text "public", null: false
+    t.text "private", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["purpose"], name: "index_keys_on_purpose", unique: true
   end
 
   create_table "kink_havers", force: :cascade do |t|
@@ -363,13 +394,28 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_04_164017) do
     t.index ["viewing_link_id"], name: "index_users_on_viewing_link_id"
   end
 
+  create_table "walls", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "title", default: "My Wall"
+    t.string "content", default: ""
+    t.integer "hits", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_walls_on_user_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "ap_followers", "users"
   add_foreign_key "banned_ips", "users", column: "banned_by_id"
   add_foreign_key "comments", "links"
   add_foreign_key "comments", "users"
   add_foreign_key "friendships", "users", column: "receiver_id"
   add_foreign_key "friendships", "users", column: "sender_id"
+  add_foreign_key "history_events", "ahoy_visits"
+  add_foreign_key "history_events", "links"
+  add_foreign_key "history_events", "users"
+  add_foreign_key "history_events", "users", column: "surrender_controller_id"
   add_foreign_key "kink_havers", "kinks"
   add_foreign_key "kink_havers", "users"
   add_foreign_key "link_abilities", "links"

@@ -7,6 +7,7 @@ class Kink < ApplicationRecord
 
   has_many :kink_havers
   has_many :users, through: :kink_havers
+  has_many :links, through: :users
 
   def test_on_e621
     begin
@@ -33,5 +34,9 @@ class Kink < ApplicationRecord
   def is_starred? (by)
     kink_haver = had_by(by)
     kink_haver&.is_starred? || false
+  end
+
+  def to_s
+    name
   end
 end

@@ -69,6 +69,29 @@
 <%= turbo_stream_from @link %>
 <%= render @link %>
 
+<% if current_user == @link.user && (@link.blacklist || '').split(' ').length > 36 %>
+  <div class="accent-block accent-block--warning spaced">
+    <ion-icon role="presentation" name="warning" class="scare-charm"></ion-icon>
+    <div class="accent-block__charm">
+      <ion-icon role="presentation" name="warning"></ion-icon>
+      Configuration warning
+    </div>
+    <p>Your link has a really long blacklist! I know I ask that you fill out your blacklist as fully as you can, but we can only make requests to e621 with a maximum number of tags. Your link still works, this is just a warning.</p>
+    <br>
+    <p><%= (@link.blacklist || '').split(' ').length %> blacklist tags <%= @link.theme ? "+ 1 theme tag": "" %> = only <%= pluralize(45 - ((@link.blacklist || '').split(' ').length + (@link.theme ? 1 : 0)), 'tag') %> a user can search with.</p>
+  </div>
+<% end %>
+
+<% if @link.seconds_since_last_set < 2.minutes %>
+  <div class="accent-block">
+    <div class="accent-block__charm inline">
+      <ion-icon role="presentation" name="hourglass"></ion-icon>
+      Wallpaper was just changed
+      <%= link_to 'Try another link', show_similar_link_path(@link), class: 'right-side' %>
+    </div>
+  </div>
+<% end %>
+
 <% if @is_current_user %>
   <div class="accent-block">
     <div class="accent-block__charm">
@@ -79,7 +102,7 @@
     <%= form_with model: @link, method: 'PATCH', class: 'set-post-response' do |form| %>
       <div>
         <%= form.text_field :response_text, placeholder: 'How do you feel about this wallpaper?', autocomplete: 'off' %>
-        <%= form.select :response_type, [['Love it!', :horny], ['Hate it!', :disgust], ['I came', :came]] %>
+        <%= form.select :response_type, [['Love it!', :horny], ['Hate it!', :disgust], ['I came', :came], ['Thanks', :ok]] %>
         <%= form.submit 'Reply' %>
       </div>
     <% end %>
