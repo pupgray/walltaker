@@ -14,11 +14,10 @@ class AcceptFollowJob < ApplicationJob
     digest = "SHA-256=" + Base64.strict_encode64(sha256.digest(document))
     date = Time.now.utc.httpdate
     keypair = OpenSSL::PKey::RSA.new(Key.find_by_purpose(:activity_pub).private)
-    signed_string = "(request-target): post /inbox\nhost: mastodon.social\ndate: #{date}\ndigest: #{digest}"
+    signed_string = "(request-target): post /inbox\nhost: #{URI.parse(inbox).host}\ndate: #{date}\ndigest: #{digest}"
     signature = Base64.strict_encode64(keypair.sign(OpenSSL::Digest::SHA256.new, signed_string))
     header = 'keyId="' + key_path + '",headers="(request-target) host date digest",signature="' + signature + '"'
-    query = Excon.new(inbox, body: document, debug: true, ssl_verify_peer: false, headers: { 'Content-Type': 'application/activity+json', 'Host': URI.parse(inbox).host, 'Date': date, 'Signature': header, 'Digest': digest })
-    logger.fatal "QUERYHERE" + query.to_s
+    query = Excon.new(inbox, body: document, debug: true, ssl_verify_peer: false, headers: { 'Content-Type': 'application/activity+json', 'Date': date, 'Signature': header, 'Digest': digest })
     result = query.post
     logger.fatal "GUH!!!!" + result.body
   end
