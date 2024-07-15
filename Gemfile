@@ -71,7 +71,11 @@ group :test do
   gem "webdrivers"
 end
 
+# this is stupid
 gem 'excon'
+gem 'http'
+# this is stupid
+
 gem 'pg'
 gem 'rack-cors'
 
