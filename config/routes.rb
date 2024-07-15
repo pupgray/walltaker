@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   resources :web_finger_actor, only: %i[index show], path: '.well-known/webfinger'
-  resources :actor, only: %i[show]
+  resources :actor, only: %i[show] do
+    resource :follower, only: %i[show create destroy], path: 'followers'
+  end
   resources :history_events, path: 'history'
   get 'errors/not_found'
   get 'errors/server_error'
