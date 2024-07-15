@@ -5,7 +5,7 @@ class ActorController < ApplicationController
     @user = User.find_by_username(params[:id])
     @public_key = Key.find_by_purpose(:activity_pub)&.public
 
-    render content_type: 'application/ld+json'
+    render content_type: 'application/activity+json'
   end
 
   private

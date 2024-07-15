@@ -13,7 +13,7 @@ class ActivityPubMessageController < ApplicationController
       ApFollower.create(user:, url: actor)
       logger.debug "GUH! #{request.raw_post}"
 
-      actor_response = Excon.get(actor, headers: { 'Accept': 'application/ld+json' })
+      actor_response = Excon.get(actor, headers: { 'Accept': 'application/activity+json' })
       logger.debug "GUH!2 #{actor_response.body}"
       inbox = JSON.parse(actor_response.body)['inbox']
       document = JSON.dump({
@@ -38,7 +38,7 @@ class ActivityPubMessageController < ApplicationController
       result = Excon.post(inbox, body: document, headers: { 'Content-Type': 'application/activity+json', 'Host': URI.parse(inbox).host, 'Date': date, 'Signature': header, 'Digest': digest })
       logger.info "GUH!8 #{result.status} #{result.body}"
 
-      render content_type: 'application/ld+json'
+      render content_type: 'application/activity+json'
     end
   end
 
