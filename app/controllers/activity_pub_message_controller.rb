@@ -27,10 +27,12 @@ class ActivityPubMessageController < ApplicationController
       signature = Base64.strict_encode64(keypair.sign(OpenSSL::Digest::SHA256.new, signed_string))
       header = 'keyId="' + actor_url(user.username, anchor: 'main-key') + '",headers="(request-target) host date digest",signature="' + signature + '"'
 
-      Excon.post(inbox, body: document, headers: { 'Content-Type': 'application/activity+json', 'Date': date, 'Signature': header, 'Digest': digest })
+      out = "POST #{inbox}\nContent-Type: application/activity+json\nDate: #{date}\nSignature: #{header}\nDigest: #{digest}\n\n#{document}"
+
+      result = Excon.post(inbox, body: document, headers: { 'Content-Type': 'application/activity+json', 'Date': date, 'Signature': header, 'Digest': digest })
     end
 
-    render content_type: 'application/jrd+json'
+    render content_type: 'application/jrd+json', json: JSON.parse(result.body)
   end
 
   private
