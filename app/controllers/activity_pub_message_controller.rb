@@ -11,7 +11,7 @@ class ActivityPubMessageController < ApplicationController
     case type
     when 'Follow'
       ApFollower.create(user:, url: actor)
-      actor_response = Excon.get(actor)
+      actor_response = Excon.get(actor, headers: { 'Accept': 'application/jrd+json' })
       inbox = JSON.parse(actor_response.body)['inbox']
       document = JSON.dump({
                              "@context": "https://www.w3.org/ns/activitystreams",
