@@ -31,7 +31,7 @@ class ActivityPubMessageController < ApplicationController
       signed_string = "(request-target): post /inbox\nhost: mastodon.social\ndate: #{date}\ndigest: #{digest}"
       logger.debug "GUH!5 #{signed_string}"
       signature = Base64.strict_encode64(keypair.sign(OpenSSL::Digest::SHA256.new, signed_string))
-      logger.info "GUH!6 #{signature}"
+      logger.info "GUH!6 #{inbox} #{actor_response.body}"
       header = 'keyId="' + actor_url(user.username, anchor: 'main-key') + '",headers="(request-target) host date digest",signature="' + signature + '"'
       logger.fatal "GUH!7 #{header}"
 
