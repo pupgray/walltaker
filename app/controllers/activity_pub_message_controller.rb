@@ -35,10 +35,10 @@ class ActivityPubMessageController < ApplicationController
       header = 'keyId="' + actor_url(user.username, anchor: 'main-key') + '",headers="(request-target) host date digest",signature="' + signature + '"'
       logger.fatal "GUH!7 #{header}"
 
-      result = Excon.post(inbox, body: document, headers: { 'Content-Type': 'application/activity+json', 'Date': date, 'Signature': header, 'Digest': digest })
+      result = Excon.post(inbox, body: document, headers: { 'Content-Type': 'application/activity+json', 'Host': URI.parse(inbox).host, 'Date': date, 'Signature': header, 'Digest': digest })
       logger.info "GUH!8 #{result.status} #{result.body}"
 
-      render content_type: 'application/jrd+json', json: JSON.parse(result.body)
+      render content_type: 'application/jrd+json'
     end
   end
 
