@@ -5,10 +5,10 @@ class WebFingerActorController < ApplicationController
     resource_key = params[:resource]
     resource = resource_key.gsub('acct:', '') if resource_key
     username = resource.gsub(any_host, '') if resource
-    user = User.find_by(username: username) if username
-    redirect_to web_finger_actor_path(user.username) if user
+    @user = User.find_by(username: username) if username
+    render  :show if @user
 
-    render status: :not_found unless user
+    render status: :not_found unless @user
   end
 
   def show
