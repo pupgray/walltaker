@@ -1,1 +1,0 @@
-json.set! :error, 'no resource found.'

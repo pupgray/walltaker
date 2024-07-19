@@ -71,10 +71,7 @@ group :test do
   gem "webdrivers"
 end
 
-# this is stupid
 gem 'excon'
-gem 'http'
-# this is stupid
 
 gem 'pg'
 gem 'rack-cors'
@@ -92,3 +89,5 @@ gem 'inline_svg'
 gem 'crono'
 gem 'wicked'
 gem 'pagy', '~> 8.6'
+
+gem "federails"

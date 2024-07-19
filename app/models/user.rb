@@ -2,7 +2,6 @@ class User < ApplicationRecord
   include ActiveModel::SecurePassword
   has_secure_password
   has_many :link, dependent: :destroy
-  has_many :ap_followers, dependent: :destroy
   has_many :history_events, dependent: :destroy
   has_many :past_links, foreign_key: :set_by_id
   has_many :orgasms, foreign_key: :user_id, class_name: 'Nuttracker::Orgasm'
