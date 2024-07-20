@@ -25,6 +25,6 @@
       </video>
     <% end %>
 
-    <strong><%= message.from_user.username %> - <%= tag('relative-time', datetime: message.created_at.iso8601) %></strong>
+    <strong><%= message.from_user.username %> - <%= tag.relative_time(datetime: message.created_at.iso8601) %></strong>
   </div>
 </div>
