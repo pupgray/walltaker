@@ -25,12 +25,6 @@ class MessageThreadController < ApplicationController
       if (!response)
         track :error, :message_could_not_be_saved, message: @new_message, thread: @message_thread
       else
-        @message_thread.users.all.each do |user|
-          if user.username != current_user.username
-            Notification.create user: user, notification_type: :new_message, text: "#{current_user.username}: #{message['content'].truncate 24}", link: message_thread_path(@message_thread)
-          end
-        end
-
         if current_user&.current_surrender
           Notification.create user: current_user, notification_type: :surrender_event, link: message_thread_path(@message_thread), text: "#{current_user.current_surrender.controller.username} said '#{@new_message.content}' in a message thread."
         end
