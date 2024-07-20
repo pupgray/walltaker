@@ -125,8 +125,6 @@ GEM
       ruby2_keywords
     erubi (1.12.0)
     excon (0.102.0)
-    federails (0.0.1)
-      rails (>= 7.0.4)
     globalid (1.2.0)
       activesupport (>= 6.1)
     groupdate (6.3.0)
@@ -317,7 +315,6 @@ DEPENDENCIES
   crono
   debug
   excon
-  federails
   groupdate
   importmap-rails
   inline_svg

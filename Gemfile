@@ -89,5 +89,3 @@ gem 'inline_svg'
 gem 'crono'
 gem 'wicked'
 gem 'pagy', '~> 8.6'
-
-gem "federails"
