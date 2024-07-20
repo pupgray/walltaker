@@ -1,0 +1,18 @@
+<% if @older_messages.count > 0 %>
+  <%= turbo_stream.append dom_id(@message_thread) do %>
+    <% @older_messages.each do |message| %>
+      <%= render 'single_message', message: %>
+    <% end %>
+
+    <%= turbo_frame_tag "#{dom_id(@older_messages.last)}_load_more_link", class: 'center' do %>
+      <%= render 'load_more_link', message_thread: @message_thread, last_message: @older_messages.last %>
+    <% end %>
+  <% end %>
+
+  <%= turbo_stream.remove "#{dom_id(@after_message)}_load_more_link" %>
+<% else %>
+  <%= turbo_stream.replace "#{dom_id(@after_message)}_load_more_link", class: 'center' do %>
+    <%= tag.span 'You have reached the top!', class: 'center' %>
+  <% end %>
+<% end %>
+

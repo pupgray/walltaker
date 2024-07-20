@@ -1,7 +1,12 @@
-<% messages = message_thread.messages.order(updated_at: :desc).includes(:from_user).limit(40) %>
+<% messages = message_thread.messages.order(updated_at: :desc).includes(:from_user).limit(60) %>
 
 <% messages.each_with_index do |message| %>
-  <%= turbo_frame_tag dom_id(message) do %>
-    <%= render 'single_message', message: %>
+  <%= render 'single_message', message: %>
+
+<% end %>
+
+<% if messages.count > 0 %>
+  <%= turbo_frame_tag "#{dom_id(messages.last)}_load_more_link", class: 'center' do %>
+    <%= render 'load_more_link', message_thread:, last_message: messages.last %>
   <% end %>
 <% end %>

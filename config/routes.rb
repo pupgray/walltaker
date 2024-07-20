@@ -70,6 +70,7 @@ Rails.application.routes.draw do
       post :send, to: 'message_thread#send_message', as: 'send_to'
       post 'users/:user_id', to: 'message_thread#add_user', as: 'add_user'
       delete 'users/:user_id', to: 'message_thread#remove_user', as: 'remove_user'
+      get 'load_more', to: 'message_thread#load_more', as: 'load_more'
     end
     collection do
       get 'resolve_thread_with/:user_id', to: 'message_thread#resolve', as: 'resolve'

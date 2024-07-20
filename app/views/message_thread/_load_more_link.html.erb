@@ -1,0 +1,2 @@
+<%# locals: (message_thread:, last_message:) -%>
+<%= link_to 'Load more', load_more_message_thread_path(message_thread, after_id: last_message.id), data: { turbo_stream: true } %>
