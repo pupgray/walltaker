@@ -24,6 +24,7 @@ class MessageThreadController < ApplicationController
 
       if (!response)
         track :error, :message_could_not_be_saved, message: @new_message, thread: @message_thread
+        redirect_to message_thread_path @message_thread, alert: 'Something went wrong'
       else
         if current_user&.current_surrender
           Notification.create user: current_user, notification_type: :surrender_event, link: message_thread_path(@message_thread), text: "#{current_user.current_surrender.controller.username} said '#{@new_message.content}' in a message thread."

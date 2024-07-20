@@ -26,6 +26,9 @@
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
 
   <%= javascript_importmap_tags %>
+
+  <!-- This should use the importmap, but I've broken that beyond repair lol -->
+  <script src="https://ga.jspm.io/npm:@github/relative-time-element@4.4.2/dist/index.js" type="module" async></script>
 </head>
 
 <body>
