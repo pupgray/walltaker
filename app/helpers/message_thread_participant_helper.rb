@@ -1,0 +1,2 @@
+module MessageThreadParticipantHelper
+end

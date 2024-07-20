@@ -65,6 +65,7 @@ Rails.application.routes.draw do
   end
   resources :session
   resources :message_thread, path: 'messages' do
+    resources :message_thread_participant, as: :participant, path: 'participants', only: %i[update]
     member do
       post :send, to: 'message_thread#send_message', as: 'send_to'
       post 'users/:user_id', to: 'message_thread#add_user', as: 'add_user'

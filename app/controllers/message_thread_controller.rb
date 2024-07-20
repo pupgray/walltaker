@@ -58,6 +58,8 @@ class MessageThreadController < ApplicationController
     )
   end
 
+  # This shouldn't have been here :(
+  # todo: move into a message_thread_partificipant controller
   def remove_user
     user = User.find params['user_id']
     if user && @message_thread

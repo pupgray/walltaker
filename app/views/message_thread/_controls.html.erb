@@ -1,0 +1,12 @@
+<%# locals: (message_thread:) -%>
+
+<% current_participant = message_thread.participants.where(user: current_user).first %>
+
+<% if current_participant %>
+  <%= form_with(model: current_participant, url: message_thread_participant_path(message_thread_id: message_thread.id, id: current_participant.id), class: 'form__group') do |f| %>
+    <div class="form__row">
+      <%= f.label :notify, 'Notify Me' %>
+      <%= f.check_box :notify, onClick: 'requestSubmit()' %>
+    </div>
+  <% end %>
+<% end %>
