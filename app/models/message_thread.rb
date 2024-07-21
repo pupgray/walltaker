@@ -14,6 +14,6 @@ class MessageThread < ApplicationRecord
   end
 
   def self.find_common_thread(*users)
-    self.joins(:message_thread_participants, :users).where(users: users).group('message_threads.id').having('count(distinct users.id) = ?', users.length).first
+    self.joins(:participants, :users).where(users: users).group('message_threads.id').having('count(distinct users.id) = ?', users.length).first
   end
 end

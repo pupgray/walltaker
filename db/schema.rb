@@ -379,16 +379,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_21_005425) do
     t.index ["viewing_link_id"], name: "index_users_on_viewing_link_id"
   end
 
-  create_table "walls", force: :cascade do |t|
-    t.bigint "user_id"
-    t.string "title", default: "My Wall"
-    t.string "content", default: ""
-    t.integer "hits", default: 0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_walls_on_user_id"
-  end
-
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "banned_ips", "users", column: "banned_by_id"
