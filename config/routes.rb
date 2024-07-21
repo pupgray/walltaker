@@ -62,6 +62,11 @@ Rails.application.routes.draw do
 
   resources :users do
     resources :reports, only: %i[new create]
+
+    member do
+      get :toggle_details_mode, to: 'users#toggle_details_mode', as: 'toggle_details_mode'
+      get :details, to: 'users#details', as: 'details'
+    end
   end
   resources :session
   resources :message_thread, path: 'messages' do

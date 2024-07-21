@@ -19,7 +19,7 @@ module Walltaker
     # in config/environments, which are processed later.
     #
     # config.time_zone = "Central Time (US & Canada)"
-    # config.eager_load_paths << Rails.root.join("extras")
+    config.eager_load_paths << Rails.root.join("scrubbers")
     Rails.application.config.hosts << "joi.how"
     Rails.application.config.hosts << "walltaker.joi.how"
     Rails.application.config.hosts << "10.244.14.67"

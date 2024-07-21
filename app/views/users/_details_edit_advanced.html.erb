@@ -1,0 +1,27 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.48.0/min/vs/loader.min.js" integrity="sha512-ZG31AN9z/CQD1YDDAK4RUAvogwbJHv6bHrumrnMLzdCrVu4HeAqrUX7Jsal/cbUwXGfaMUNmQU04tQ8XXl5Znw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<div data-controller="hotkeys wall-editor"
+     data-hotkeys-bindings-value='{"ctrl+s, command+s": "wall-editor#save:prevent"}'
+     data-wall-editor-save-url-value="<%= user_path(user) %>"
+     class="wall_editor"
+>
+  <template data-wall-editor-target="template"><%= sanitize user.details, scrubber: WallScrubber.new %></template>
+
+  <div class="task-tools small">
+    <div class="left">
+      <a href="<%= user_path(user.username) %>" title="Cancel editing" class="no-underline" data-turbo="false">
+        Back
+      </a>
+    </div>
+    <div class="right">
+      <%= link_to 'Simple Mode', toggle_details_mode_user_path(user.username), data: { turbo: false } %>
+      <%= link_to '#', data: { action: 'click->wall-editor#save:prevent' }, class: 'no-underline button-like' do %>
+        <span data-wall-editor-target="saveBtnText">Save</span>
+      <% end %>
+    </div>
+  </div>
+
+  <%= turbo_frame_tag :wall, src: details_user_path(user), class: 'preview', data: { 'wall-editor-target': 'preview' } %>
+
+  <div class="editor" data-wall-editor-target="editor"></div>
+</div>

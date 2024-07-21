@@ -595,6 +595,11 @@ p {
     align-items: center;
     flex: 1 1 320px;
     gap: 1.5rem;
+
+    & .button-like {
+        border: none;
+        padding: 0.1rem 0.5rem;
+    }
 }
 
 .task-tools span > ion-icon {

@@ -416,3 +416,15 @@ h2.with-chart #chart-1 {
         }
     }
 }
+
+.wall_editor {
+    position: relative;
+    min-height: 70dvh;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    & .editor {
+        flex: 1 1 100%;
+    }
+}

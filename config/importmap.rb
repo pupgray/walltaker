@@ -12,3 +12,5 @@ pin "Chart.bundle", to: "Chart.bundle.js"
 
 pin "@rails/actioncable", to: "actioncable.esm.js"
 pin_all_from "app/javascript/channels", under: "channels"
+
+pin 'hotkeys-js', to: 'https://unpkg.com/hotkeys-js/dist/hotkeys.esm.js'

@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   after_action :track_visit, only: %i[new show edit]
-  before_action :authorize, only: %i[update]
+  before_action :authorize, only: %i[update toggle_details_mode]
 
   def new
     @user = User.new
@@ -108,6 +108,19 @@ class UsersController < ApplicationController
       @user.assign_new_api_key
     end
     redirect_to user_path(@user.username)
+  end
+
+  def toggle_details_mode
+    current_user.advanced = !current_user.advanced
+    if current_user.save
+      redirect_to edit_user_path(current_user.username)
+    else
+      redirect_to root_path, alert: 'Something went wrong'
+    end
+  end
+
+  def details
+    @user = User.find(params[:id])
   end
 
   private

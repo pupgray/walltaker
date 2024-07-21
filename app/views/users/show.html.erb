@@ -107,7 +107,11 @@
   <% unless @is_editing %>
     <%= render 'details', { user: @user, is_current_user: @is_current_user } %>
   <% else %>
-    <%= render 'details_edit', user: @user %>
+    <% if @user.advanced %>
+      <%= render 'details_edit_advanced', user: @user %>
+    <% else %>
+      <%= render 'details_edit', user: @user %>
+    <% end %>
   <% end %>
 
   <%= render partial: 'past_links', locals: { past_links: @past_links } %>

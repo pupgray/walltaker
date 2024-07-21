@@ -1,0 +1,15 @@
+<%# locals: (user:) -%>
+
+<% if user.details.present? %>
+  <%
+    default_tags = Rails::Html::Sanitizer.white_list_sanitizer.allowed_tags
+    default_attributes = Rails::Html::Sanitizer.white_list_sanitizer.allowed_attributes
+  %>
+  <% if user.advanced %>
+    <%= sanitize user.details, scrubber: WallScrubber.new %>
+  <% else %>
+    <blockquote><%= simple_format user.details, {}, { sanitize_options: { attributes: default_attributes.merge(%w[colspan rowspan style class id]), tags: default_tags.merge(%w[table tr td th tbody thead style]) } } %></blockquote>
+  <% end %>
+<% else %>
+  <blockquote><small>No profile description... yet!</small></blockquote>
+<% end %>
