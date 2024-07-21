@@ -1766,3 +1766,10 @@ pre code.hljs {
     grid-template-columns: subgrid;
     justify-items: center;
 }
+
+.split {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+}
