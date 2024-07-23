@@ -418,16 +418,11 @@ h2.with-chart #chart-1 {
 }
 
 .wall_editor {
-    position: relative;
-    min-height: 90dvh;
     display: flex;
     flex-direction: column;
     gap: 1rem;
 
     & .editor {
-        flex: 1 1 100%;
-        min-height: 400px;
-
         &::part(inner-container) {
             overflow: visible;
         }
@@ -437,4 +432,24 @@ h2.with-chart #chart-1 {
 .editor-hints {
     margin-top: 0.5rem;
     border-width: 0 !important;
+}
+
+.editors {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    width: 95dvw;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+
+    & .accent-block {
+        flex: 1 1 500px;
+        margin-top: 0 !important;
+        position: relative;
+
+        & .editor {
+            height: 500px;
+        }
+    }
 }
