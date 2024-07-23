@@ -21,7 +21,8 @@
 
   <%= turbo_frame_tag :wall, src: details_user_path(user), class: 'preview', data: { 'wall-editor-target': 'preview' } %>
 
-  <div class="accent-block">
+
+  <div class="accent-block tight-top">
     <div class="accent-block__charm inline">
       <ion-icon role="presentation" name="information-circle"></ion-icon>
       <div class="split">
@@ -41,5 +42,27 @@
       </div>
     </div>
     <hey-monaco-editor class="editor" data-wall-editor-target="csseditor" language="css"></hey-monaco-editor>
+    <details class="editor-hints">
+      <summary>Hints</summary>
+      <ul>
+        <li>
+          Accent colour: <br/>
+          <code>body { --accent: #ff0000; }</code>
+        </li>
+        <li>
+          Text colour: <br/>
+          <code>body { --text: #ff0000; }</code>
+        </li>
+        <li>
+          Background colour: <br/>
+          <code>body { --bg: #ff0000; --accent-bg: #ff0000; }</code>
+        </li>
+        <li>
+          Change heading: <br/>
+          <code>.header__age-warning { font-size: 0; }<br/>
+            .header__age-warning::after { content: 'Your Text'; font-size: 0.9rem; }</code>
+        </li>
+      </ul>
+    </details>
   </div>
 </div>

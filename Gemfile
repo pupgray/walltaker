@@ -89,3 +89,4 @@ gem 'crono'
 gem 'wicked'
 gem 'pagy', '~> 8.6'
 gem 'rack-attack'
+gem "faker"

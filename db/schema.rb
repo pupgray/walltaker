@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_21_005425) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_22_234636) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -330,6 +330,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_21_005425) do
     t.index ["user_id"], name: "index_past_links_on_user_id"
   end
 
+  create_table "profiles", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "name"
+    t.text "content", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_profiles_on_user_id"
+  end
+
   create_table "reports", force: :cascade do |t|
     t.bigint "reporter_id", null: false
     t.string "reportable_type"
@@ -373,7 +382,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_21_005425) do
     t.boolean "quarantined", default: false
     t.integer "colour_preference", default: 0
     t.boolean "advanced", default: false, null: false
+    t.bigint "profile_id"
     t.index ["email"], name: "unique_emails", unique: true
+    t.index ["profile_id"], name: "index_users_on_profile_id"
     t.index ["set_count"], name: "index_users_on_set_count", order: :desc
     t.index ["username"], name: "unique_usernames", unique: true
     t.index ["viewing_link_id"], name: "index_users_on_viewing_link_id"
@@ -401,8 +412,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_21_005425) do
   add_foreign_key "past_links", "links", on_delete: :nullify
   add_foreign_key "past_links", "users"
   add_foreign_key "past_links", "users", column: "set_by_id"
+  add_foreign_key "profiles", "users"
   add_foreign_key "reports", "users", column: "reporter_id"
   add_foreign_key "surrenders", "friendships"
   add_foreign_key "surrenders", "users"
   add_foreign_key "users", "links", column: "viewing_link_id"
+  add_foreign_key "users", "profiles"
 end

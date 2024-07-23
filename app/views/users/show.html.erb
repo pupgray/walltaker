@@ -105,79 +105,111 @@
   </h2>
 
   <% unless @is_editing %>
-    <%= render 'details', { user: @user, is_current_user: @is_current_user } %>
+    <%= render 'details', { user: @user, is_current_user: @is_current_user } %><%= render partial: 'past_links', locals: { past_links: @past_links } %>
+
+    <% unless @past_links.empty? %>
+      <%= link_to past_links_path, class: 'small see-all-past-wallpapers' do %>
+        See past 50 wallpapers
+        <ion-icon role="presentation" name="arrow-forward"></ion-icon>
+      <% end %>
+    <% end %>
+
+    <% if @is_current_user %>
+      <div class="two-col">
+        <%= turbo_frame_tag 'orgasm_form', src: '/nut/orgasms/new' %>
+        <%= turbo_frame_tag 'api_key_form', class: "accent-block" do %>
+          <div class="accent-block__charm">
+            <ion-icon role="presentation" name="eye-off"></ion-icon>
+            Only you see this
+          </div>
+
+          <div>
+            <h2>
+              <ion-icon role="presentation" name="key" class="big"></ion-icon>
+              Your API key
+            </h2>
+
+            <p>
+              Use this key to grant special powers to a client you're using. It does not grant full access to your
+              account,
+              but does allow clients to set a response on links on your behalf.
+              <strong>You can only have 1 API key at once.</strong> When you randomize a new one, the old one will stop
+              working.
+            </p>
+          </div>
+
+          <div class="api-key" data-controller="api-key-form">
+            <% if @user.api_key.present? %>
+              <div class="api-key__key" data-api-key-form-target="key">
+                <ion-icon role="presentation" name="key" class="big"></ion-icon><%= @user.api_key %></div>
+              <%= button_to user_new_api_key_path(current_user.username), class: 'danger-button accent-block__button' do %>
+                Give me a new one
+              <% end %>
+            <% else %>
+              <%= button_to user_new_api_key_path(current_user.username), class: 'accent-block__button' do %>
+                Generate my API key
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <% if @links.count.positive? %>
+      <% @links.each do |link| %>
+        <div data-controller="go" data-go-to-value="<%= link_url(link) %>">
+          <%= render link %>
+        </div>
+      <% end %>
+    <% else %>
+      <h4>This user has no links</h4>
+      <p>
+        You should pester them into making some! Click the
+        <strong>
+          <ion-icon role="presentation" name="person-add"></ion-icon>
+          Send Friends Request
+        </strong> button in the tool bar to send them a friend request. Maybe that's the motivation they
+        need!
+      </p>
+    <% end %>
   <% else %>
     <% if @user.advanced %>
       <%= render 'details_edit_advanced', user: @user %>
     <% else %>
       <%= render 'details_edit', user: @user %>
     <% end %>
-  <% end %>
 
-  <%= render partial: 'past_links', locals: { past_links: @past_links } %>
+    <%= turbo_frame_tag :profiles_manager do %>
+      <div class="accent-block">
+        <div class="accent-block__charm inline">
+          <ion-icon role="presentation" name="file-tray-stacked"></ion-icon>
+          <div class="split">
+            Manage profile styles
 
-  <% unless @past_links.empty? %>
-    <%= link_to past_links_path, class: 'small see-all-past-wallpapers' do %>
-      See past 50 wallpapers
-      <ion-icon role="presentation" name="arrow-forward"></ion-icon>
-    <% end %>
-  <% end %>
-
-  <% if @is_current_user %>
-    <div class="two-col">
-      <%= turbo_frame_tag 'orgasm_form', src: '/nut/orgasms/new' %>
-      <%= turbo_frame_tag 'api_key_form', class: "accent-block" do %>
-        <div class="accent-block__charm">
-          <ion-icon role="presentation" name="eye-off"></ion-icon>
-          Only you see this
+            <strong><small>Remember to save first!</small></strong>
+          </div>
         </div>
-
-        <div>
-          <h2>
-            <ion-icon role="presentation" name="key" class="big"></ion-icon>
-            Your API key
-          </h2>
-
-          <p>
-            Use this key to grant special powers to a client you're using. It does not grant full access to your
-            account,
-            but does allow clients to set a response on links on your behalf.
-            <strong>You can only have 1 API key at once.</strong> When you randomize a new one, the old one will stop
-            working.
-          </p>
-        </div>
-
-        <div class="api-key" data-controller="api-key-form">
-          <% if @user.api_key.present? %>
-            <div class="api-key__key" data-api-key-form-target="key">
-              <ion-icon role="presentation" name="key" class="big"></ion-icon><%= @user.api_key %></div>
-            <%= button_to user_new_api_key_path(current_user.username), class: 'danger-button accent-block__button' do %>
-              Give me a new one
-            <% end %>
-          <% else %>
-            <%= button_to user_new_api_key_path(current_user.username), class: 'accent-block__button' do %>
-              Generate my API key
-            <% end %>
+        <div class="form__row profile_selector split">
+          <% form = ProfileSelectorForm.from_user(@user) %>
+          <%= form_with(model: form, url: user_set_profile_path(@user), data: { 'turbo-frame': '_top' }) do |f| %>
+            <%= f.select :profile_id, options_from_collection_for_select(@user.profiles, :id, :name, form.profile_id), {}, { onchange: 'requestSubmit()' } %>
           <% end %>
-        </div>
-      <% end %>
-    </div>
-  <% end %>
 
-  <% if @links.count.positive? %>
-    <% @links.each do |link| %>
-      <div data-controller="go" data-go-to-value="<%= link_url(link) %>">
-        <%= render link %>
+          <%= button_to 'New', profiles_path, form: { data: { 'turbo-frame': '_top' } } %>
+        </div>
+
+        <% if @user.profile %>
+          <div class="form__row profile_renamer">
+            <% rename_form = ProfileRenameForm.from_user(@user) %>
+            <%= form_with(model: rename_form, url: profile_path(@user.profile), method: :PUT) do |f| %>
+              <%= f.hidden_field :profile_id %>
+              <%= f.label :name, 'Name: ' %>
+              <%= f.text_field :name %>
+              <%= f.submit 'Rename', class: 'secondary' %>
+            <% end %>
+          </div>
+        <% end %>
       </div>
     <% end %>
-  <% else %>
-    <h4>This user has no links</h4>
-    <p>
-      You should pester them into making some! Click the
-      <strong>
-        <ion-icon role="presentation" name="person-add"></ion-icon>
-        Send Friends Request
-      </strong> button in the tool bar to send them a friend request. Maybe that's the motivation they
-      need!
-    </p>
   <% end %>
+

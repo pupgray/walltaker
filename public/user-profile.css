@@ -433,3 +433,8 @@ h2.with-chart #chart-1 {
         }
     }
 }
+
+.editor-hints {
+    margin-top: 0.5rem;
+    border-width: 0 !important;
+}

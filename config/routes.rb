@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :profiles, only: %i[update create]
   resources :history_events, path: 'history'
   get 'errors/not_found'
   get 'errors/server_error'
@@ -62,6 +63,7 @@ Rails.application.routes.draw do
 
   resources :users do
     resources :reports, only: %i[new create]
+    post 'profile', to: 'profiles#set_profile', as: 'set_profile'
 
     member do
       get :toggle_details_mode, to: 'users#toggle_details_mode', as: 'toggle_details_mode'

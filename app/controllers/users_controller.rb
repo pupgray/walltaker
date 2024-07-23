@@ -31,7 +31,16 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     return redirect_to user_path(@user.username), { alert: 'Not Authorized.' } if current_user.id != @user.id
 
-    @user.details = user_params[:details]
+    if @user.profile
+      @user.profile.content = user_params[:details]
+      @user.profile.save
+    else
+      new_profile = Profile.create({user: @user, name: nil, content: user_params[:details]})
+      @user.profile = new_profile
+      @user.save
+    end
+
+    @user.profile.content = user_params[:details]
     if @user.save
       track :regular, :updated_details
 

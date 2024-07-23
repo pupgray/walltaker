@@ -1773,3 +1773,46 @@ pre code.hljs {
     align-items: center;
     flex: 1;
 }
+
+.profile_selector {
+    margin-top: 0 !important;
+}
+
+.profile_renamer {
+    margin-bottom: 1.5rem !important;
+}
+
+.profile_selector,
+.profile_renamer {
+    position: relative;
+
+    & form {
+        display: contents;
+
+        & select,
+        & input[type=submit],
+        & input[type=text] {
+            height: 42px;
+        }
+
+        & select {
+            margin: 0;
+            flex: 1 1 100%;
+        }
+
+        & input[type=submit],
+        & input[type=text] {
+            margin: 0;
+        }
+
+        & input[type=text] {
+            flex: 1 1 auto;
+        }
+
+        & .secondary {
+            background: var(--accent-bg);
+            border-color: var(--accent);
+            flex: 0 0 min-content;
+        }
+    }
+}

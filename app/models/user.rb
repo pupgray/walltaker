@@ -16,7 +16,8 @@ class User < ApplicationRecord
   has_many :message_threads, through: :message_thread_participants
   has_many :messages, through: :message_threads
   has_many :reports, as: :reportable
-
+  has_many :profiles, inverse_of: :user
+  belongs_to :profile, optional: true
   has_one :current_surrender, class_name: 'Surrender', dependent: :destroy
 
   validates_uniqueness_of :username
@@ -50,6 +51,16 @@ class User < ApplicationRecord
     else
       User.find_by_username('PornLizardKi')
     end
+  end
+
+  def details
+    return profile.content if profile
+    profiles.order(id: :asc).first&.content || ''
+  end
+
+  def current_profile_name
+    return profile.name || 'Unnamed' if profile
+    '<Imported Profile>'
   end
 
   def assign_new_api_key
