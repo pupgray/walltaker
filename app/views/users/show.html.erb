@@ -212,12 +212,13 @@
 
             <dialog class="modal" data-delete-profile-style-target="modal">
               <h4>Are you sure?</h4>
-              <p>This will delete the current page style, permanently. Please make sure you've kept a back up if you think there's a chance you will want it back.</p>
+              <p>This will delete the current page style, permanently. Please make sure you've kept a back up if you
+                think there's a chance you will want it back.</p>
               <div class="modal__buttons">
                 <%= button_tag class: 'no-underline primary', data: { 'delete-profile-style-target': 'cancel', action: 'click->delete-profile-style#cancel' } do %>
                   Cancel
                 <% end %>
-                <%= button_to profile_path(@user.profile), method: :delete, class: 'no-underline secondary' do %>
+                <%= button_to profile_path(@user.profile), method: :delete, class: 'no-underline secondary', form: { data: { 'turbo-frame': '_top' } } do %>
                   <ion-icon role="presentation" name="trash"></ion-icon>
                   Confirm
                 <% end %>
