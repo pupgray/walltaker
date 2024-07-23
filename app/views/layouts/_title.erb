@@ -7,9 +7,8 @@
   <span class="show-desktop">
     <%= is_surrender_controller_session? ? 'Walltaken' : 'Walltaker' %>
 
-    <div class="mascot">
+    <%= tag.div class: { mascot: true, perverted: pervert } do %>
       <%= image_tag("marx.png", class: ["mascot__under-cover", mascot, pervert ? 'nsfw' : 'sfw']) if is_surrender_controller_session? %>
-
       <% if mascot == 'ki' %>
         <%= image_tag("mascot/Ki#{pervert ? 'NSFW' : ''}.png", alt: 'A suave little lizard welcoming you to the website.', class: 'mascot', height: 190) %>
       <% elsif mascot == 'warren' %>
@@ -17,7 +16,7 @@
       <% elsif mascot == 'taylor' %>
         <%= image_tag("mascot/Taylor#{pervert ? 'N' : ''}SFW.png", alt: 'A suave little lizard welcoming you to the website.', class: 'mascot', height: 190) %>
       <% end %>
-    </div>
+    <% end %>
   </span>
   <span class="show-mobile">
     WT
