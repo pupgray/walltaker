@@ -27,6 +27,24 @@ class ProfilesController < ApplicationController
     end
   end
 
+  def destroy
+    profile = Profile.find(params[:id])
+    current_user.update(profile: nil)
+
+    if profile && profile.destroy
+      next_profile = current_user.profiles.order(id: :desc).first
+      if next_profile
+        current_user.profile = current_user.profiles.order(id: :desc).first
+      else
+        current_user.profile = nil
+      end
+      current_user.save
+      redirect_to edit_user_path(current_user.username)
+    else
+      redirect_to edit_user_path(current_user.username), alert: 'something went wrong'
+    end
+  end
+
   def set_profile
     profile = ProfileSelectorForm.from_params(params).profile
     current_user.profile = profile

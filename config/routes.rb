@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :profiles, only: %i[update create]
+  resources :profiles, only: %i[update create destroy]
   resources :history_events, path: 'history'
   get 'errors/not_found'
   get 'errors/server_error'

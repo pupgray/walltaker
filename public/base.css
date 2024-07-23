@@ -1786,7 +1786,7 @@ pre code.hljs {
 .profile_renamer {
     position: relative;
 
-    & form {
+    & > form {
         display: contents;
 
         & select,

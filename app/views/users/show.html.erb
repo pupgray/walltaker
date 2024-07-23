@@ -199,7 +199,7 @@
         </div>
 
         <% if @user.profile %>
-          <div class="form__row profile_renamer">
+          <div class="form__row profile_renamer" data-controller="delete-profile-style">
             <% rename_form = ProfileRenameForm.from_user(@user) %>
             <%= form_with(model: rename_form, url: profile_path(@user.profile), method: :PUT) do |f| %>
               <%= f.hidden_field :profile_id %>
@@ -207,6 +207,22 @@
               <%= f.text_field :name %>
               <%= f.submit 'Rename', class: 'secondary' %>
             <% end %>
+
+            <%= button_tag 'Delete', class: 'danger-button', data: { action: 'click->delete-profile-style#confirm' } %>
+
+            <dialog class="modal" data-delete-profile-style-target="modal">
+              <h4>Confirm Unfriend-ing</h4>
+              <p></p>
+              <div class="modal__buttons">
+                <%= button_tag class: 'no-underline primary', data: { 'delete-profile-style-target': 'cancel', action: 'click->delete-profile-style#cancel' } do %>
+                  Cancel
+                <% end %>
+                <%= button_to profile_path(@user.profile), method: :delete, class: 'no-underline secondary' do %>
+                  <ion-icon role="presentation" name="trash"></ion-icon>
+                  Confirm
+                <% end %>
+              </div>
+            </dialog>
           </div>
         <% end %>
       </div>
