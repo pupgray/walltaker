@@ -126,7 +126,7 @@
       <%= render 'users/details', { user: @user, is_current_user: @is_current_user } %><%= render partial: 'users/past_links', locals: { past_links: @past_links } %>
 
       <% unless @past_links.empty? %>
-        <%= link_to past_links_path, class: 'small see-all-past-wallpapers' do %>
+        <%= link_to past_links_path(@user.username), class: 'small see-all-past-wallpapers' do %>
           See past 50 wallpapers
           <ion-icon role="presentation" name="arrow-forward"></ion-icon>
         <% end %>
