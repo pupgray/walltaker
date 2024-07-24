@@ -1,232 +1,253 @@
 <% content_for(:html_title) { "Walltaker #{@user.username}" } %>
 
-<div class="task-tools">
-  <div class="left">
-    <% if current_user&.admin? %>
-      <%= link_to mod_tools_users_assume_path(@user), target: '_top', class: 'no-underline' do %>
-        <ion-icon role="presentation" name="key"></ion-icon>
-        Log in as <%= @user.username %>
-      <% end %>
-    <% end %>
-  </div>
-  <% if (!current_user || !@has_friendship) && (!@is_current_user || !current_user) %>
-    <div class="right">
-      <% if current_user %>
-        <%= turbo_frame_tag :report_button, src: new_polymorphic_path([@user, Report]) %>
-      <% end %>
-      <a href="<%= url_for :action => :new, :controller => :friendships, :params => { :with => @user.username } %>" title="Become friends" class="no-underline">
-        <ion-icon role="presentation" name="person-add"></ion-icon>
-        Send Friend Request
-      </a>
-    </div>
-  <% end %>
-
-  <% if (current_user && @has_friendship) && !@is_current_user %>
-    <div class="right">
-      <% if current_user %>
-        <%= turbo_frame_tag :report_button, src: new_polymorphic_path([@user, Report]) %>
-      <% end %>
-      <a href="<%= resolve_message_thread_index_path(user_id: @user.id) %>" title="Become friends" class="no-underline">
-        <ion-icon role="presentation" name="mail"></ion-icon>
-        Send message
-      </a>
-    </div>
-  <% end %>
-
-  <% if current_user && current_user.id == @user.id %>
-    <div class="right">
-      <%= link_to 'History', history_events_path %>
-      <%= link_to settings_path do %>
-        Settings
-      <% end %>
-    </div>
-    <%= button_to "New link", new_link_path, method: :get %>
-    </div>
-  <% end %>
-  </div>
-  <h2 class="one-line <%= @total_orgasms_by_day.present? ? 'with-chart' : '' %>">
-
-    <% if @user.username == 'gios' %>
-      <ion-icon role="presentation" name="logo-octocat" class="big"></ion-icon>
-    <% elsif @user.username == 'gray' %>
-      <ion-icon role="presentation" name="train-outline" class="big"></ion-icon>
-    <% else %>
-      <ion-icon role="presentation" name="person" class="big"></ion-icon>
-    <% end %>
-
-    <span data-controller="user-reference" data-user-reference-hide-online-value><%= @user.username %></span>
-    <% if @any_links_online %>
-      <strong class="online" title="User is online"></strong>
-    <% end %>
-    <div class="gios-user-grid">
-      <small>
-        <%= link_to user_sets_path(@user.username) do %>
-          Set <%= @user.set_count %> wallpapers
+<%= turbo_frame_tag :user, target: '_top' do %>
+  <div class="task-tools">
+    <div class="left">
+      <% if current_user&.admin? %>
+        <%= link_to mod_tools_users_assume_path(@user), target: '_top', class: 'no-underline' do %>
+          <ion-icon role="presentation" name="key"></ion-icon>
+          Log in as <%= @user.username %>
         <% end %>
-        <span>
+      <% end %>
+    </div>
+    <% if (!current_user || !@has_friendship) && (!@is_current_user || !current_user) %>
+      <div class="right">
+        <% if current_user %>
+          <%= turbo_frame_tag :report_button, src: new_polymorphic_path([@user, Report]) %>
+        <% end %>
+        <a href="<%= url_for :action => :new, :controller => :friendships, :params => { :with => @user.username } %>" title="Become friends" class="no-underline">
+          <ion-icon role="presentation" name="person-add"></ion-icon>
+          Send Friend Request
+        </a>
+      </div>
+    <% end %>
+
+    <% if (current_user && @has_friendship) && !@is_current_user %>
+      <div class="right">
+        <% if current_user %>
+          <%= turbo_frame_tag :report_button, src: new_polymorphic_path([@user, Report]) %>
+        <% end %>
+        <a href="<%= resolve_message_thread_index_path(user_id: @user.id) %>" title="Become friends" class="no-underline">
+          <ion-icon role="presentation" name="mail"></ion-icon>
+          Send message
+        </a>
+      </div>
+    <% end %>
+
+    <% if current_user && current_user.id == @user.id %>
+      <div class="right">
+        <%= link_to 'History', history_events_path %>
+        <%= link_to settings_path do %>
+          Settings
+        <% end %>
+      </div>
+      <%= button_to "New link", new_link_path, method: :get %>
+      </div>
+    <% end %>
+    </div>
+    <h2 class="one-line <%= @total_orgasms_by_day.present? ? 'with-chart' : '' %>">
+
+      <% if @user.username == 'gios' %>
+        <ion-icon role="presentation" name="logo-octocat" class="big"></ion-icon>
+      <% elsif @user.username == 'gray' %>
+        <ion-icon role="presentation" name="train-outline" class="big"></ion-icon>
+      <% else %>
+        <ion-icon role="presentation" name="person" class="big"></ion-icon>
+      <% end %>
+
+      <span data-controller="user-reference" data-user-reference-hide-online-value><%= @user.username %></span>
+      <% if @any_links_online %>
+        <strong class="online" title="User is online"></strong>
+      <% end %>
+      <div class="gios-user-grid">
+        <small>
+          <%= link_to user_sets_path(@user.username) do %>
+            Set <%= @user.set_count %> wallpapers
+          <% end %>
+          <span>
         <% if @user.username == 'gray' %>
           Caused <%= pluralize @total_orgasms_caused, 'orgasm' %>, technically.
         <% else %>
           Caused <%= pluralize @total_orgasms_caused, 'orgasm' %>
         <% end %>
       </span>
-      </small>
-      <small>
-        <div>
-          Last online
-          <%= @most_recent_pinged_link && @most_recent_pinged_link[0].last_ping ? time_tag(@most_recent_pinged_link[0].last_ping, (time_ago_in_words @most_recent_pinged_link[0].last_ping) + ' ago') : 'never' %>
-        </div>
-        <div>
-          Had <%= @total_orgasms %> orgasms in the last 7 days
-        </div>
-      </small>
-    </div>
-    <% if @user.viewing_link %>
-      <small>
-        Currently viewing
-        <%= link_to "#{@user.viewing_link.user.username}'s link", @user.viewing_link %>
-      </small>
-    <% end %>
-
-    <%= turbo_frame_tag :kink_tools, src: user_kinks_path(@user.username) %>
-
-    <% if @total_orgasms_by_day %>
-      <%= area_chart @total_orgasms_by_day, colors: ["#606575"], legend: false, height: "60px", suffix: '💦', library: {
-        scales: {
-          x: {
-            display: false,
-          },
-          y: {
-            display: false,
-          },
-        }
-      } %>
-    <% end %>
-  </h2>
-
-  <% unless @is_editing %>
-    <%= render 'details', { user: @user, is_current_user: @is_current_user } %><%= render partial: 'past_links', locals: { past_links: @past_links } %>
-
-    <% unless @past_links.empty? %>
-      <%= link_to past_links_path, class: 'small see-all-past-wallpapers' do %>
-        See past 50 wallpapers
-        <ion-icon role="presentation" name="arrow-forward"></ion-icon>
-      <% end %>
-    <% end %>
-
-    <% if @is_current_user %>
-      <div class="two-col">
-        <%= turbo_frame_tag 'orgasm_form', src: '/nut/orgasms/new' %>
-        <%= turbo_frame_tag 'api_key_form', class: "accent-block" do %>
-          <div class="accent-block__charm">
-            <ion-icon role="presentation" name="eye-off"></ion-icon>
-            Only you see this
-          </div>
-
+        </small>
+        <small>
           <div>
-            <h2>
-              <ion-icon role="presentation" name="key" class="big"></ion-icon>
-              Your API key
-            </h2>
-
-            <p>
-              Use this key to grant special powers to a client you're using. It does not grant full access to your
-              account,
-              but does allow clients to set a response on links on your behalf.
-              <strong>You can only have 1 API key at once.</strong> When you randomize a new one, the old one will stop
-              working.
-            </p>
+            Last online
+            <%= @most_recent_pinged_link && @most_recent_pinged_link[0].last_ping ? time_tag(@most_recent_pinged_link[0].last_ping, (time_ago_in_words @most_recent_pinged_link[0].last_ping) + ' ago') : 'never' %>
           </div>
+          <div>
+            Had <%= @total_orgasms %> orgasms in the last 7 days
+          </div>
+        </small>
+      </div>
+      <% if @user.viewing_link %>
+        <small>
+          Currently viewing
+          <%= link_to "#{@user.viewing_link.user.username}'s link", @user.viewing_link %>
+        </small>
+      <% end %>
 
-          <div class="api-key" data-controller="api-key-form">
-            <% if @user.api_key.present? %>
-              <div class="api-key__key" data-api-key-form-target="key">
-                <ion-icon role="presentation" name="key" class="big"></ion-icon><%= @user.api_key %></div>
-              <%= button_to user_new_api_key_path(current_user.username), class: 'danger-button accent-block__button' do %>
-                Give me a new one
+      <%= turbo_frame_tag :kink_tools, src: user_kinks_path(@user.username) %>
+
+      <% if @total_orgasms_by_day %>
+        <%= area_chart @total_orgasms_by_day, colors: ["#606575"], legend: false, height: "60px", suffix: '💦', library: {
+          scales: {
+            x: {
+              display: false,
+            },
+            y: {
+              display: false,
+            },
+          }
+        } %>
+      <% end %>
+    </h2>
+
+    <% unless @is_editing %>
+      <%= render 'users/details', { user: @user, is_current_user: @is_current_user } %><%= render partial: 'users/past_links', locals: { past_links: @past_links } %>
+
+      <% unless @past_links.empty? %>
+        <%= link_to past_links_path, class: 'small see-all-past-wallpapers' do %>
+          See past 50 wallpapers
+          <ion-icon role="presentation" name="arrow-forward"></ion-icon>
+        <% end %>
+      <% end %>
+
+      <% if @is_current_user %>
+        <div class="two-col">
+          <%= turbo_frame_tag 'orgasm_form', src: '/nut/orgasms/new' %>
+          <%= turbo_frame_tag 'api_key_form', class: "accent-block" do %>
+            <div class="accent-block__charm">
+              <ion-icon role="presentation" name="eye-off"></ion-icon>
+              Only you see this
+            </div>
+
+            <div>
+              <h2>
+                <ion-icon role="presentation" name="key" class="big"></ion-icon>
+                Your API key
+              </h2>
+
+              <p>
+                Use this key to grant special powers to a client you're using. It does not grant full access to your
+                account,
+                but does allow clients to set a response on links on your behalf.
+                <strong>You can only have 1 API key at once.</strong> When you randomize a new one, the old one will
+                stop
+                working.
+              </p>
+            </div>
+
+            <div class="api-key" data-controller="api-key-form">
+              <% if @user.api_key.present? %>
+                <div class="api-key__key" data-api-key-form-target="key">
+                  <ion-icon role="presentation" name="key" class="big"></ion-icon><%= @user.api_key %></div>
+                <%= button_to user_new_api_key_path(current_user.username), class: 'danger-button accent-block__button' do %>
+                  Give me a new one
+                <% end %>
+              <% else %>
+                <%= button_to user_new_api_key_path(current_user.username), class: 'accent-block__button' do %>
+                  Generate my API key
+                <% end %>
               <% end %>
-            <% else %>
-              <%= button_to user_new_api_key_path(current_user.username), class: 'accent-block__button' do %>
-                Generate my API key
-              <% end %>
-            <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
+      <% if @links.count.positive? %>
+        <% @links.each do |link| %>
+          <div data-controller="go" data-go-to-value="<%= link_url(link) %>">
+            <%= render link %>
           </div>
         <% end %>
-      </div>
-    <% end %>
-
-    <% if @links.count.positive? %>
-      <% @links.each do |link| %>
-        <div data-controller="go" data-go-to-value="<%= link_url(link) %>">
-          <%= render link %>
-        </div>
+      <% else %>
+        <h4>This user has no links</h4>
+        <p>
+          You should pester them into making some! Click the
+          <strong>
+            <ion-icon role="presentation" name="person-add"></ion-icon>
+            Send Friends Request
+          </strong> button in the tool bar to send them a friend request. Maybe that's the motivation they
+          need!
+        </p>
       <% end %>
     <% else %>
-      <h4>This user has no links</h4>
-      <p>
-        You should pester them into making some! Click the
-        <strong>
-          <ion-icon role="presentation" name="person-add"></ion-icon>
-          Send Friends Request
-        </strong> button in the tool bar to send them a friend request. Maybe that's the motivation they
-        need!
-      </p>
-    <% end %>
-  <% else %>
-    <% if @user.advanced %>
-      <%= render 'details_edit_advanced', user: @user %>
-    <% else %>
-      <%= render 'details_edit', user: @user %>
-    <% end %>
+      <% if @user.advanced %>
+        <%= render 'users/details_edit_advanced', user: @user %>
+      <% else %>
+        <%= render 'users/details_edit', user: @user %>
+      <% end %>
 
-    <%= turbo_frame_tag :profiles_manager do %>
-      <div class="accent-block">
-        <div class="accent-block__charm inline">
-          <ion-icon role="presentation" name="file-tray-stacked"></ion-icon>
-          <div class="split">
-            Manage profile styles
+      <%= turbo_frame_tag :profiles_manager do %>
+        <div class="accent-block">
+          <div class="accent-block__charm inline">
+            <ion-icon role="presentation" name="file-tray-stacked"></ion-icon>
+            <div class="split">
+              Manage profile styles
 
-            <strong><small>Remember to save first!</small></strong>
+              <strong><small>Remember to save first!</small></strong>
+            </div>
           </div>
-        </div>
-        <div class="form__row profile_selector split">
-          <% form = ProfileSelectorForm.from_user(@user) %>
-          <%= form_with(model: form, url: user_set_profile_path(@user), data: { 'turbo-frame': '_top' }) do |f| %>
-            <%= f.select :profile_id, options_from_collection_for_select(@user.profiles, :id, :name, form.profile_id), {}, { onchange: 'requestSubmit()' } %>
-          <% end %>
+          <div class="form__row profile_selector split">
+            <% form = ProfileSelectorForm.from_user(@user) %>
+            <%= form_with(model: form, url: user_set_profile_path(@user), data: { 'turbo-frame': '_top' }) do |f| %>
+              <%= f.select :profile_id, options_from_collection_for_select(@user.profiles, :id, :name, form.profile_id), {}, { onchange: 'requestSubmit()' } %>
+            <% end %>
 
-          <%= button_to 'New', profiles_path, form: { data: { 'turbo-frame': '_top' } } %>
+            <%= button_to 'New', profiles_path, form: { data: { 'turbo-frame': '_top' } } %>
+          </div>
+
+          <% if @user.profile %>
+            <div class="form__row profile_renamer" data-controller="delete-profile-style">
+              <% rename_form = ProfileRenameForm.from_user(@user) %>
+              <%= form_with(model: rename_form, url: profile_path(@user.profile), method: :PUT) do |f| %>
+                <%= f.hidden_field :profile_id %>
+                <%= f.label :name, 'Name: ' %>
+                <%= f.text_field :name %>
+                <%= f.submit 'Rename', class: 'secondary' %>
+              <% end %>
+
+              <%= button_tag 'Delete', class: 'danger-button', data: { action: 'click->delete-profile-style#confirm' } %>
+
+              <dialog class="modal" data-delete-profile-style-target="modal">
+                <h4>Are you sure?</h4>
+                <p>This will delete the current page style, permanently. Please make sure you've kept a back up if you
+                  think there's a chance you will want it back.</p>
+                <div class="modal__buttons">
+                  <%= button_tag class: 'no-underline primary', data: { 'delete-profile-style-target': 'cancel', action: 'click->delete-profile-style#cancel' } do %>
+                    Cancel
+                  <% end %>
+                  <%= button_to profile_path(@user.profile), method: :delete, class: 'no-underline secondary', form: { data: { 'turbo-frame': '_top' } } do %>
+                    <ion-icon role="presentation" name="trash"></ion-icon>
+                    Confirm
+                  <% end %>
+                </div>
+              </dialog>
+            </div>
+          <% end %>
         </div>
 
         <% if @user.profile %>
-          <div class="form__row profile_renamer" data-controller="delete-profile-style">
-            <% rename_form = ProfileRenameForm.from_user(@user) %>
-            <%= form_with(model: rename_form, url: profile_path(@user.profile), method: :PUT) do |f| %>
-              <%= f.hidden_field :profile_id %>
-              <%= f.label :name, 'Name: ' %>
-              <%= f.text_field :name %>
-              <%= f.submit 'Rename', class: 'secondary' %>
-            <% end %>
-
-            <%= button_tag 'Delete', class: 'danger-button', data: { action: 'click->delete-profile-style#confirm' } %>
-
-            <dialog class="modal" data-delete-profile-style-target="modal">
-              <h4>Are you sure?</h4>
-              <p>This will delete the current page style, permanently. Please make sure you've kept a back up if you
-                think there's a chance you will want it back.</p>
-              <div class="modal__buttons">
-                <%= button_tag class: 'no-underline primary', data: { 'delete-profile-style-target': 'cancel', action: 'click->delete-profile-style#cancel' } do %>
-                  Cancel
-                <% end %>
-                <%= button_to profile_path(@user.profile), method: :delete, class: 'no-underline secondary', form: { data: { 'turbo-frame': '_top' } } do %>
-                  <ion-icon role="presentation" name="trash"></ion-icon>
-                  Confirm
-                <% end %>
+          <div class="accent-block">
+            <div class="accent-block__charm inline">
+              <ion-icon role="presentation" name="git-branch"></ion-icon>
+              <div class="split">
+                Sharing <%= @user.profile.name %>
               </div>
-            </dialog>
+            </div>
+
+            <p>
+              You can share your profile styles publicly, allowing others to install it themselves. A small label will be visible on their profile, attributing you as the coder. They will be able to modify their copy. <strong>If you make changes here, users who have already installed <%= @user.profile.name %> will need to reinstall it to get your new changes.</strong> Once installed, you cannot revoke someone's copy of <%= @user.profile.name %>.
+            </p>
+
+            <%= turbo_frame_tag :sharing_form do %>
+              <%= render 'sharing_form', user: @user %>
+            <% end %>
           </div>
         <% end %>
-      </div>
+      <% end %>
     <% end %>
-  <% end %>
-
+<% end %>

@@ -16,7 +16,7 @@
     <% if past_links_and_setter[:set_by].nil? %>
       <ion-icon role="presentation" name="glasses" class="big"></ion-icon>
       Anon Users
-    <% elsif %>
+    <% else %>
       <ion-icon role="presentation" name="person" class="big"></ion-icon>
       <%= link_to past_links_and_setter[:set_by].username, user_path(past_links_and_setter[:set_by].username) %>
     <% end %>

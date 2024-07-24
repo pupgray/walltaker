@@ -453,3 +453,13 @@ h2.with-chart #chart-1 {
         }
     }
 }
+
+.profile_preview {
+    display: block;
+    pointer-events: none;
+    user-select: none;
+    transform: scale(0.9);
+    box-shadow: 0 0 10px 4px var(--accent-bg);
+    border: solid 1px var(--accent-bg);
+    padding: 2rem;
+}

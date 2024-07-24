@@ -1,5 +1,32 @@
 class ProfilesController < ApplicationController
   before_action :authorize
+  before_action :set_profile_property, only: %i[show show_preview]
+
+  def index
+    @profiles = Profile.where(public: true)
+  end
+
+  def show
+  end
+
+  def show_preview
+    base_user = User.find_by_username('evil')
+    @user = User.build({
+                         **base_user.attributes,
+                         email: Faker::Internet.email,
+                         username: "#{Faker::Adjective.positive.titlecase}#{Faker::Creature::Bird.anatomy.titlecase}",
+                         profile: @profile,
+                         advanced: true
+                       })
+    @has_friendship = false
+    @links = Link.limit(2)
+    @any_links_online = @links.is_online.count.positive?
+    @most_recent_pinged_link = @links.order(last_ping: :desc).take(1) if @links.count.positive?
+    @past_links = PastLink.take(5)
+    @is_current_user = true
+
+    render 'users/show'
+  end
 
   def create
     profile = current_user.profiles.build({ name: nil, content: '' })
@@ -14,16 +41,41 @@ class ProfilesController < ApplicationController
   end
 
   def update
-    form = ProfileRenameForm.from_params(params)
+    if params['profile_rename_form'].present?
+      form = ProfileRenameForm.from_params(params)
 
-    if form && form.profile && current_user.profiles.include?(form.profile)
-      if form.profile.update(name: form.name)
-        redirect_to edit_user_path(current_user.username)
+      if form && form.profile && current_user.profiles.include?(form.profile)
+        if form.profile.update(name: form.name)
+          redirect_to edit_user_path(current_user.username)
+        else
+          redirect_to edit_user_path(current_user.username), alert: 'something went wrong'
+        end
       else
         redirect_to edit_user_path(current_user.username), alert: 'something went wrong'
       end
+    elsif params['profile_adder_form'].present?
+      form = ProfileAdderForm.from_params(params)
+
+      if form && form.profile && form.profile.public
+        copy = current_user.profiles.create(name: "#{form.profile.name} #{form.profile.updated_at.to_formatted_s(:short)}", content: form.profile.content)
+
+        if copy
+          current_user.profile = copy
+          if current_user.save
+            return redirect_to user_path(current_user.username)
+          end
+        end
+      end
+
+      redirect_to preview_profile_path(form.profile), alert: 'something went wrong'
     else
-      redirect_to edit_user_path(current_user.username), alert: 'something went wrong'
+      profile = Profile.find(params[:id])
+      if current_user.profiles.include?(profile)
+        if profile.update(params.require(:profile).permit(:public))
+          return render turbo_stream: turbo_stream.update(:sharing_form, partial: 'users/sharing_form', locals: { user: current_user })
+        end
+      end
+      redirect_to preview_profile_path(profile), alert: 'something went wrong'
     end
   end
 
@@ -54,5 +106,12 @@ class ProfilesController < ApplicationController
     else
       redirect_to edit_user_path(current_user.username), alert: 'something went wrong'
     end
+  end
+
+  private
+
+  def set_profile_property
+    @profile = Profile.find(params[:id])
+    redirect_to root_path, alert: 'Not authorized' unless @profile.public
   end
 end

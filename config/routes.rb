@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  resources :profiles, only: %i[update create destroy]
+  resources :profiles, only: %i[update create destroy index show] do
+    member do
+      get 'preview', to: 'profiles#show_preview', as: 'preview'
+    end
+  end
   resources :history_events, path: 'history'
   get 'errors/not_found'
   get 'errors/server_error'
