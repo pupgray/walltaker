@@ -1,6 +1,6 @@
 <% content_for(:html_title) { "Walltaker #{@user.username}" } %>
 
-<% if @user.profile.origin %>
+<% if @user.profile&.origin %>
   <div class="profile_attribution">
     <%= link_to @user.profile.origin.name.truncate(20), profile_path(@user.profile.origin) %> by <%= link_to @user.profile.origin.user.username.truncate(20), user_path(@user.profile.origin.user.username) %>
   </div>
