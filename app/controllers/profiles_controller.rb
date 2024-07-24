@@ -3,7 +3,9 @@ class ProfilesController < ApplicationController
   before_action :set_profile_property, only: %i[show show_preview]
 
   def index
-    @profiles = Profile.where(public: true)
+    @user = User.find(params[:id]) if params[:id]
+    @pagy, @profiles = pagy(Profile.where(public: true, user_id: params[:id]).includes(:users), items: 5) if params[:id]
+    @pagy, @profiles = pagy(Profile.where(public: true).includes(:users), items: 5) unless params[:id]
   end
 
   def show
@@ -57,7 +59,7 @@ class ProfilesController < ApplicationController
       form = ProfileAdderForm.from_params(params)
 
       if form && form.profile && form.profile.public
-        copy = current_user.profiles.create(name: "#{form.profile.name} #{form.profile.updated_at.to_formatted_s(:short)}", content: form.profile.content)
+        copy = current_user.profiles.create(name: "#{form.profile.name} #{form.profile.updated_at.to_formatted_s(:short)}", content: form.profile.content, origin: form.profile)
 
         if copy
           current_user.profile = copy

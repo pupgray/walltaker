@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_23_233724) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_24_014054) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -337,6 +337,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_23_233724) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "public", default: false, null: false
+    t.bigint "origin_id"
+    t.index ["origin_id"], name: "index_profiles_on_origin_id"
     t.index ["user_id"], name: "index_profiles_on_user_id"
   end
 
@@ -413,6 +415,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_23_233724) do
   add_foreign_key "past_links", "links", on_delete: :nullify
   add_foreign_key "past_links", "users"
   add_foreign_key "past_links", "users", column: "set_by_id"
+  add_foreign_key "profiles", "profiles", column: "origin_id"
   add_foreign_key "profiles", "users"
   add_foreign_key "reports", "users", column: "reporter_id"
   add_foreign_key "surrenders", "friendships"

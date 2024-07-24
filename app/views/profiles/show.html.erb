@@ -1,7 +1,6 @@
-<div class="accent-block accent-block--warning spaced tight-top only_charm">
-  <div class="accent-block__charm">
-    <ion-icon role="presentation" name="warning"></ion-icon>
-    This is a profile preview, and not a real profile.
+<div class="task-tools">
+  <div class="left">
+    <%= link_to "Back", profiles_path %>
   </div>
 </div>
 
@@ -19,10 +18,18 @@
   <% form = ProfileAdderForm.new(profile_id: @profile.id) %>
   <%= form_with(model: form, url: profile_path(@profile), method: :PUT) do |f| %>
     <%= f.hidden_field :profile_id %>
-    <div class="center">
+    <div class="center install_profile">
       <%= f.submit "Install it" %>
     </div>
   <% end %>
 </div>
+
+<div class="accent-block accent-block--warning spaced only_charm">
+  <div class="accent-block__charm">
+    <ion-icon role="presentation" name="warning"></ion-icon>
+    This is a profile preview, and not a real profile.
+  </div>
+</div>
+
 
 <%= turbo_frame_tag :user, src: preview_profile_path(@profile), class: 'profile_preview' %>

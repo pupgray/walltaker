@@ -1,8 +1,15 @@
 class Profile < ApplicationRecord
   belongs_to :user
+  belongs_to :origin, optional: true, class_name: 'Profile'
+  has_many :forks, dependent: :nullify, class_name: 'Profile', foreign_key: :origin_id
+  has_many :users, foreign_key: :profile_id
 
   before_create do
     self.name ||= random_name
+  end
+
+  def number_of_users
+    users.where(profile: [{ origin: self }, self]).count
   end
 
   private

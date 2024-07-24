@@ -72,6 +72,7 @@ Rails.application.routes.draw do
     member do
       get :toggle_details_mode, to: 'users#toggle_details_mode', as: 'toggle_details_mode'
       get :details, to: 'users#details', as: 'details'
+      get :profiles, to: 'profiles#index', as: 'profiles'
     end
   end
   resources :session
