@@ -361,7 +361,8 @@ class LinksController < ApplicationController
       current_user.set_count = current_user.set_count.to_i + 1
       current_user.save
     end
-    past_link = PastLink.log_link(link)
+    tag_string = "#{e621_post['tags']['general'].join(' ')} #{e621_post['tags']['character'].join(' ')} #{e621_post['tags']['species'].join(' ')} #{e621_post['tags']['lore'].join(' ')} #{e621_post['tags']['copyright'].join(' ')} #{e621_post['tags']['meta'].join(' ')} rating:#{e621_post['rating']}"
+    past_link = PastLink.log_link(link, tag_string)
     past_link.save
     track :regular, :update_link_post, attempted_post_id: params['link'][:post_id], past_link_id: past_link.id
   end

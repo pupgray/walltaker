@@ -37,7 +37,8 @@ namespace :walltaker do
           if result
             puts "Set link_id=#{link.id} to #{results[0]['file']['url']}"
             set_count += 1
-            PastLink.log_link(link).save
+            tag_string = "#{results[0]['tags']['general'].join(' ')} #{results[0]['tags']['character'].join(' ')} #{results[0]['tags']['species'].join(' ')} #{results[0]['tags']['lore'].join(' ')} #{results[0]['tags']['copyright'].join(' ')} #{results[0]['tags']['meta'].join(' ')} rating:#{results[0]['rating']}"
+            PastLink.log_link(link, tag_string).save
             pornbot.set_count = pornbot.set_count.to_i + 1
             pornbot.save
           end
@@ -94,7 +95,8 @@ namespace :walltaker do
           if result
             puts "Set link_id=#{link.id} to #{results[0]['file']['url']}"
             set_count += 1
-            PastLink.log_link(link).save
+            tag_string = "#{results[0]['tags']['general'].join(' ')} #{results[0]['tags']['character'].join(' ')} #{results[0]['tags']['species'].join(' ')} #{results[0]['tags']['lore'].join(' ')} #{results[0]['tags']['copyright'].join(' ')} #{results[0]['tags']['meta'].join(' ')} rating:#{results[0]['rating']}"
+            PastLink.log_link(link, tag_string).save
             pornbot.set_count = pornbot.set_count.to_i + 1
             pornbot.save
           end
@@ -151,7 +153,8 @@ namespace :walltaker do
           if result
             puts "Set link_id=#{link.id} to #{results[0]['file']['url']}"
             set_count += 1
-            PastLink.log_link(link).save
+            tag_string = "#{results[0]['tags']['general'].join(' ')} #{results[0]['tags']['character'].join(' ')} #{results[0]['tags']['species'].join(' ')} #{results[0]['tags']['lore'].join(' ')} #{results[0]['tags']['copyright'].join(' ')} #{results[0]['tags']['meta'].join(' ')} rating:#{results[0]['rating']}"
+            PastLink.log_link(link, tag_string).save
             pornbot.set_count = pornbot.set_count.to_i + 1
             pornbot.save
           end
@@ -209,7 +212,8 @@ namespace :walltaker do
           if result
             puts "Set link_id=#{link.id} to #{results[0]['file']['url']}"
             set_count += 1
-            PastLink.log_link(link).save
+            tag_string = "#{results[0]['tags']['general'].join(' ')} #{results[0]['tags']['character'].join(' ')} #{results[0]['tags']['species'].join(' ')} #{results[0]['tags']['lore'].join(' ')} #{results[0]['tags']['copyright'].join(' ')} #{results[0]['tags']['meta'].join(' ')} rating:#{results[0]['rating']}"
+            PastLink.log_link(link, tag_string).save
             pornbot.set_count = pornbot.set_count.to_i + 1
             pornbot.save
           end

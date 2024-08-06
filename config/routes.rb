@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'news_room/index'
   resources :profiles, only: %i[update create destroy index show] do
     member do
       get 'preview', to: 'profiles#show_preview', as: 'preview'
@@ -7,6 +8,8 @@ Rails.application.routes.draw do
   resources :history_events, path: 'history'
   get 'errors/not_found'
   get 'errors/server_error'
+
+  resources :news_room, only: %i[index]
 
   get 'users/:user_id/kinks', to: 'kink#users_kinks', as: 'user_kinks'
   get 'kinks/new', to: 'kink#new', as: 'kink_new_form'
