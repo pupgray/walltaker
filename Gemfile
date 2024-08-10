@@ -91,3 +91,4 @@ gem 'pagy', '~> 8.6'
 gem 'rack-attack'
 gem "faker"
 gem "barnes"
+gem "lograge"
