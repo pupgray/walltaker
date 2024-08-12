@@ -193,6 +193,19 @@ form.orgasms .form__row {
     align-items: center;
     margin: 0.75rem 0;
     cursor: pointer;
+    position: relative;
+
+    & > .form__row__charm {
+        position: absolute;
+        top: 37%;
+        right: 7px;
+        transform: translateY(-50%);
+        opacity: 0.7;
+    }
+
+    & .full-span {
+        width: 100%;
+    }
 }
 
 .form__row--stacking {

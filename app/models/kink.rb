@@ -1,4 +1,5 @@
 class Kink < ApplicationRecord
+  include PgSearch::Model
   validates_uniqueness_of :name
   validates_length_of :name, maximum: 30, minimum: 1
   validates_associated :kink_havers, message: 'must only have one of each kink.'
@@ -8,6 +9,8 @@ class Kink < ApplicationRecord
   has_many :kink_havers
   has_many :users, through: :kink_havers
   has_many :links, through: :users
+
+  pg_search_scope :search_name, against: :name, using: { tsearch: { dictionary: 'english', prefix: true, any_word: true }, trigram: { threshold: 0.2 } }
 
   def test_on_e621
     begin
