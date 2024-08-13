@@ -13,8 +13,7 @@ class KinkController < ApplicationController
   end
 
   def show
-    @kink = Kink.find(params['id'])
-    @users = @kink.users.order(updated_at: :desc)
+    @kink = Kink.includes(users: [:past_links, :profile, :kinks]).find(params['id'])
   end
 
   def search_kinks
