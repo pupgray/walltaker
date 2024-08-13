@@ -13,7 +13,8 @@ class KinkController < ApplicationController
   end
 
   def show
-    @kink = Kink.includes(users: [:profile, :kinks]).find(params['id'])
+    @kink = Kink.find(params['id'])
+    @users = @kink.users.left_joins(:profile).includes(:kinks).limit(30)
   end
 
   def search_kinks

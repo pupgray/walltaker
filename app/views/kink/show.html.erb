@@ -19,9 +19,9 @@
   <%= @kink.name.titlecase %>
 </h2>
 
-<% if @kink.users.count > 0 %>
+<% if @users.count > 0 %>
   <div class="user_segments">
-    <% @kink.users.each do |user| %>
+    <% @users.each do |user| %>
       <%= render user %>
     <% end %>
   </div>
