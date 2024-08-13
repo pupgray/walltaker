@@ -63,8 +63,8 @@ class LinksController < ApplicationController
           .pluck(:id)
     end
 
-    @new_user_links = Link.joins(:user).is_public.is_online.where('users.created_at': 12.hours.ago..Time.now).order('RANDOM()').limit(3)
-    @links = Link.where(id: science_links)
+    @new_user_links = Link.includes(:abilities).joins(:user).is_public.is_online.where('users.created_at': 12.hours.ago..Time.now).order('RANDOM()').limit(3)
+    @links = Link.includes(:abilities, :user, user: [:kinks]).where(id: science_links)
   end
 
   # GET /links/1 or /links/1.json
