@@ -32,6 +32,7 @@ module LinksHelper
     return :kemkem_userscript if link_agent.include? 'Walltaker for Walltaker (kemkem)'
     return :xenofluff if link_agent.include? 'Walltaker_eXPerience'
     return :pawslut if link_agent.include? 'PawSlut'
+    return :collin if link_agent.include? 'umbrella Collin\'s Walltaker Setter Thing'
     :unknown
   end
 
