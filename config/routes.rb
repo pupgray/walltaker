@@ -24,7 +24,6 @@ Rails.application.routes.draw do
   get 'search/index'
   get 'search/results'
   mount Nuttracker::Engine => "/nut"
-  mount Crono::Engine, at: '/pornbot'
   get 'help', to: 'help#index', as: 'help'
   get 'help/faq', to: 'help#faq', as: 'faq'
   get 'help/client_guide', to: 'help#client_guide', as: 'client_guide'

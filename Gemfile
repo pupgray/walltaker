@@ -85,10 +85,10 @@ gem "blazer"
 gem 'nuttracker', path: 'nuttracker'
 gem "pg_search", "~> 2.3"
 gem 'inline_svg'
-gem 'crono'
 gem 'wicked'
 gem 'pagy', '~> 8.6'
 gem 'rack-attack'
 gem "faker"
 gem "barnes"
 gem "lograge"
+gem 'scout_apm'
