@@ -353,8 +353,7 @@ class LinksController < ApplicationController
       }
     )
     link.forks.each do |fork|
-      result = get_post e621_post['id'], fork
-      assign_e621_post_to_self result, fork if result
+      SetPostJob.perform_later(fork.id)
     end
     track :regular, :update_set_count, current_user_id: current_user&.id, link_owner_id: link.user.id, current_user_set_count_before_inc: current_user&.set_count
     if current_user.present? && (link.user.id != current_user.id)
