@@ -38,8 +38,8 @@ class ApiController < ApplicationController
 
   # GET /api/links/:id.json
   def show_link
-    @link = Link.find(params[:id])
-    @set_by = User.find(@link.set_by_id) if @link.set_by_id
+    @link = Link.joins(:user, :set_by).find(params[:id])
+    @set_by = @link.set_by
   rescue
     render json: { message: 'This link does not exist.' }, status: 404
   end
