@@ -7,7 +7,7 @@
 <% end %>
 
 <%= turbo_frame_tag :user, target: '_top' do %>
-  <div class="task-tools">
+  <div data-turbo-prefetch="false" class="task-tools">
     <div class="left">
       <% if current_user&.admin? %>
         <%= link_to mod_tools_users_assume_path(@user), target: '_top', class: 'no-underline' do %>

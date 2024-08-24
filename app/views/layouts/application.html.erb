@@ -28,7 +28,7 @@
           </a>
           <%= link_to 'Links', links_path %>
           <%= link_to 'Friends', friendships_path, class: has_requests? ? 'pinged' : '' %>
-          <%= link_to 'Logout', logout_path %>
+          <%= link_to 'Logout', logout_path, data: { 'turbo-prefetch': 'false' } %>
 
           <div class="user-tools__nested">
             <%= link_to message_thread_index_path do %>

@@ -1,6 +1,6 @@
 <% content_for(:html_title) { "Walltaker #{@user.username} - Wallpapers Set For Others" } %>
 
-<div class="task-tools">
+<div data-turbo-prefetch="false" class="task-tools">
   <div class="left">
     <%= link_to "Back", user_path(@user.username) %>
   </div>
