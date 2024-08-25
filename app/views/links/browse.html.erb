@@ -1,14 +1,18 @@
 <% content_for(:html_title) { 'Browse Walltaker Links' } %>
 
-<div class="task-tools">
+<div data-turbo-prefetch="false" class="task-tools">
   <div class="left">
-    <%= link_to "Back to dashboard", root_path %>
+    <%= link_to "Back", root_path %>
   </div>
 
   <div class="right">
+    <%= button_to link_lists_path, method: :get do %>
+      <ion-icon role="presentation" name="bookmark"></ion-icon>
+      By Kinks
+    <% end %>
     <%= button_to search_path, method: :get do %>
       <ion-icon role="presentation" name="search-sharp"></ion-icon>
-      Search
+      By Search
     <% end %>
   </div>
 </div>

@@ -1,6 +1,6 @@
 <%= turbo_stream_from link %>
 
-<%= turbo_frame_tag dom_id link do %>
+<%= turbo_frame_tag dom_id(link), target: '_top' do %>
   <% if !link.never_expires && link.expires <= Time.now.utc %>
     <div class="accent-block accent-block--link">
       <div class="accent-block__charm">
@@ -63,7 +63,7 @@
       </div>
     <% end %>
 
-    <% if link.abilities.count > 0 %>
+    <% if link.abilities.length > 0 %>
       <div class="link--abilities">
         <strong>
           <ion-icon role="presentation" name="sparkles"></ion-icon>
@@ -108,7 +108,7 @@
         <% if link.check_ability 'is_kink_aligned' %>
           <div class="kink_tools" style="margin-bottom: 1rem">
             <div class="kinks">
-              <%=  render 'kink/kinks', kinks: link.user.kinks, is_current_user: false, user: link.user %>
+              <%= render 'kink/kinks', kinks: link.user.kinks, is_current_user: false, user: link.user %>
             </div>
           </div>
         <% end %>
@@ -175,6 +175,12 @@
         <% when :xenofluff %>
           <span>Walltaker eXPerience</span>
           <ion-icon name="terminal-outline"></ion-icon>
+        <% when :pawslut %>
+          <span>Pawslut's Client</span>
+          <ion-icon name="paw"></ion-icon>
+        <% when :collin %>
+          <span>Collin's Walltaker Setter Thing</span>
+          <ion-icon name="umbrella"></ion-icon>
         <% when :unknown %>
           <ion-icon role="presentation" name="help-circle-outline"></ion-icon>
         <% end %>
@@ -189,6 +195,8 @@
         <%= link.user.username %>
         <% if link.horny? %>
           😍:
+        <% elsif link.ok? && link.response_text == '' %>
+          says thanks
         <% elsif link.came? %>
           💦 said while cumming:
         <% end %>

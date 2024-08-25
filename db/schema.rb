@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema[7.1].define(version: 2024_03_12_052021) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_06_043226) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -209,6 +208,20 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_12_052021) do
     t.index ["sender_id"], name: "index_friendships_on_sender_id"
   end
 
+  create_table "history_events", force: :cascade do |t|
+    t.integer "did_what", default: 0, null: false
+    t.bigint "ahoy_visit_id"
+    t.bigint "user_id", null: false
+    t.bigint "surrender_controller_id"
+    t.bigint "link_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ahoy_visit_id"], name: "index_history_events_on_ahoy_visit_id"
+    t.index ["link_id"], name: "index_history_events_on_link_id"
+    t.index ["surrender_controller_id"], name: "index_history_events_on_surrender_controller_id"
+    t.index ["user_id"], name: "index_history_events_on_user_id"
+  end
+
   create_table "kink_havers", force: :cascade do |t|
     t.bigint "kink_id"
     t.bigint "user_id"
@@ -265,6 +278,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_12_052021) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "notify", default: true, null: false
   end
 
   create_table "message_threads", force: :cascade do |t|
@@ -311,9 +325,34 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_12_052021) do
     t.bigint "link_id"
     t.bigint "set_by_id"
     t.bigint "ahoy_visit_id"
+    t.text "tags", default: "", null: false
     t.index ["link_id"], name: "index_past_links_on_link_id"
     t.index ["set_by_id"], name: "index_past_links_on_set_by_id"
     t.index ["user_id"], name: "index_past_links_on_user_id"
+  end
+
+  create_table "profiles", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "name"
+    t.text "content", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "public", default: false, null: false
+    t.bigint "origin_id"
+    t.index ["origin_id"], name: "index_profiles_on_origin_id"
+    t.index ["user_id"], name: "index_profiles_on_user_id"
+  end
+
+  create_table "reports", force: :cascade do |t|
+    t.bigint "reporter_id", null: false
+    t.string "reportable_type"
+    t.bigint "reportable_id"
+    t.boolean "is_closed", default: false
+    t.string "snapshot"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reportable_type", "reportable_id"], name: "index_reports_on_reportable"
+    t.index ["reporter_id"], name: "index_reports_on_reporter_id"
   end
 
   create_table "surrenders", force: :cascade do |t|
@@ -346,7 +385,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_12_052021) do
     t.boolean "pervert"
     t.boolean "quarantined", default: false
     t.integer "colour_preference", default: 0
+    t.boolean "advanced", default: false, null: false
+    t.bigint "profile_id"
     t.index ["email"], name: "unique_emails", unique: true
+    t.index ["profile_id"], name: "index_users_on_profile_id"
     t.index ["set_count"], name: "index_users_on_set_count", order: :desc
     t.index ["username"], name: "unique_usernames", unique: true
     t.index ["viewing_link_id"], name: "index_users_on_viewing_link_id"
@@ -359,6 +401,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_12_052021) do
   add_foreign_key "comments", "users"
   add_foreign_key "friendships", "users", column: "receiver_id"
   add_foreign_key "friendships", "users", column: "sender_id"
+  add_foreign_key "history_events", "ahoy_visits"
+  add_foreign_key "history_events", "links"
+  add_foreign_key "history_events", "users"
+  add_foreign_key "history_events", "users", column: "surrender_controller_id"
   add_foreign_key "kink_havers", "kinks"
   add_foreign_key "kink_havers", "users"
   add_foreign_key "link_abilities", "links"
@@ -370,7 +416,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_12_052021) do
   add_foreign_key "past_links", "links", on_delete: :nullify
   add_foreign_key "past_links", "users"
   add_foreign_key "past_links", "users", column: "set_by_id"
+  add_foreign_key "profiles", "profiles", column: "origin_id"
+  add_foreign_key "profiles", "users"
+  add_foreign_key "reports", "users", column: "reporter_id"
   add_foreign_key "surrenders", "friendships"
   add_foreign_key "surrenders", "users"
   add_foreign_key "users", "links", column: "viewing_link_id"
+  add_foreign_key "users", "profiles"
 end

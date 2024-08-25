@@ -1,0 +1,14 @@
+<%# locals: (news_entry:) -%>
+
+<% if news_entry.message %>
+  <div class="news-room__desk">
+    <div class="thought thought--large">
+      <%= news_entry.message %>
+    </div>
+    <%= image_tag news_entry.lizard_image_url %>
+  </div>
+<% else %>
+  <div class="news-room__desk">
+    <%= image_tag 'mascot/news/TaylorDeskClosed.png' %>
+  </div>
+<% end %>

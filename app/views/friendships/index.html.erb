@@ -1,6 +1,6 @@
 <% content_for(:html_title) { 'Your Walltaker Friends' } %>
 
-<div class="task-tools">
+<div data-turbo-prefetch="false" class="task-tools">
   <div class="left">
     <% if action_name == 'requests' %>
       <%= link_to "Back to friends", url_for(action: :index, controller: :friendships) %>
@@ -8,9 +8,11 @@
   </div>
   <div class="right">
     <% if action_name == 'index' %>
-      <%= link_to surrenders_path, class: 'no-underline' do %>
-        <ion-icon name="ticket"></ion-icon>
-        Surrender
+      <% unless @user.admin? %>
+        <%= link_to surrenders_path, class: 'no-underline' do %>
+          <ion-icon name="ticket"></ion-icon>
+          Surrender
+        <% end %>
       <% end %>
       <% if has_requests? %>
         <span class="notice-right">New Requests <ion-icon role="presentation" name="arrow-forward-outline"></ion-icon></span>

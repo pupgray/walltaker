@@ -1,0 +1,56 @@
+<%= turbo_frame_tag :link_lists do %>
+  <div data-turbo-prefetch="false" class="task-tools">
+    <div class="left">
+      <%= link_to "Back to browse", browse_path %>
+    </div>
+
+    <div class="right">
+      <% if params[:filter].nil? && current_user.present? %>
+        <%= button_to link_lists_path, method: :get, params: { **filter_params, filter: :mine } do %>
+          <ion-icon role="presentation" name="person"></ion-icon>
+          Just my kinks
+        <% end %>
+      <% end %>
+      <% if params[:filter] == 'mine' %>
+        <%= button_to link_lists_path, method: :get, params: filter_params.except(:filter) do %>
+          <ion-icon role="presentation" name="bookmark"></ion-icon>
+          All kinks
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <h2>
+    <ion-icon role="presentation" name="documents" class="big"></ion-icon>
+    Browse by <%= params[:filter] == 'mine' ? 'my Kinks' : 'Kink' %>
+    <small>Links grouped by profile kinks of the link's user. This list doesn't take into account theme tags!</small>
+  </h2>
+
+
+
+  <%= form_with url: link_lists_path, method: :GET, data: { turbo_frame: '_top' } do |f| %>
+    <div class="form__row">
+      <%= f.label :q, class: 'form__row__charm' do %>
+        <ion-icon role="presentation" name="search-outline"></ion-icon>
+      <% end %>
+      <%= f.text_field :q, value: params[:q], autofocus: true, class: 'full-span' %>
+    </div>
+
+    <% filter_params.except(:q).each do |param_name, param_value| %>
+      <%= f.hidden_field param_name, value: param_value %>
+    <% end %>
+  <% end %>
+
+  <% @kinks.each do |kink| %>
+    <div class="accent-block no-charm">
+      <%= render 'kink', kink:, sample: true %>
+    </div>
+  <% end %>
+
+  <br/>
+
+  <div class="center">
+    <%== pagy_info(@pagy, item_name: 'kink'.pluralize(@pagy.count)) %>
+    <%== pagy_nav(@pagy) %>
+  </div>
+<% end %>

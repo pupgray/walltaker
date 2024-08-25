@@ -1,0 +1,16 @@
+<%# locals: (link:, fit_mode: 'cover', background: '#212121', text_shown: true) -%>
+
+<div class="embed__preview <%= fit_mode %>" style="background-color: <%= background %>">
+  <% if text_shown %>
+    <div class="embed__text">
+      <%= turbo_frame_tag :preview_text, class: 'embed__text__content' do %>
+        <%= render 'links/embed_text', link: %>
+      <% end %>
+
+      <%= turbo_frame_tag "link_comments", src: link_comments_path(link_id: link.id) %>
+    </div>
+  <% end %>
+  <%= turbo_frame_tag :preview_image do %>
+    <%= render 'links/embed_image', link: %>
+  <% end %>
+</div>

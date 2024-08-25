@@ -9,7 +9,7 @@ class LinksController < ApplicationController
   before_action :authorize, only: %i[index new edit create destroy]
 
   # 2. set @link instance var, since a lot of action filters use it
-  before_action :set_link, only: %i[show edit update destroy export toggle_ability]
+  before_action :set_link, only: %i[show edit update destroy export toggle_ability embed show_similar]
 
   # 3. protect link-specific buisness rules
   before_action :prevent_public_expired, only: %i[show update]
@@ -17,13 +17,33 @@ class LinksController < ApplicationController
   before_action :skip_unauthorized_requests, only: %i[update toggle_ability], if: -> { update_request_unsafe? }
   before_action :disallow_surrendered_accounts, only: %i[update]
 
-  # 4. save presence + analytics
+  # 4. Layout for the embedded view has no nav or footer
+  layout 'base', only: %i[embed]
+
+  # 5. save presence + analytics
   after_action :log_presence, only: %i[show]
   after_action :track_visit, only: %i[index browse new show edit]
+
+  content_security_policy only: %i[embed] do |policy|
+    policy.frame_ancestors :self, "*"
+  end
 
   # GET /links or /links.json (only your links)
   def index
     @links = User.find(current_user.id).link
+  end
+
+  def show_similar
+    query = Link.order('RANDOM()').where.not(id: @link.id).is_public
+    random_link = nil
+    random_link = query.is_online.find_by(theme: @link.theme) if @link.theme
+    random_link = query.is_online.includes(:user, user: [:kinks]).find_by(user: { kinks: @link.user.kinks.pluck(:id) }) if @link.user.kinks.count > 0 && random_link.nil?
+    random_link = query.is_online.take if random_link.nil?
+    random_link = query.take if random_link.nil?
+
+    return redirect_back_or_to root_path, alert: 'No other link was found... somehow.' if random_link.nil?
+
+    redirect_to link_path(random_link)
   end
 
   # GET /browse (all online links)
@@ -43,15 +63,18 @@ class LinksController < ApplicationController
           .pluck(:id)
     end
 
-    @new_user_links = Link.joins(:user).is_public.is_online.where('users.created_at': 12.hours.ago..Time.now).order('RANDOM()').limit(3)
-    @links = Link.where(id: science_links)
+    @new_user_links = Link.includes(:abilities).joins(:user).is_public.is_online.where('users.created_at': 12.hours.ago..Time.now).order('RANDOM()').limit(3)
+    @links = Link.includes(:abilities, :user, user: [:kinks]).where(id: science_links)
   end
 
   # GET /links/1 or /links/1.json
   def show
     @has_friendship = Friendship.find_friendship(current_user, @link.user).exists? if current_user
-    @set_by = User.find(@link.set_by_id) if @link.set_by_id && request.format == :json
+    @set_by = @link.set_by if @link.set_by_id && request.format == :json
     @is_current_user = (current_user && (current_user.id == @link.user.id))
+
+    HistoryEvent.record(current_user, :looked_at, @link, nil, current_visit) if current_user && !surrender_controller
+    HistoryEvent.record(current_user, :looked_at, @link, surrender_controller, current_visit) if surrender_controller
   end
 
   # GET /links/new
@@ -126,6 +149,8 @@ class LinksController < ApplicationController
                                   if current_user&.current_surrender
                                     Notification.create user: current_user, notification_type: :surrender_event, link: link_path(@link), text: "#{current_user.current_surrender.controller.username} set a new wallpaper for #{@link.user.username}"
                                   end
+                                  HistoryEvent.record(current_user, :set_wallpaper, @link, nil, current_visit) if current_user && !surrender_controller
+                                  HistoryEvent.record(current_user, :set_wallpaper, @link, surrender_controller, current_visit) if surrender_controller
                                   assign_e621_post_to_self e621_post, @link
                                 end
 
@@ -204,6 +229,46 @@ class LinksController < ApplicationController
     end
   end
 
+  def embed
+    @link_shown = true
+    @details_shown = true
+    @form_shown = true
+    @preview_shown = false
+    @text_shown = true
+    @fit_mode = 'cover'
+    @background = nil
+
+    if params['type'].present?
+      case params['type']
+      when 'form'
+        @link_shown = false
+        @details_shown = false
+      when 'short'
+        @details_shown = false
+      when 'link'
+        @details_shown = false
+        @form_shown = false
+      when 'wallpaper'
+        @link_shown = false
+        @details_shown = false
+        @form_shown = false
+        @preview_shown = true
+      end
+    end
+
+    if params['fit_mode'].present? && %w[cover contain].include?(params['fit_mode'])
+      @fit_mode = params['fit_mode']
+    end
+
+    if params['background'].present? && (/[\dA-Fa-f]+/).match?(params['background'])
+      @background = '#' + params['background']
+    end
+
+    if params['hide_text'].present? && params['hide_text'] == 'true'
+      @text_shown = false
+    end
+  end
+
   private
 
   # Guards
@@ -234,9 +299,9 @@ class LinksController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_link
     if params[:id].match? /\D+/
-      @link = Link.find_by(custom_url: params[:id])
+      @link = Link.joins(:user).left_joins(:set_by).find_by(custom_url: params[:id])
     else
-      @link = Link.find(params[:id])
+      @link = Link.joins(:user).left_joins(:set_by).find(params[:id])
     end
   end
 
@@ -265,6 +330,8 @@ class LinksController < ApplicationController
     end
     if post_count > 99
       redirect_to edit_link_path(@link), notice: "Many posts are selectable with these settings."
+    elsif post_count == 99
+      redirect_to edit_link_path(@link), notice: "Only #{post_count} #{'post'.pluralize post_count} can be selected with these settings. You may not get many wallpapers.🎈"
     elsif post_count > 30
       redirect_to edit_link_path(@link), notice: "Only #{post_count} #{'post'.pluralize post_count} can be selected with these settings. You may not get many wallpapers."
     elsif post_count > 0
@@ -294,7 +361,8 @@ class LinksController < ApplicationController
       current_user.set_count = current_user.set_count.to_i + 1
       current_user.save
     end
-    past_link = PastLink.log_link(link)
+    tag_string = "#{e621_post['tags']['general'].join(' ')} #{e621_post['tags']['character'].join(' ')} #{e621_post['tags']['species'].join(' ')} #{e621_post['tags']['lore'].join(' ')} #{e621_post['tags']['copyright'].join(' ')} #{e621_post['tags']['meta'].join(' ')} rating:#{e621_post['rating']}"
+    past_link = PastLink.log_link(link, tag_string)
     past_link.save
     track :regular, :update_link_post, attempted_post_id: params['link'][:post_id], past_link_id: past_link.id
   end

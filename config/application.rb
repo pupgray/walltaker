@@ -11,7 +11,10 @@ module Walltaker
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
 
-    config.exceptions_app = self.routes
+    # Please, add to the `ignore` list any other `lib` subdirectories that do
+    # not contain `.rb` files, or that should not be reloaded or eager loaded.
+    # Common ones are `templates`, `generators`, or `middleware`, for example.
+    config.autoload_lib(ignore: %w[assets tasks])
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -19,9 +22,10 @@ module Walltaker
     # in config/environments, which are processed later.
     #
     # config.time_zone = "Central Time (US & Canada)"
-    # config.eager_load_paths << Rails.root.join("extras")
+    config.eager_load_paths << Rails.root.join("scrubbers")
     Rails.application.config.hosts << "joi.how"
     Rails.application.config.hosts << "walltaker.joi.how"
+    Rails.application.config.hosts << "walltaker-heroku-24-6dcd77a4ae7b.herokuapp.com"
     Rails.application.config.hosts << "10.244.14.67"
     Rails.application.config.hosts << "walltaker-master-39nrv.ondigitalocean.app"
     Rails.application.config.hosts << "walltaker-7e4cf22c7c3d.herokuapp.com"

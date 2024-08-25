@@ -1,17 +1,23 @@
 class User < ApplicationRecord
   include ActiveModel::SecurePassword
   has_secure_password
-  has_many :link
+  has_many :link, dependent: :destroy
+  has_many :history_events, dependent: :destroy
   has_many :past_links, foreign_key: :set_by_id
   has_many :orgasms, foreign_key: :user_id, class_name: 'Nuttracker::Orgasm'
   has_many :caused_orgasms, foreign_key: :caused_by_user_id, class_name: 'Nuttracker::Orgasm'
   has_many :notifications
   has_many :ahoy_visits, :class_name => 'Ahoy::Visit'
   has_many :kink_havers
-  has_many :kinks, -> { order(is_starred: :desc, id: :desc) }, through: :kink_havers
+  has_many :kinks, -> { order(id: :desc) }, through: :kink_havers
   attribute :colour_preference, :integer
   belongs_to :viewing_link, foreign_key: :viewing_link_id, class_name: 'Link', optional: true
-
+  has_many :message_thread_participants
+  has_many :message_threads, through: :message_thread_participants
+  has_many :messages, through: :message_threads
+  has_many :reports, as: :reportable
+  has_many :profiles, inverse_of: :user
+  belongs_to :profile, optional: true
   has_one :current_surrender, class_name: 'Surrender', dependent: :destroy
 
   validates_uniqueness_of :username
@@ -47,6 +53,16 @@ class User < ApplicationRecord
     end
   end
 
+  def details
+    return profile.content if profile
+    profiles.order(id: :asc).first&.content || ''
+  end
+
+  def current_profile_name
+    return profile.name || 'Unnamed' if profile
+    '<Imported Profile>'
+  end
+
   def assign_new_api_key
     self.api_key = SecureRandom.base64(6).slice 0..7
     save
@@ -66,6 +82,29 @@ class User < ApplicationRecord
     friendship_ids = Friendship.involving(self).is_confirmed.pluck(:id)
     Surrender.not_for_user(self).where(id: friendship_ids)
   end
+
+  def snapshot
+    <<~OUT.strip
+      #{username}
+      #{details}
+
+      Recent messages:
+      #{messages.limit(6).map {|message| "=> (to #{message.message_thread&.users&.map(&:username).join(',')}) #{message.content}"}.join("\n")}
+
+      Recent wallpapers set for others:
+      #{past_links.limit(6).map {|pl| "=> (for #{pl.link&.user&.username} on ##{pl.link&.id}) #{pl.post_url}"}.join("\n")}
+
+      All links:
+
+      ======= LINK ========
+      #{link.map(&:snapshot).join("\n\n======= LINK ========\n")}
+    OUT
+  end
+
+  def to_s
+    username
+  end
+
 
   after_commit do
     if viewing_link_id

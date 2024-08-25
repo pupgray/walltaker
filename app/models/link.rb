@@ -9,13 +9,16 @@ class Link < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_many :abilities, class_name: 'LinkAbility', inverse_of: :link, dependent: :destroy
   has_many :users_viewing, class_name: 'User', foreign_key: :viewing_link_id, inverse_of: :viewing_link, dependent: :nullify
-  enum response_type: %i[horny came disgust]
+  enum response_type: %i[horny came disgust ok]
   validates :expires, presence: true, unless: :never_expires?
   validates :theme, format: { without: /\s+/i, message: 'must be only 1 tag.' }
   validates :theme, format: { without: /\:/, message: 'must not contain filter or sort tags. (like score:>30) Use the Minimum Score setting instead.' }
   validates :min_score, comparison: { greater_than: -1, less_than: 301 }
   validates :custom_url, format: { with: /\A[a-zA-Z\-_]*\z/, message: 'must be a valid in a url, with no spaces or special characters' }
   validates_uniqueness_of :custom_url, allow_nil: true, unless: ->(l) { l.custom_url.blank? }
+  has_many :reports, as: :reportable
+  has_many :history_events, dependent: :destroy
+
   visitable :ahoy_visit
 
   pg_search_scope :search_positive, against: %i[terms theme custom_url response_text post_description], associated_against: {
@@ -73,10 +76,16 @@ class Link < ApplicationRecord
     nil unless self.set_by_id
   end
 
+  def seconds_since_last_set
+    past_links.last.present? ? Time.now - past_links.last.created_at : 99999
+  end
+
   after_update_commit do
     if blacklist_previously_changed? || terms_previously_changed? || theme_previously_changed? || response_text_previously_changed? || last_ping_user_agent_previously_changed? || live_client_started_at_previously_changed? || expires_previously_changed? || never_expires_previously_changed? || friends_only_previously_changed? || post_url_previously_changed?
       begin
         broadcast_update
+        broadcast_update_to "link_preview_#{id}_image", target: "preview_image", partial: 'links/embed_image', locals: { link: self }
+        broadcast_update_to "link_preview_#{id}_text", target: "preview_text", partial: 'links/embed_text', locals: { link: self }
         link = {}
         link[:success] = true
         link[:id] = self.id
@@ -101,5 +110,23 @@ class Link < ApplicationRecord
         link
       )
     end
+  end
+
+  def snapshot
+    <<~OUT.strip
+      ##{id}
+      Creator: #{user.username}
+      #{terms}
+
+      Theme: #{theme}
+      Blacklist: #{blacklist}
+      Post URL: #{post_url}
+      Set By: #{set_by&.username || 'anon or no one'}
+      Response Text: #{response_text}
+    OUT
+  end
+
+  def to_s
+    "Link ##{id}"
   end
 end

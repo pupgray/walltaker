@@ -22,7 +22,8 @@
     max-height: 200px;
 }
 
-h2 > small {
+h2 > small,
+h2 > .gios-user-grid > small {
     color: var(--border);
     display: block;
     font-size: 0.35em;
@@ -192,6 +193,19 @@ form.orgasms .form__row {
     align-items: center;
     margin: 0.75rem 0;
     cursor: pointer;
+    position: relative;
+
+    & > .form__row__charm {
+        position: absolute;
+        top: 37%;
+        right: 7px;
+        transform: translateY(-50%);
+        opacity: 0.7;
+    }
+
+    & .full-span {
+        width: 100%;
+    }
 }
 
 .form__row--stacking {
@@ -389,4 +403,148 @@ h2.with-chart #chart-1 {
 
 .user_segment h3 .text-charm {
     transform: translateY(-10px);
+}
+
+.gios-user-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: auto;
+    gap: 0.2rem;
+
+    @media screen and (max-width: 600px) {
+        grid-template-columns: 1fr;
+
+        & > small:last-child {
+            text-align: left !important;
+        }
+    }
+
+    & > small {
+        display: grid !important;
+        gap: 0.4rem;
+        grid-template-columns: subgrid;
+
+        &:last-child {
+            text-align: right;
+        }
+    }
+}
+
+.wall_editor {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    & .editor {
+        &::part(inner-container) {
+            overflow: visible;
+        }
+    }
+}
+
+.editor-hints {
+    margin-top: 0.5rem;
+    border-width: 0 !important;
+}
+
+.editors {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    width: 95dvw;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+
+    & .accent-block {
+        flex: 1 1 500px;
+        margin-top: 0 !important;
+        position: relative;
+
+        & .editor {
+            height: 500px;
+        }
+    }
+}
+
+.install_profile {
+    margin: 1rem 0;
+}
+
+.profile_preview {
+    display: block;
+    pointer-events: none;
+    user-select: none;
+    transform: scale(0.9);
+    box-shadow: 0 0 10px 4px var(--accent-bg);
+    border: solid 1px var(--accent-bg);
+    padding: 2rem;
+}
+
+.profile_attribution {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    background: var(--accent-bg);
+    color: var(--text);
+    z-index: 99999;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.7rem;
+}
+
+.profiles {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    & .profile {
+        background: var(--accent-bg);
+        padding: 1rem;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        min-height: 400px;
+        gap: 1rem;
+
+        & .profile__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1rem;
+        }
+
+        & > a {
+            position: relative;
+            flex: 1 1 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        & .profile__frame {
+            flex: 1 1 100%;
+            position: relative;
+            border: 1px solid var(--border);
+            padding: 1px;
+            overflow: hidden;
+            border-radius: 5px;
+            --scale-factor: 0.4;
+
+            &:hover {
+                --scale-factor: 0.7;
+            }
+
+            & iframe {
+                border: none;
+                transform: scale(var(--scale-factor));
+                width: calc(1 / var(--scale-factor) * 100%);
+                height: calc(1 / var(--scale-factor) * 100%);
+                transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+                transform-origin: 0 0;
+                pointer-events: none;
+                user-select: none;
+                display: block;
+                position: absolute;
+            }
+        }
+    }
 }

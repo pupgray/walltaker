@@ -2,14 +2,10 @@
   <strong>Who's Browsing</strong>
 
   <div class="dashboard__users-viewing-links">
-    <% if users_viewing_links.count.positive? %>
-      <% users_viewing_links.each do |user| %>
-        <%= link_to link_path(user.viewing_link) do %>
-          <%= user.username %>
-        <% end %>
+    <% users_viewing_links.each do |user| %>
+      <%= link_to link_path(user.viewing_link) do %>
+        <%= user.username %>
       <% end %>
-    <% else %>
-      <em>No one currently.</em>
     <% end %>
   </div>
 <% end %>

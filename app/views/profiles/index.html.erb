@@ -1,0 +1,46 @@
+<h2>
+  <ion-icon role="presentation" name="color-palette" class="big"></ion-icon>
+  Profile Styles
+  <small>Decorate your user profile with a community-made style!</small>
+</h2>
+
+<% if @pagy.count != 0 %>
+  <div class="profiles">
+    <% @profiles.each do |profile| %>
+      <%= tag.div class: 'profile', id: dom_id(profile) do %>
+        <div class="profile__header">
+          <strong><%= link_to profile.name, profile %></strong>
+          <small>by <%= link_to profile.user.username, user_path(profile.user.username) %></small>
+        </div>
+        <div class="profile__header">
+          <small>Updated <%= tag.relative_time datetime: profile.updated_at %></small>
+          <small class="subdued">Used on <%= pluralize profile.number_of_users, 'profile' %></small>
+        </div>
+        <%= link_to profile, class: 'no-underline' do %>
+          <div class="profile__frame">
+            <%= tag.iframe src: preview_profile_path(profile), width: '100%', height: 0, scrolling: 'no' %>
+          </div>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <br/>
+  <br/>
+  <div class="center">
+    <%== pagy_info(@pagy, item_name: 'profile'.pluralize(@pagy.count)) %>
+    <%== pagy_nav(@pagy) %>
+  </div>
+
+<% else %>
+  <h4>No profile styles</h4>
+  <% if current_user != @user %>
+  <p>
+    <%= @user.username %> has no profile styles available. They may have removed an old profile style, or set it to private. <%= link_to "You can always send them a message to ask.", resolve_message_thread_index_path(@user) %>
+  </p>
+    <% else %>
+    <p>
+      You have no public styles. You can set some of your profile styles to public on <%= link_to "the profile edit page.", edit_user_path(@user.username) %> Afterwards, they will appear here, and be installable by others.
+    </p>
+    <% end %>
+<% end %>

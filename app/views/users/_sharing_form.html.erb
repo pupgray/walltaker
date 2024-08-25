@@ -1,0 +1,8 @@
+<%# loacls: (user:) -%>
+
+<%= form_with(model: user.profile, url: profile_path(user.profile), method: :PUT, class: 'form__group') do |f| %>
+  <div class="form__row right">
+    <%= f.label :public, 'Public' %>
+    <%= f.check_box :public, onClick: 'requestSubmit()' %>
+  </div>
+<% end %>

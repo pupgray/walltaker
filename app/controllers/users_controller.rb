@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   after_action :track_visit, only: %i[new show edit]
-  before_action :authorize, only: %i[update]
+  before_action :authorize, only: %i[update toggle_details_mode]
 
   def new
     @user = User.new
@@ -9,6 +9,7 @@ class UsersController < ApplicationController
   def show
     set_user_vars
     @total_orgasms_by_day = @user.orgasms.where('created_at > ?', 1.weeks.ago.midnight).group_by_day(:created_at, range: 1.weeks.ago.midnight..Time.now).count
+    @total_orgasms = @user.orgasms.where('created_at > ?', 1.weeks.ago.midnight).count
     @total_orgasms_caused = @user.caused_orgasms.where('caused_by_user_id <> user_id').count unless @user.username == 'gray'
     @total_orgasms_caused = Nuttracker::Orgasm.count if @user.username == 'gray'
   end
@@ -30,7 +31,16 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     return redirect_to user_path(@user.username), { alert: 'Not Authorized.' } if current_user.id != @user.id
 
-    @user.details = user_params[:details]
+    if @user.profile
+      @user.profile.content = user_params[:details]
+      @user.profile.save
+    else
+      new_profile = Profile.create({user: @user, name: nil, content: user_params[:details]})
+      @user.profile = new_profile
+      @user.save
+    end
+
+    @user.profile.content = user_params[:details]
     if @user.save
       track :regular, :updated_details
 
@@ -107,6 +117,19 @@ class UsersController < ApplicationController
       @user.assign_new_api_key
     end
     redirect_to user_path(@user.username)
+  end
+
+  def toggle_details_mode
+    current_user.advanced = !current_user.advanced
+    if current_user.save
+      redirect_to edit_user_path(current_user.username)
+    else
+      redirect_to root_path, alert: 'Something went wrong'
+    end
+  end
+
+  def details
+    @user = User.find(params[:id])
   end
 
   private

@@ -3,7 +3,7 @@
 <div data-controller="presence" data-presence-id-value="<%= @link.id %>"></div>
 
 <% if @is_current_user %>
-  <div class="task-tools" data-controller="link" data-link-id-value="<%= @link.custom_url || @link.id %>">
+  <div data-turbo-prefetch="false" class="task-tools" data-controller="link" data-link-id-value="<%= @link.custom_url || @link.id %>">
     <dialog class="modal" data-link-target="modal">
       <h4>Confirm Delete</h4>
       <p>Are you sure you want to delete this link?</p>
@@ -38,13 +38,17 @@
     </div>
   </div>
 <% else %>
-  <div class="task-tools">
+  <div data-turbo-prefetch="false" class="task-tools">
     <% if _filtered_referrer %>
       <div class="left">
         <%= link_to "Back", :back %>
       </div>
     <% end %>
     <div class="right">
+      <% if current_user %>
+        <%= turbo_frame_tag :report_button, src: new_polymorphic_path([@link, Report]) %>
+      <% end %>
+
       <% if !@has_friendship %>
         <a href="<%= url_for :action => :new, :controller => :friendships, :params => { :with => @link.user.username } %>" title="Become friends" class="no-underline">
           <ion-icon role="presentation" name="person-add"></ion-icon>
@@ -65,6 +69,29 @@
 <%= turbo_stream_from @link %>
 <%= render @link %>
 
+<% if current_user == @link.user && (@link.blacklist || '').split(' ').length > 36 %>
+  <div class="accent-block accent-block--warning spaced">
+    <ion-icon role="presentation" name="warning" class="scare-charm"></ion-icon>
+    <div class="accent-block__charm">
+      <ion-icon role="presentation" name="warning"></ion-icon>
+      Configuration warning
+    </div>
+    <p>Your link has a really long blacklist! I know I ask that you fill out your blacklist as fully as you can, but we can only make requests to e621 with a maximum number of tags. Your link still works, this is just a warning.</p>
+    <br>
+    <p><%= (@link.blacklist || '').split(' ').length %> blacklist tags <%= @link.theme ? "+ 1 theme tag": "" %> = only <%= pluralize(45 - ((@link.blacklist || '').split(' ').length + (@link.theme ? 1 : 0)), 'tag') %> a user can search with.</p>
+  </div>
+<% end %>
+
+<% if @link.seconds_since_last_set < 2.minutes %>
+  <div class="accent-block">
+    <div class="accent-block__charm inline">
+      <ion-icon role="presentation" name="hourglass"></ion-icon>
+      Wallpaper was just changed
+      <%= link_to 'Try another link', show_similar_link_path(@link), class: 'right-side' %>
+    </div>
+  </div>
+<% end %>
+
 <% if @is_current_user %>
   <div class="accent-block">
     <div class="accent-block__charm">
@@ -75,7 +102,7 @@
     <%= form_with model: @link, method: 'PATCH', class: 'set-post-response' do |form| %>
       <div>
         <%= form.text_field :response_text, placeholder: 'How do you feel about this wallpaper?', autocomplete: 'off' %>
-        <%= form.select :response_type, [['Love it!', :horny], ['Hate it!', :disgust], ['I came', :came]] %>
+        <%= form.select :response_type, [['Love it!', :horny], ['Hate it!', :disgust], ['I came', :came], ['Thanks', :ok]] %>
         <%= form.submit 'Reply' %>
       </div>
     <% end %>
@@ -165,78 +192,7 @@
 
 <%= turbo_stream_from "link_details_#{@link.id}" %>
 <%= render 'details', link: @link, set_by: @set_by %>
-
-<div class="tabs" data-controller="tabs">
-  <div class="tabs__charm">
-    <ion-icon role="presentation" name="magnet"></ion-icon>
-    Select wallpaper via...
-  </div>
-
-  <% seconds_since_last_wallpaper = @link.past_links.last.present? ? Time.now - @link.past_links.last.created_at : 9999 %>
-
-  <div
-    class="tab"
-    data-tabs-target="tab"
-    data-title="Search"
-    data-controller="porn-search"
-    data-porn-search-seconds-since-last-wallpaper-value="<%= seconds_since_last_wallpaper %>"
-  >
-    <dialog class="modal" data-porn-search-target="modal">
-      <h4>Confirm Wallpaper</h4>
-      <p>This link's wallpaper was changed less than a minute ago, are you sure you want to overwrite it so soon?</p>
-      <div class="modal__buttons">
-        <%= button_tag class: 'no-underline primary', data: { 'link-target': 'cancel', action: 'click->porn-search#cancel' } do %>
-          <ion-icon role="presentation" name="close"></ion-icon>
-          Cancel
-        <% end %>
-        <%= button_tag "Yes, Use This Wallpaper", class: 'no-underline secondary', data: { action: 'click->porn-search#confirm' } %>
-      </div>
-    </dialog>
-    <div class="link--flashes">
-      <% flash.each do |type, msg| %>
-        <% unless type === 'notice' %>
-          <div class="flash--danger">
-            <%= msg %>
-          </div>
-        <% end %>
-      <% end %>
-    </div>
-    <p>
-      Enter some e621 tags, click search, then click any post to
-      set <%= @link.user.username %>'s wallpaper.
-    </p>
-
-    <% unless @link.theme.nil? || @link.theme&.empty? %>
-      <p class="subdued">
-        The theme tag <strong>
-        <ion-icon role="presentation" name="pricetag-outline"></ion-icon> <%= @link.theme %></strong> is being
-        automatically applied.
-      </p>
-    <% end %>
-
-    <% if @link.check_ability 'can_show_videos' %>
-      <p class="subdued">
-        You can select
-        <strong>
-          <ion-icon class="video-icon" role="presentation" name="videocam"></ion-icon>
-          videos
-        </strong>
-        on this link.
-      </p>
-    <% end %>
-
-    <%= turbo_frame_tag "pornsearch", src: porn_search_index_path({ link: @link.id }) do %>
-      <div>
-        Loading
-      </div>
-    <% end %>
-  </div>
-
-  <div class="tab" data-tabs-target="tab" data-title="Post ID">
-    <%= render 'submit', link: @link %>
-  </div>
-
-</div>
+<%= render 'porn_selector', link: @link %>
 
 <%= turbo_stream_from "link_viewing_users_#{@link.id}" %>
 <%= render 'viewing_users', link: @link %>

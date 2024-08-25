@@ -1,0 +1,15 @@
+<div data-turbo-prefetch="false" class="task-tools">
+  <div class="left">
+    <%= link_to "Back", link_lists_path %>
+  </div>
+</div>
+
+<%= render 'kink', kink: @kink, preloaded_links: @links, sample: false %>
+
+<br/>
+<br/>
+
+<div class="center">
+  <%== pagy_info(@pagy, item_name: 'link'.pluralize(@pagy.count)) %>
+  <%== pagy_nav(@pagy) %>
+</div>

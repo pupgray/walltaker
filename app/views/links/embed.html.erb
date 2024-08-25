@@ -1,0 +1,11 @@
+<%= render @link if @link_shown %>
+<%= render 'details', link: @link, set_by: @set_by if @details_shown %>
+<% unless @details_shown %>
+  <div class="spacer"></div>
+<% end %>
+<%= render 'porn_selector', link: @link if @form_shown %>
+
+<%= turbo_stream_from "link_comments_#{@link.id}" if @text_shown %>
+<%= turbo_stream_from "link_preview_#{@link.id}_text" if @text_shown %>
+<%= turbo_stream_from "link_preview_#{@link.id}_image" %>
+<%= render 'preview', link: @link, fit_mode: @fit_mode, background: @background, text_shown: @text_shown if @preview_shown %>

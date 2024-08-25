@@ -6,10 +6,13 @@
           Cancel
         </a>
       </div>
+
       <div class="right">
+        <%= link_to 'HTML Mode', toggle_details_mode_user_path(user.username), data: { turbo: false } %>
         <%= f.submit 'Save' %>
       </div>
     </div>
+
     <%= f.text_area :details %>
   <% end %>
 </div>

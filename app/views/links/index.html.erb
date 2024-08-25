@@ -1,8 +1,8 @@
 <% content_for(:html_title) { "Your Walltaker Links" } %>
 
-<div class="task-tools">
+<div data-turbo-prefetch="false" class="task-tools">
   <div class="left">
-    <%= link_to "Back to dashboard", root_path %>
+    <%= link_to "Back", root_path %>
   </div>
   <div class="right">
     <a href="<%= spawn_link_links_path %>" title="Return to wizard" class="no-underline">

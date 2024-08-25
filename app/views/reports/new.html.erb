@@ -1,0 +1,5 @@
+<%= turbo_frame_tag :report_button do %>
+  <%= form_with model: @report, url: polymorphic_url([@reportable, Report]) do |f| %>
+    <%= f.submit 'Report', class: 'danger-button' %>
+  <% end %>
+<% end %>

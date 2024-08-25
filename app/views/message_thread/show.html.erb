@@ -1,8 +1,11 @@
-<div class="task-tools">
+<div data-turbo-prefetch="false" class="task-tools">
   <div class="left">
     <%= link_to "All threads", message_thread_index_path %>
   </div>
   <div class="right">
+    <%= turbo_frame_tag dom_id(@message_thread) + '-controls' do %>
+      <%= render partial: 'controls', locals: { message_thread: @message_thread } %>
+    <% end %>
     <a href="<%= edit_message_thread_path @message_thread %>" title="Manage Members" class="no-underline">
       <ion-icon name="people"></ion-icon>
       Manage Members
@@ -20,13 +23,13 @@
 </h2>
 
 <%= turbo_stream_from @message_thread %>
-<%= turbo_frame_tag @message_thread do %>
+<%= turbo_frame_tag @message_thread, class: 'messages' do %>
   <%= render 'messages_from_thread', message_thread: @message_thread %>
 <% end %>
 
 <%= turbo_frame_tag 'new_message_form' do %>
   <%= form_with(model: @new_message, url: send_to_message_thread_path(@message_thread)) do |form| %>
-    <%= form.text_field :content, autocomplete: 'off' %>
+    <%= form.text_field :content, autocomplete: 'off', autofocus: true %>
     <%= form.button type: :submit do %>
       <ion-icon name="send"></ion-icon>
     <% end %>

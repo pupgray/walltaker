@@ -1,0 +1,35 @@
+<div data-turbo-prefetch="false" class="task-tools">
+  <div class="left">
+    <%= link_to "Back", profiles_path %>
+  </div>
+</div>
+
+<div class="accent-block spaced">
+  <div class="accent-block__charm inline">
+    <ion-icon role="presentation" name="color-palette"></ion-icon>
+    <div class="split">
+      <span><%= @profile.name %> by <%= @profile.user.username %></span>
+      <span>Updated <%= tag.relative_time(datetime: @profile.updated_at.iso8601) %></span>
+    </div>
+  </div>
+  <p>
+    Installing this profile style will only affect your public profile, not any other page on the site. <strong>You will get a copy of the design added to your profile, and your current profile will be recoverable in the profile editor.</strong> It will not change automatically if <%= @profile.user.username %> makes any updates. You will need to install it again if it's updated.
+  </p>
+  <% form = ProfileAdderForm.new(profile_id: @profile.id) %>
+  <%= form_with(model: form, url: profile_path(@profile), method: :PUT) do |f| %>
+    <%= f.hidden_field :profile_id %>
+    <div class="center install_profile">
+      <%= f.submit "Install it" %>
+    </div>
+  <% end %>
+</div>
+
+<div class="accent-block accent-block--warning spaced only_charm">
+  <div class="accent-block__charm">
+    <ion-icon role="presentation" name="warning"></ion-icon>
+    This is a profile preview, and not a real profile.
+  </div>
+</div>
+
+
+<%= turbo_frame_tag :user, src: preview_profile_path(@profile), class: 'profile_preview' %>

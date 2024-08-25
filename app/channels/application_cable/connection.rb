@@ -8,7 +8,7 @@ module ApplicationCable
     end
 
     def disconnect
-      self.watched_links.for do |link| 
+      self.watched_links.each do |link|
         link.live_client_started_at = nil
         link.save
       end

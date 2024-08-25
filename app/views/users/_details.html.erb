@@ -2,16 +2,12 @@
   <% if is_current_user %>
     <div class="task-tools small">
       <div class="right">
-        <a href="<%= user_path(user.username) %>/edit" title="Edit my details" class="no-underline">
+        <a href="<%= user_path(user.username) %>/edit" title="Edit my details" class="no-underline" data-turbo="false">
           <ion-icon role="presentation" name="build"></ion-icon>
           Edit
         </a>
       </div>
     </div>
   <% end %>
-  <% if user.details.present? %>
-    <blockquote><%= simple_format user.details %></blockquote>
-  <% else %>
-    <blockquote><small>No profile description... yet!</small></blockquote>
-  <% end %>
+  <%= render 'users/rendered_details', user: user %>
 </div>

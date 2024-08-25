@@ -38,16 +38,16 @@ class ApiController < ApplicationController
 
   # GET /api/links/:id.json
   def show_link
-    @link = Link.find(params[:id])
-    @set_by = User.find(@link.set_by_id) if @link.set_by_id
+    @link = Link.joins(:user, :set_by).find(params[:id])
+    @set_by = @link.set_by
   rescue
     render json: { message: 'This link does not exist.' }, status: 404
   end
 
   def all_links
     @force_online = params.has_key? :online
-    @links = Link.all.where(friends_only: false).and(Link.where('expires > ?', Time.now).or(Link.where(never_expires: true))) unless @force_online
-    @links = Link.all.where(friends_only: false).is_online.and(Link.where('expires > ?', Time.now).or(Link.where(never_expires: true))) if @force_online
+    @links = Link.includes(:user).all.where(friends_only: false).and(Link.where('expires > ?', Time.now).or(Link.where(never_expires: true))).limit(100) unless @force_online
+    @links = Link.includes(:user).all.where(friends_only: false).is_online.and(Link.where('expires > ?', Time.now).or(Link.where(never_expires: true))).limit(100) if @force_online
   end
 
   def show_link_widget
@@ -99,15 +99,17 @@ class ApiController < ApplicationController
     end
 
     @user = User.find_by(username: params[:username])
-    @has_friendship = Friendship.find_friendship(current_user_or_api_user, @user).exists? if current_user_or_api_user
-    online_links = @user.link.where(friends_only: false).and(@user.link.where('expires > ?', Time.now).or(@user.link.where(never_expires: true))).and(@user.link.is_online) unless @has_friendship
-    online_links = @user.link.where('expires > ?', Time.now).or(@user.link.where(never_expires: true)).and(@user.link.is_online) if @has_friendship
+    @has_friendship = Rails.cache.fetch("v1/user-api/#{@user.username}/#{current_user_or_api_user&.username || 'anon'}/has_friendship", expires: 1.hour) { Friendship.find_friendship(current_user_or_api_user, @user).exists? } if current_user_or_api_user
+    online_links_ids = Rails.cache.fetch("v1/user-api/#{@user.username}/online-links/as-anon", expires: 7.minutes) { @user.link.where(friends_only: false).and(@user.link.where('expires > ?', Time.now).or(@user.link.where(never_expires: true))).and(@user.link.is_online).pluck(:id) } unless @has_friendship
+    online_links_ids = Rails.cache.fetch("v1/user-api/#{@user.username}/online-links/as-friend", expires: 7.minutes) { @user.link.where('expires > ?', Time.now).or(@user.link.where(never_expires: true)).and(@user.link.is_online).pluck(:id) } if @has_friendship
 
     @is_self = @user.id == current_user_or_api_user.id if current_user_or_api_user
     @is_self = false unless current_user_or_api_user
-    @is_online = online_links.count > 0
+    @is_online = online_links_ids.length > 0
     @is_authenticated = !!current_user_or_api_user
     @public_links = @user.link.where(friends_only: false).and(@user.link.where('expires > ?', Time.now).or(@user.link.where(never_expires: true)))
+
+    expires_in 7.minutes, public: true
   rescue => e
     track :error, :api_user_missing, username: params[:username], message: e.message
     render json: { message: 'This user does not exist.' }, status: 404

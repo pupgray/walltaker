@@ -1,0 +1,9 @@
+<%= turbo_stream_from :news_backdrop %>
+<%= turbo_frame_tag :news_backdrop do %>
+  <%= render 'backdrop', news_entry: @news_entry %>
+<% end %>
+
+<%= turbo_stream_from :desk %>
+<%= turbo_frame_tag :desk do %>
+  <%= render 'desk', news_entry: @news_entry %>
+<% end %>

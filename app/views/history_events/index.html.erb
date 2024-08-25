@@ -1,0 +1,35 @@
+<ul class="history">
+  <% @events.each do |visit, list| %>
+    <li>
+      <div class="accent-block no-charm">
+        <h3>
+          <%= visit.started_at.strftime(Time::DATE_FORMATS[:short]) if visit.present? %>
+          <%= list.last.created_at.strftime(Time::DATE_FORMATS[:short]) unless visit.present? %>
+          <small><%= "#{time_ago_in_words visit.started_at} ago" if visit.present? %></small>
+        </h3>
+        <ul>
+          <% list.group_by(&:link).each do |link, link_group| %>
+            <li>
+              <%= render 'links/link', link: %>
+              <ul>
+                <% link_group.each do |e| %>
+                  <li class="history__record">
+                    <div>
+                      <%= link_to (e.surrender_controller || e.user), user_path((e.surrender_controller || e.user).username) %>
+                      <% if e.surrender_controller %>
+                        on behalf of
+                        <%= link_to e.user, user_path(e.user.username) %>
+                      <% end %>
+                    </div>
+                    <%= e.did_what.humanize.downcase %>
+                    <%= link_to e.link %>
+                  </li>
+                <% end %>
+              </ul>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </li>
+  <% end %>
+</ul>

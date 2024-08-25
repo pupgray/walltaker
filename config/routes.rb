@@ -1,6 +1,15 @@
 Rails.application.routes.draw do
+  get 'news_room/index'
+  resources :profiles, only: %i[update create destroy index show] do
+    member do
+      get 'preview', to: 'profiles#show_preview', as: 'preview'
+    end
+  end
+  resources :history_events, path: 'history'
   get 'errors/not_found'
   get 'errors/server_error'
+
+  resources :news_room, only: %i[index]
 
   get 'users/:user_id/kinks', to: 'kink#users_kinks', as: 'user_kinks'
   get 'kinks/new', to: 'kink#new', as: 'kink_new_form'
@@ -15,7 +24,6 @@ Rails.application.routes.draw do
   get 'search/index'
   get 'search/results'
   mount Nuttracker::Engine => "/nut"
-  mount Crono::Engine, at: '/pornbot'
   get 'help', to: 'help#index', as: 'help'
   get 'help/faq', to: 'help#faq', as: 'faq'
   get 'help/client_guide', to: 'help#client_guide', as: 'client_guide'
@@ -29,6 +37,7 @@ Rails.application.routes.draw do
   root 'dashboard#index'
   get 'signup', to: 'users#new', as: 'signup'
   get 'login', to: 'session#new', as: 'login'
+  get 'login/evilly', to: 'session#be_evil', as: 'be_evil'
   get 'i-forgor', to: 'users#request_password_reset', as: 'forgor'
   post 'i-forgor', to: 'users#password_reset', as: 'forgor_commit'
   get 'i-forgor/commit/:password_reset_token', to: 'users#apply_new_password', as: 'forgor_apply'
@@ -45,6 +54,8 @@ Rails.application.routes.draw do
   get 'search', to: 'search#index', as: 'search'
   get 'search/query', to: 'search#results', as: 'results'
 
+  resources :link_lists, only: %i[show index]
+
   defaults format: :json do
     get 'api/links/:id.json', to: 'api#show_link'
     get 'api/links.json', to: 'api#all_links'
@@ -56,13 +67,24 @@ Rails.application.routes.draw do
   post 'api/mascot/next', to: 'api#update_mascot'
   post 'api/pervert/toggle', to: 'api#update_perviness'
 
-  resources :users
+  resources :users do
+    resources :reports, only: %i[new create]
+    post 'profile', to: 'profiles#set_profile', as: 'set_profile'
+
+    member do
+      get :toggle_details_mode, to: 'users#toggle_details_mode', as: 'toggle_details_mode'
+      get :details, to: 'users#details', as: 'details'
+      get :profiles, to: 'profiles#index', as: 'profiles'
+    end
+  end
   resources :session
   resources :message_thread, path: 'messages' do
+    resources :message_thread_participant, as: :participant, path: 'participants', only: %i[update]
     member do
       post :send, to: 'message_thread#send_message', as: 'send_to'
       post 'users/:user_id', to: 'message_thread#add_user', as: 'add_user'
       delete 'users/:user_id', to: 'message_thread#remove_user', as: 'remove_user'
+      get 'load_more', to: 'message_thread#load_more', as: 'load_more'
     end
     collection do
       get 'resolve_thread_with/:user_id', to: 'message_thread#resolve', as: 'resolve'
@@ -87,8 +109,11 @@ Rails.application.routes.draw do
       get :walltaker, to: 'links#export'
       post 'abilities/:ability', to: 'links#toggle_ability', as: 'toggle_link_ability'
       post 'fork', to: 'links#fork', as: 'fork_link'
+      get 'embed'
+      get 'show_similar', as: 'show_similar'
     end
 
+    resources :reports, only: %i[new create]
     resources :comments
     resources :link_wizard, controller: 'link_wizard', path: :wizard, as: :wizard do
       member do
@@ -110,6 +135,8 @@ Rails.application.routes.draw do
 
   scope path: :mod_tools, as: 'mod_tools' do
     get '/', to: 'mod_tools#index', as: 'index'
+
+    resources :reports, except: %i[new create]
 
     scope path: :passwords, as: 'passwords' do
       get '/', to: 'mod_tools#show_password_reset', as: 'index'

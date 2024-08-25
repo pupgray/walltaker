@@ -1,0 +1,66 @@
+<%# locals: (report:) -%>
+
+<table class="reports">
+    <tr>
+      <td rowspan="2">
+        <strong>Reporter:</strong>
+        <%= report.reporter.username %>
+      </td>
+      <td>
+        <div>
+          <%= time_tag report.created_at do %>
+            <%= time_ago_in_words report.created_at %> ago.
+          <% end %>
+        </div>
+        <div>Reported a <%= report.reportable_type %>.</div>
+        <% if report.reportable %>
+          <%= link_to polymorphic_path(report.reportable), polymorphic_path(report.reportable) %>
+        <% end %>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <pre><%= report.snapshot %></pre>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <% if report.is_closed %>
+          Closed <%= time_tag report.updated_at do %>
+            <%= time_ago_in_words report.updated_at %> ago.
+          <% end %>
+        <% else %>
+          <%= button_to 'Close ticket', mod_tools_report_path(report), method: :delete, class: 'secondary' %>
+          <br/>
+
+          <% if report.reportable %>
+            <% case report.reportable_type %>
+            <% when 'User' %>
+              <%= button_to mod_tools_users_index_url, method: :get, params: {email: report.reportable&.email}, class: 'secondary' do %>
+                Edit account
+              <% end %>
+              <% if report.reportable&.quarantined %>
+                <%= button_to "Revive #{report.reportable&.username}", mod_tools_quarantine_update_path(report.reportable), params: {return_to: request.path} %>
+              <% else %>
+                <%= button_to "Quarantine #{report.reportable&.username}", mod_tools_quarantine_update_path(report.reportable), params: {return_to: request.path} %>
+              <% end %>
+              <%= button_to "IP Ban #{report.reportable&.username}", mod_tools_quarantine_ipban_path(report.reportable), params: {return_to: request.path} %>
+            <% when 'Link' %>
+              <%= button_to mod_tools_users_index_url, method: :get, params: {email: report.reportable&.user&.email}, class: 'secondary' do %>
+                Edit <%= report.reportable&.user&.username %>
+              <% end %>
+              <%= button_to "Delete Link ##{report.reportable&.id}", link_path(report.reportable), method: :delete %>
+              <% if report.reportable&.user&.quarantined %>
+                <%= button_to "Revive #{report.reportable&.user&.username} (link owner)", mod_tools_quarantine_update_path(report.reportable&.user), params: {return_to: request.path} %>
+              <% else %>
+                <%= button_to "Quarantine #{report.reportable&.user&.username} (link owner)", mod_tools_quarantine_update_path(report.reportable&.user), params: {return_to: request.path} %>
+              <% end %>
+              <%= button_to "IP Ban #{report.reportable&.user&.username} (link owner)", mod_tools_quarantine_ipban_path(report.reportable&.user), params: {return_to: request.path} %>
+            <% end %>
+          <% else %>
+            (The entity that was reported no longer exists!)
+          <% end %>
+        </td>
+      <% end %>
+    </tr>
+</table>

@@ -2,7 +2,7 @@
   <link rel="stylesheet" href="/wizard.css?x=<%= ENV['COMMIT_HASH'] %>"/>
 <% end %>
 <% content_for :content do %>
-  <div class="task-tools">
+  <div data-turbo-prefetch="false" class="task-tools">
     <div class="left">
       <%= link_to "Come back later", link_path(@link.id) %>
     </div>

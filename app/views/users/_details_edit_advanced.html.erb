@@ -1,0 +1,82 @@
+<div data-controller="hotkeys wall-editor"
+     data-hotkeys-bindings-value='{"ctrl+s, command+s": "wall-editor#save:prevent"}'
+     data-wall-editor-save-url-value="<%= user_path(user) %>"
+     class="wall_editor"
+>
+  <template data-wall-editor-target="template"><%= sanitize user.details, scrubber: WallScrubber.new %></template>
+
+  <div class="task-tools small">
+    <div class="left">
+      <a href="<%= user_path(user.username) %>" title="Cancel editing" class="no-underline" data-turbo="false">
+        Back
+      </a>
+    </div>
+    <div class="right">
+      <%= link_to 'Simple Mode', toggle_details_mode_user_path(user.username), data: { turbo: false } %>
+      <%= link_to '#', data: { action: 'click->wall-editor#save:prevent' }, class: 'no-underline button-like' do %>
+        <span data-wall-editor-target="saveBtnText">Save</span>
+      <% end %>
+    </div>
+  </div>
+
+  <%= turbo_frame_tag :wall, src: details_user_path(user), class: 'preview', data: { 'wall-editor-target': 'preview' } %>
+
+  <div class="full-width editors">
+    <div class="accent-block tight-top">
+      <div class="accent-block__charm inline">
+        <ion-icon role="presentation" name="information-circle"></ion-icon>
+        <div class="split">
+          <span><%= user.username %>.html</span>
+          <%= link_to 'Learn HTML', 'https://www.htmldog.com/guides/html/beginner/tags/', target: '_blank' %>
+        </div>
+      </div>
+      <hey-monaco-editor class="editor" data-wall-editor-target="editor" language="html"></hey-monaco-editor>
+      <details class="editor-hints">
+        <summary>Hints</summary>
+        <ul>
+          <li>
+            Live updating time: <br/>
+            <code>&lt;relative-time datetime="2024-08-01T05:07:19Z">&lt;/relative-time></code>
+          </li>
+          <li>
+            Two columns: <br/>
+            <code>&lt;div class="split">...content...&lt;/div></code>
+          </li>
+        </ul>
+      </details>
+    </div>
+
+    <div class="accent-block">
+      <div class="accent-block__charm inline">
+        <ion-icon role="presentation" name="information-circle"></ion-icon>
+        <div class="split">
+          <span><%= user.username %>.css</span>
+          <%= link_to 'Learn CSS', 'https://developer.mozilla.org/en-US/docs/Learn/CSS/First_steps/Getting_started', target: '_blank' %>
+        </div>
+      </div>
+      <hey-monaco-editor class="editor" data-wall-editor-target="csseditor" language="css"></hey-monaco-editor>
+      <details class="editor-hints">
+        <summary>Hints</summary>
+        <ul>
+          <li>
+            Accent colour: <br/>
+            <code>body { --accent: #ff0000; }</code>
+          </li>
+          <li>
+            Text colour: <br/>
+            <code>body { --text: #ff0000; }</code>
+          </li>
+          <li>
+            Background colour: <br/>
+            <code>body { --bg: #ff0000; --accent-bg: #ff0000; }</code>
+          </li>
+          <li>
+            Change heading: <br/>
+            <code>.header__age-warning { font-size: 0; }<br/>
+              .header__age-warning::after { content: 'Your Text'; font-size: 0.9rem; }</code>
+          </li>
+        </ul>
+      </details>
+    </div>
+  </div>
+</div>

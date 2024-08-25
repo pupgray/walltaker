@@ -1,0 +1,25 @@
+<%# locals: (kink:, preloaded_links: nil, sample: false) -%>
+
+<% links = kink.links.is_public.order('RANDOM()').limit(2) if sample %>
+<% links = kink.links.is_public.order(:updated_at).limit(30) if !sample && preloaded_links.nil? %>
+<% links = preloaded_links if !sample && preloaded_links.present? %>
+
+<% count = sample ? kink.links.is_public.count : links.count %>
+
+<%= link_to(sample ? link_list_path(kink) : kink_path(kink), class: 'no-underline', target: '_top') do %>
+  <%= tag.send(sample ? :h3 : :h2) do %>
+    <%= kink.name.capitalize %>
+    <small><%= pluralize count, 'link' %>,
+      across <%= pluralize (sample ? kink.links.is_public : links).pluck(:user_id).uniq.count, 'user' %>.</small>
+    </h3>
+  <% end %>
+<% end %>
+
+<% links.each do |link| %>
+  <div data-controller="go" data-go-to-value="<%= link_url(link) %>">
+    <%= render 'links/link', link: %>
+  </div>
+<% end %>
+
+<%= link_to "See more #{kink.name} links", link_list_path(kink), class: 'button-like no-underline center-button', target: '_top' if sample && count > 1 %>
+

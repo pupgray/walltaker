@@ -1,6 +1,6 @@
 class MessageThreadController < ApplicationController
-  before_action :authorize, only: %i[index show send_message new create destroy edit remove_user add_user update resolve]
-  before_action :set_message_thread, only: %i[show send_message edit update remove_user add_user]
+  before_action :authorize, only: %i[index show send_message new create destroy edit remove_user add_user update resolve load_more]
+  before_action :set_message_thread, only: %i[show send_message edit update remove_user add_user load_more]
 
   def index
     @message_threads = MessageThread.includes(:users).where(users: { id: current_user.id })
@@ -24,13 +24,8 @@ class MessageThreadController < ApplicationController
 
       if (!response)
         track :error, :message_could_not_be_saved, message: @new_message, thread: @message_thread
+        redirect_to message_thread_path @message_thread, alert: 'Something went wrong'
       else
-        @message_thread.users.all.each do |user|
-          if user.username != current_user.username
-            Notification.create user: user, notification_type: :new_message, text: "#{current_user.username}: #{message['content'].truncate 24}", link: message_thread_path(@message_thread)
-          end
-        end
-
         if current_user&.current_surrender
           Notification.create user: current_user, notification_type: :surrender_event, link: message_thread_path(@message_thread), text: "#{current_user.current_surrender.controller.username} said '#{@new_message.content}' in a message thread."
         end
@@ -64,6 +59,23 @@ class MessageThreadController < ApplicationController
     )
   end
 
+  def load_more
+    @after_message = Message.find(params[:after_id])
+    @message_thread = @after_message.message_thread
+
+    begin
+      if @after_message && @message_thread.users.find(current_user.id)
+        @older_messages = @message_thread.messages.order(updated_at: :desc).includes(:from_user).where('id < ?', @after_message.id).limit(30)
+      else
+        redirect_to message_thread_path(@message_thread), alert: 'Something went wrong'
+      end
+    rescue
+      redirect_to message_thread_path(@message_thread), alert: 'Something went wrong'
+    end
+  end
+
+  # This shouldn't have been here :(
+  # todo: move into a message_thread_participant controller
   def remove_user
     user = User.find params['user_id']
     if user && @message_thread
