@@ -5,7 +5,7 @@ default: &default
       recurring_tasks:
         scoop_round:
           class: ScoopPopJob
-          schedule: every 1 minute
+          schedule: every 2 minutes
 
 development:
   <<: *default
