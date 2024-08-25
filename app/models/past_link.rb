@@ -21,8 +21,14 @@ class PastLink < ApplicationRecord
       recent_posts: PastLink.order(id: :desc).take(6)
     }
 
-    Rails.cache.fetch('v1/pushnewsjob', expires_in: (8..15).to_a.sample.seconds) do
-      PushNewsJob.perform_later(NewsEntry.from_past_link(self).to_json)
+    if post_url.ends_with?(".png", ".jpg", ".jpeg", ".gif", ".bmp")
+      waiting = Rails.cache.fetch('v1/newsroom_mutex').present?
+
+      unless waiting
+        Rails.cache.fetch('v1/pushnewsjob', expires_in: (7..9).to_a.sample.seconds) do
+          PushNewsJob.perform_later(NewsEntry.from_past_link(self).to_json)
+        end
+      end
     end
   end
 end

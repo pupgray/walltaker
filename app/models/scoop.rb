@@ -26,6 +26,6 @@ class Scoop < ApplicationRecord
   end
 
   def not_editing_shown_scoop
-    errors.add(:base, 'Scoop was already shown. It can no longer be changed.') if was_shown
+    errors.add(:base, 'Scoop was already shown. It can no longer be changed.') if was_shown_was == true
   end
 end
