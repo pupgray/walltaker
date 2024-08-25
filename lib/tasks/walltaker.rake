@@ -241,8 +241,6 @@ namespace :walltaker do
     Rake::Task["walltaker:ki_round"].invoke
     Rake::Task["walltaker:warren_round"].invoke
     Rake::Task["walltaker:taylor_round"].invoke
-
-    Rake::Task["walltaker:scoop_round"].invoke
   end
 end
 

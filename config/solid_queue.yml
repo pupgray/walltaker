@@ -1,0 +1,17 @@
+default: &default
+  dispatchers:
+    - polling_interval: 1
+      batch_size: 1
+      recurring_tasks:
+        scoop_round:
+          class: ScoopPopJob
+          schedule: every 1 minute
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default
