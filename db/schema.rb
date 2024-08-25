@@ -10,8 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_08_06_043226) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_06_043226) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_trgm"
   enable_extension "plpgsql"
 
   # Custom types defined in this database.
@@ -355,6 +356,17 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_06_043226) do
     t.index ["reporter_id"], name: "index_reports_on_reporter_id"
   end
 
+  create_table "scoops", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.text "details"
+    t.bigint "link_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "was_shown", default: false
+    t.index ["link_id"], name: "index_scoops_on_link_id"
+    t.index ["user_id"], name: "index_scoops_on_user_id"
+  end
+
   create_table "surrenders", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "friendship_id", null: false
@@ -419,6 +431,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_06_043226) do
   add_foreign_key "profiles", "profiles", column: "origin_id"
   add_foreign_key "profiles", "users"
   add_foreign_key "reports", "users", column: "reporter_id"
+  add_foreign_key "scoops", "links"
+  add_foreign_key "scoops", "users"
   add_foreign_key "surrenders", "friendships"
   add_foreign_key "surrenders", "users"
   add_foreign_key "users", "links", column: "viewing_link_id"

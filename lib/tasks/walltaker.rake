@@ -227,11 +227,22 @@ namespace :walltaker do
     puts "Done! Set #{set_count} links in the end"
   end
 
+  task scoop_round: :environment do
+    next_scoop = Scoop.where(was_shown: false).order(created_at: :asc).first
+    if next_scoop
+      news_entry = NewsEntry.from_scoop(next_scoop)
+      PushNewsJob.perform_later(news_entry.to_json)
+      next_scoop.update(was_shown: true)
+    end
+  end
+
   task all_bots: :environment do
     Rake::Task["walltaker:porn_bot_round"].invoke
     Rake::Task["walltaker:ki_round"].invoke
     Rake::Task["walltaker:warren_round"].invoke
     Rake::Task["walltaker:taylor_round"].invoke
+
+    Rake::Task["walltaker:scoop_round"].invoke
   end
 end
 

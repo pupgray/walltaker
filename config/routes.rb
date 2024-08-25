@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   get 'news_room/index'
+  resources :scoops
   resources :profiles, only: %i[update create destroy index show] do
     member do
       get 'preview', to: 'profiles#show_preview', as: 'preview'

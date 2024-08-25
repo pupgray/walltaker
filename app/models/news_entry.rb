@@ -26,6 +26,13 @@ class NewsEntry
     end
   end
 
+  def self.from_scoop(scoop)
+    NewsEntry.new(
+      image_url: nil,
+      message: 'OH FUCK'
+    )
+  end
+
   def attributes
     { 'image_url' => nil, 'message' => '', 'lizard_image_url' => 'mascot/news/TaylorDeskOpen.png' }
   end

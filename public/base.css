@@ -972,6 +972,40 @@ a.small:hover {
     transform: translateY(1.5rem);
     border-top-right-radius: 0;
     border-top-left-radius: 0;
+
+    &.accent-block__button--left,
+    &.accent-block__button--right {
+        width: calc(50% + 0.5rem) !important;
+    }
+
+    &.accent-block__button--left {
+       border-bottom-right-radius: 0;
+    }
+
+    &.accent-block__button--right {
+        border-bottom-left-radius: 0;
+        position: absolute;
+        right: 1.5rem;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .accent-block .accent-block__button {
+        &.accent-block__button--left,
+        &.accent-block__button--right {
+            width: calc(100% + 3rem) !important;
+        }
+
+        &.accent-block__button--left {
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        &.accent-block__button--right {
+            border-bottom-left-radius: 5px;
+            position: static;
+        }
+    }
 }
 
 .accent-block .accent-block__button--force-bottom {
