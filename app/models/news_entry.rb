@@ -4,7 +4,7 @@ class NewsEntry
   include ActiveModel::API
   include ActiveModel::Serializers::JSON
 
-  attr_accessor :image_url, :message, :lizard_image_url
+  attr_accessor :image_url, :message, :lizard_image_url, :type, :transition_message
 
   def initialize(**args)
     args[:lizard_image_url] ||= 'mascot/news/TaylorDeskOpen.png'
@@ -29,12 +29,15 @@ class NewsEntry
   def self.from_scoop(scoop)
     NewsEntry.new(
       image_url: nil,
-      message: 'OH FUCK'
+      type: 'scoop',
+      message: scoop.details + " - #{scoop.user.username}",
+      lizard_image_url: scoop.interview_image_url,
+      transition_message: "Breaking news from #{scoop.user.username}!"
     )
   end
 
   def attributes
-    { 'image_url' => nil, 'message' => '', 'lizard_image_url' => 'mascot/news/TaylorDeskOpen.png' }
+    { 'image_url' => nil, 'message' => '', 'lizard_image_url' => 'mascot/news/TaylorDeskOpen.png', 'type' => 'post', 'transition_message' => nil }
   end
 end
 

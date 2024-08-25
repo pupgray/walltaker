@@ -1,11 +1,37 @@
+.news-room {
+    min-height: 100dvh;
+    position: relative;
+    grid-column: 1 / span 3;
+    overflow: hidden;
+
+    &::after {
+        content: '';
+        display: block;
+        position: fixed;
+        background: var(--bg);
+        max-height: 330px;
+        max-width: 370px;
+        bottom: -30px;
+        right: -30px;
+        z-index: 1;
+        filter: blur(30px);
+        opacity: 0.6;
+        height: 100%;
+        width: 100%;
+    }
+}
+
 .news-room__desk {
     position: fixed;
     bottom: -25px;
     right: -65px;
     width: 370px;
+    z-index: 10;
 
     & > img {
         opacity: 1;
+        position: relative;
+        z-index: 10;
     }
 }
 
@@ -24,15 +50,18 @@
         height: 100%;
         border-radius: 0;
         object-fit: cover;
+        position: relative;
+        z-index: 1;
     }
 
     & .news-room__feature {
         position: fixed;
-        bottom: 30px;
+        bottom: 250px;
         right: 100px;
         width: 120px;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, 100%);
         border: 3px solid var(--border);
+        z-index: 5;
     }
 }
 
@@ -53,6 +82,7 @@
     justify-content: center;
     text-align: center;
     color: var(--bg);
+    z-index: 15;
 }
 
 .thought:before,
