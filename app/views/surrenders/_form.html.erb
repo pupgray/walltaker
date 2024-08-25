@@ -6,6 +6,16 @@
     <%= f.select :friendship, friendship_options, {}, class: 'no-margin' %>
   <% end %>
 
+  <%= f.label :duration, class: 'form__row form__row--stacking' do %>
+    <strong>Surrender Duration</strong>
+    <%= f.select :duration, options_for_select([
+      ['24 hours (Default)', 24],
+      ['3 days', 72],
+      ['7 days', 168],
+      ['2 weeks', 336]
+    ]), {}, class: 'no-margin' %>
+  <% end %>
+
   <%= f.label :pending, class: 'form__row form__row--checkbox' do %>
     <%= f.check_box :pending, class: 'no-margin' %>
     <span>Let me keep using the site till my account is taken over.</span>
@@ -25,5 +35,5 @@
     </span>
   <% end %>
 
-  <%= f.submit "Give them my account for up to 24hrs", class: 'danger-button accent-block__button' %>
+  <%= f.submit "Give them my account", class: 'danger-button accent-block__button' %>
 <% end %>
