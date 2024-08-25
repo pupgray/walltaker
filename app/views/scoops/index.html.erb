@@ -1,3 +1,15 @@
+<div data-turbo-prefetch="false" class="task-tools">
+  <div class="left">
+    <%= link_to "Newsroom", news_room_index_path %>
+  </div>
+
+  <div class="right">
+    <%= button_to new_scoop_path, method: :get do %>
+      New scoop
+    <% end %>
+  </div>
+</div>
+
 <h2>
   <ion-icon role="presentation" name="newspaper" class="big"></ion-icon>
   Your Scoops
