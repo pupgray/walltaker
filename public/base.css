@@ -1857,3 +1857,26 @@ main.full-width {
     grid-template-columns: subgrid;
 }
 
+.chyron {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--accent-bg);
+    box-shadow: 0 0 15px rgba(43, 41, 37, 0.24);
+    z-index: 999999;
+
+    & .WTN-logo {
+        font-family: "Josefin Sans", sans-serif;
+        font-weight: 700;
+        font-style: italic;
+        font-size: 1.5em;
+        line-height: 23px;
+        padding: 9px 9px 5px 9px;
+        color: var(--bg);
+        background: var(--accent);
+    }
+}

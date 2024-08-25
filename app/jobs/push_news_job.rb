@@ -27,6 +27,7 @@ class PushNewsJob < ApplicationJob
       transition.lizard_image_url = 'mascot/news/TaylorDeskTransition.png'
 
       Turbo::StreamsChannel.broadcast_update_to :desk, target: :desk, partial: 'news_room/desk', locals: { news_entry: follow_up }
+      Turbo::StreamsChannel.broadcast_remove_to :chyron, target: :chyron
 
       PushNewsJob.set(wait: 5.seconds).perform_later(transition.to_json, done: true)
       return
@@ -64,10 +65,6 @@ class PushNewsJob < ApplicationJob
           resting = NewsEntry.new
           resting.lizard_image_url = 'mascot/news/TaylorDeskClosed.png'
           PushNewsJob.set(wait: 5.seconds).perform_later(resting.to_json)
-        end
-
-        if news_entry.lizard_image_url == 'mascot/news/TaylorDeskClosed.png'
-          Rails.cache.delete('v1/newsroom_mutex')
         end
 
         if news_entry.lizard_image_url == 'mascot/news/TaylorDeskOpen.png'

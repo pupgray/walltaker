@@ -49,6 +49,9 @@
     </div>
   </header>
 
+  <%= turbo_stream_from :chyron %>
+  <%= turbo_frame_tag :chyron %>
+
   <%= render 'application/flashes' %>
 
   <% if current_user %>
