@@ -6,6 +6,10 @@ default: &default
         scoop_round:
           class: ScoopPopJob
           schedule: every 2 minutes
+  workers:
+    - queues: "*"
+      threads: 3
+      polling_interval: 0.5
 
 development:
   <<: *default
