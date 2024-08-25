@@ -1,0 +1,9 @@
+<h2>
+  <ion-icon role="presentation" name="newspaper" class="big"></ion-icon>
+  Your Scoops
+  <small>Edit or review the scoops you've submitted to the newsroom.</small>
+</h2>
+
+<% @scoops.each do |scoop| %>
+  <%= render scoop %>
+<% end %>

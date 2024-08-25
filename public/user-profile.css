@@ -206,6 +206,11 @@ form.orgasms .form__row {
     & .full-span {
         width: 100%;
     }
+
+    &.stacked {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }
 
 .form__row--stacking {

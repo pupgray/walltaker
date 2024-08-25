@@ -19,6 +19,7 @@ class User < ApplicationRecord
   has_many :profiles, inverse_of: :user
   belongs_to :profile, optional: true
   has_one :current_surrender, class_name: 'Surrender', dependent: :destroy
+  has_many :scoops
 
   validates_uniqueness_of :username
 
