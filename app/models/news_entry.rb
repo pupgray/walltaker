@@ -21,7 +21,7 @@ class NewsEntry
     else
       return NewsEntry.new(
         image_url: past_link.post_url,
-        message: TaylorSpeech.new(tags: past_link.tags, tone: :neutral, setter: past_link.set_by.username, settee: past_link.user.username).to_s
+        message: TaylorSpeech.new(tags: past_link.tags, tone: :neutral, setter: past_link.set_by&.username || 'anon', settee: past_link.user.username).to_s
       )
     end
   end
