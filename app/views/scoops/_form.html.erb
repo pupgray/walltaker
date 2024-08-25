@@ -1,0 +1,15 @@
+<%# locals: (scoop:) %>
+
+<div class="accent-block">
+  <div class="accent-block__charm">
+    <ion-icon role="presentation" name="newspaper"></ion-icon>
+    <%= scoop.persisted? ? 'Edit a scoop' : 'New scoop!' %>
+  </div>
+  <%= form_with model: scoop do |f| %>
+    <div class="form__row stacked">
+      <%= f.label :details %>
+      <%= f.text_area :details, class: 'full-span' %>
+    </div>
+    <%= f.submit "Send in!", class: 'accent-block__button' %>
+  <% end %>
+</div>

@@ -1,3 +1,8 @@
+<% content_for :stylesheets do %>
+  <link rel="preload" as="image" href="<%= image_url("mascot/news/TaylorDeskClosed.png") %>">
+  <link rel="preload" as="image" href="<%= image_url("mascot/news/TaylorDeskOpen.png") %>">
+<% end %>
+
 <%= turbo_stream_from :news_backdrop %>
 <%= turbo_frame_tag :news_backdrop do %>
   <%= render 'backdrop', news_entry: @news_entry %>
