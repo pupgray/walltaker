@@ -238,9 +238,6 @@ namespace :walltaker do
 
   task all_bots: :environment do
     Rake::Task["walltaker:porn_bot_round"].invoke
-    Rake::Task["walltaker:ki_round"].invoke
-    Rake::Task["walltaker:warren_round"].invoke
-    Rake::Task["walltaker:taylor_round"].invoke
   end
 end
 

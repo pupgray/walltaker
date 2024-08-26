@@ -6,9 +6,21 @@ default: &default
         scoop_round:
           class: ScoopPopJob
           schedule: every 2 minutes
+        taylor:
+          class: LizardRoundJob
+          args: [ 'PornLizardTaylor' ]
+          schedule: every 4 minute
+        warren:
+          class: LizardRoundJob
+          args: [ 'PornLizardWarren' ]
+          schedule: every 4 minutes
+        ki:
+          class: LizardRoundJob
+          args: [ 'PornLizardKi' ]
+          schedule: every 4 minutes
   workers:
     - queues: "*"
-      threads: 3
+      threads: 4
       polling_interval: 0.5
 
 development:
