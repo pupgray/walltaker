@@ -67,6 +67,10 @@ class PushNewsJob < ApplicationJob
           PushNewsJob.set(wait: 5.seconds).perform_later(resting.to_json)
         end
 
+        if news_entry.lizard_image_url == 'mascot/news/TaylorDeskClosed.png'
+          Rails.cache.delete('v1/newsroom_mutex')
+        end
+
         if news_entry.lizard_image_url == 'mascot/news/TaylorDeskOpen.png'
           news_entry.lizard_image_url = 'mascot/news/TaylorDeskClosed.png'
           PushNewsJob.set(wait: 3.seconds).perform_later(news_entry.to_json)
