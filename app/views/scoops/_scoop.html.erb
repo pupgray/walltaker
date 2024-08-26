@@ -1,17 +1,19 @@
-<%# locals: (scoop:) %>
+<%# locals: (scoop:, tight: false) %>
 
-<div class="accent-block">
+<div class="accent-block <%= tight ? 'tight-top' : '' %>">
   <div class="accent-block__charm">
     <ion-icon role="presentation" name="newspaper"></ion-icon>
-    Created: <strong><%= time_ago_in_words scoop.created_at %> ago</strong>
+    <%= link_to scoop.user.username, user_path(scoop.user.username) %> <%= time_ago_in_words scoop.created_at %> ago
   </div>
   <p><%= scoop.details %></p>
   <hr/>
   <% if scoop.was_shown %>
-    <p><strong>Shown <%= time_ago_in_words scoop.updated_at %> ago.</strong></p>
-    <% else %>
+    <p><strong>Aired <%= time_ago_in_words scoop.updated_at %> ago.</strong></p>
+  <% else %>
     <p>Awaiting a newsroom slot...</p>
   <% end %>
-  <%= button_to 'Stop the presses!', scoop, method: :delete, disabled: scoop.was_shown, class: 'accent-block__button danger-button accent-block__button--left' %>
-  <%= button_to 'Edit', edit_scoop_path(scoop), method: :get, disabled: scoop.was_shown, class: 'accent-block__button accent-block__button--right' %>
+  <% if current_user && current_user == scoop.user %>
+    <%= button_to 'Stop the presses!', scoop, method: :delete, disabled: scoop.was_shown, class: 'accent-block__button danger-button accent-block__button--left' %>
+    <%= button_to 'Edit', edit_scoop_path(scoop), method: :get, disabled: scoop.was_shown, class: 'accent-block__button accent-block__button--right' %>
+  <% end %>
 </div>

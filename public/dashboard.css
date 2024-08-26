@@ -45,8 +45,9 @@
 .dashboard h2 {
     margin-top: 0rem;
     text-align: left;
-    font-size: 1.25rem;
+    font-size: 1.35rem;
     padding: 0 0 0.5rem;
+    min-height: 2.4ex;
 }
 
 .dashboard h2 > small {
@@ -149,10 +150,34 @@
 
 .dashboard__updates {
     grid-column: 2 / -1;
-    grid-row: 2 / span 4;
+    grid-row: 3 / span 1;
     max-height: 830px;
     display: flex;
     flex-direction: column;
+}
+
+.news-room__panel {
+    grid-column: 2 / -1;
+    grid-row: 2 / span 1;
+
+    h2 {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+
+        & .WTN-logo {
+            font-size: 1.3rem;
+            padding: 5px 4px 0px;
+            line-height: 18px;
+        }
+
+        & button {
+            font-size: 0.75rem;
+            padding: 4px 7px;
+            margin: 0;
+        }
+    }
 }
 
 .dashboard__updates__content {
@@ -172,6 +197,11 @@
         max-height: initial;
     }
 
+    .news-room__panel {
+        grid-column: 1 / span 1;
+        grid-row: 4 / span 1;
+    }
+
     .dashboard__updates__content {
         max-height: 300px;
     }
@@ -181,11 +211,11 @@
     }
 
     .dashboard__total-updates {
-        grid-row: 4 / span 1;
+        grid-row: 6 / span 1;
     }
 
     .dashboard__newest-user {
-        grid-row: 6 / span 1;
+        grid-row: 8 / span 1;
     }
 
     .dashboard__your-total-changes {

@@ -17,7 +17,7 @@ class ScoopsController < ApplicationController
     @scoop = current_user.scoops.new(scoop_params)
 
     if @scoop.save
-      redirect_to @scoop
+      redirect_to scoops_path
     else
       redirect_to new_scoop_path, alert: @scoop.errors.full_messages.to_sentence
     end

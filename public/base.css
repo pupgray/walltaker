@@ -1868,15 +1868,50 @@ main.full-width {
     background: var(--accent-bg);
     box-shadow: 0 0 15px rgba(43, 41, 37, 0.24);
     z-index: 999999;
+    transform: translateY(100%);
+    animation-name: chyronappear;
+    animation-duration: 0.45s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+    animation-play-state: running;
+}
 
-    & .WTN-logo {
-        font-family: "Josefin Sans", sans-serif;
-        font-weight: 700;
-        font-style: italic;
-        font-size: 1.5em;
-        line-height: 23px;
-        padding: 9px 9px 5px 9px;
-        color: var(--bg);
-        background: var(--accent);
+.centred {
+    text-align: center;
+    margin: 1rem auto;
+    display: block;
+}
+
+.WTN-logo {
+    font-family: "Josefin Sans", sans-serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 1.5em;
+    line-height: 23px;
+    padding: 9px 9px 5px 9px;
+    color: var(--bg);
+    background: var(--accent);
+}
+
+@keyframes chyronappear {
+    0% {
+        transform: translateY(100%);
     }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.video-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 4;
+    pointer-events: none;
+    mix-blend-mode: hard-light;
+    opacity: 0.3;
+    object-fit: cover;
+    height: 100dvh;
+    width: 100dvw;
 }

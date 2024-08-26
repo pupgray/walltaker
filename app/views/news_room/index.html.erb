@@ -21,4 +21,10 @@
   <%= turbo_frame_tag :desk do %>
     <%= render 'desk', news_entry: @news_entry %>
   <% end %>
+
+  <div data-controller="audio">
+    <%= audio_tag 'news.mp3', autoplay: true, data: { 'audio-target': 'player' } %>
+  </div>
 </div>
+
+<%= video_tag 'globe.mp4', autoplay: true, loop: true, muted: true, class: 'video-bg' %>
