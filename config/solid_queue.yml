@@ -9,15 +9,15 @@ default: &default
         taylor:
           class: LizardRoundJob
           args: [ 'PornLizardTaylor' ]
-          schedule: every 4 minute
+          schedule: every 1 minute
         warren:
           class: LizardRoundJob
           args: [ 'PornLizardWarren' ]
-          schedule: every 4 minutes
+          schedule: every 1 minute
         ki:
           class: LizardRoundJob
           args: [ 'PornLizardKi' ]
-          schedule: every 4 minutes
+          schedule: every 1 minute
   workers:
     - queues: "*"
       threads: 4

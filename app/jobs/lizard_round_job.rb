@@ -21,7 +21,7 @@ class LizardRoundJob < ApplicationJob
                   end
 
     puts "#{lizard_username} has awoken"
-    links = Link.with_ability_to('can_be_set_by_lizard').is_online.joins(:user).where(user: { mascot: mascot_name }).order(Arel.sql('RANDOM()')).limit(20)
+    links = Link.with_ability_to('can_be_set_by_lizard').is_online.joins(:user).where(user: { mascot: mascot_name }).order(Arel.sql('RANDOM()')).limit(4)
 
     puts "Found #{links.count} links to set this round"
 
