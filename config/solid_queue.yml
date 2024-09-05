@@ -20,7 +20,7 @@ default: &default
           schedule: every 1 minute
   workers:
     - queues: "*"
-      threads: 4
+      threads: 3
       polling_interval: 0.5
 
 development:
