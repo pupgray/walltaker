@@ -6,6 +6,9 @@ default: &default
         scoop_round:
           class: ScoopPopJob
           schedule: every 2 minutes
+        browse_populate:
+          class: BrowsePopulate
+          schedule: every 4 minutes
         taylor:
           class: LizardRoundJob
           args: [ 'PornLizardTaylor' ]
