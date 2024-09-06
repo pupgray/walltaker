@@ -5,6 +5,7 @@ class Surrender < ApplicationRecord
   validates :user, uniqueness: { scope: :friendship }
   validates :accepted_consequences, acceptance: true
   validates :expires_at, comparison: { greater_than: Time.now }
+  validates :expires_at, comparison: { less_than_or_equal_to: Time.now + 2.weeks + 5.seconds }, on: :create
   validate :no_admin_surrendering, :friendship_is_confirmed
 
   scope :not_for_user, ->(user) { where.not(user: user) }
