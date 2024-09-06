@@ -61,6 +61,17 @@
         </table>
       </div>
     </div>
+    <div class="news-room__panel">
+      <h2>
+        <span>
+          <span class="WTN-logo">WTN</span> News Room
+        </span>
+        <%= button_to 'My Scoops', scoops_path, method: :get %>
+      </h2>
+      <%= render 'scoops/scoop', scoop: @recent_scoop, tight: true %>
+
+      <%= link_to 'Tune in', news_room_index_url, class: 'button-like centred' %>
+    </div>
     <div class="dashboard__total-updates">
       <h2>All-time</h2>
       <div class="dashboard__total-updates__content"><em><%= @total_wallpapers_changed_all %></em>wallpapers</div>

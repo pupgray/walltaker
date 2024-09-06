@@ -92,3 +92,4 @@ gem "faker"
 gem "barnes"
 gem "lograge"
 gem 'scout_apm'
+gem "solid_queue"

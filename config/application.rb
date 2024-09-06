@@ -23,6 +23,7 @@ module Walltaker
     #
     # config.time_zone = "Central Time (US & Canada)"
     config.eager_load_paths << Rails.root.join("scrubbers")
+    config.eager_load_paths << Rails.root.join("services")
     Rails.application.config.hosts << "joi.how"
     Rails.application.config.hosts << "walltaker.joi.how"
     Rails.application.config.hosts << "walltaker-heroku-24-6dcd77a4ae7b.herokuapp.com"

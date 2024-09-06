@@ -342,28 +342,30 @@ class LinksController < ApplicationController
   end
 
   def assign_e621_post_to_self(e621_post, link)
+    track :regular, :update_link_post, attempted_post_id: params['link'][:post_id]
+    set_by = current_user || nil
+    e621_service = E621.new
+
     link.update(
       {
         post_url: e621_post['file']['url'],
         post_thumbnail_url: e621_post['sample']['url'] || e621_post['preview']['url'],
         post_description: e621_post['description'],
-        set_by_id: current_user.nil? ? nil : current_user.id,
+        set_by_id: set_by.nil? ? nil : set_by.id,
         response_type: nil,
         response_text: nil
       }
     )
     link.forks.each do |fork|
-      result = get_post e621_post['id'], fork
-      assign_e621_post_to_self result, fork if result
+      result = e621_service.get_post e621_post['id'], fork
+      SetLinkJob.set(wait: 1.second, priority: 10).perform_later(e621_post: result, link: fork, set_by:) if result
     end
-    track :regular, :update_set_count, current_user_id: current_user&.id, link_owner_id: link.user.id, current_user_set_count_before_inc: current_user&.set_count
-    if current_user.present? && (link.user.id != current_user.id)
-      current_user.set_count = current_user.set_count.to_i + 1
-      current_user.save
+    if set_by.present? && (link.user.id != set_by.id)
+      set_by.set_count = set_by.set_count.to_i + 1
+      set_by.save
     end
     tag_string = "#{e621_post['tags']['general'].join(' ')} #{e621_post['tags']['character'].join(' ')} #{e621_post['tags']['species'].join(' ')} #{e621_post['tags']['lore'].join(' ')} #{e621_post['tags']['copyright'].join(' ')} #{e621_post['tags']['meta'].join(' ')} rating:#{e621_post['rating']}"
     past_link = PastLink.log_link(link, tag_string)
     past_link.save
-    track :regular, :update_link_post, attempted_post_id: params['link'][:post_id], past_link_id: past_link.id
   end
 end

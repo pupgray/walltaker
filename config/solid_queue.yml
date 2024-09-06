@@ -1,0 +1,36 @@
+default: &default
+  dispatchers:
+    - polling_interval: 1
+      batch_size: 1
+      recurring_tasks:
+        scoop_round:
+          class: ScoopPopJob
+          schedule: every 2 minutes
+        browse_populate:
+          class: BrowsePopulate
+          schedule: every 4 minutes
+        taylor:
+          class: LizardRoundJob
+          args: [ 'PornLizardTaylor' ]
+          schedule: every 1 minute
+        warren:
+          class: LizardRoundJob
+          args: [ 'PornLizardWarren' ]
+          schedule: every 1 minute
+        ki:
+          class: LizardRoundJob
+          args: [ 'PornLizardKi' ]
+          schedule: every 1 minute
+  workers:
+    - queues: "*"
+      threads: 3
+      polling_interval: 0.5
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default

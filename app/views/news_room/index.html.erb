@@ -1,14 +1,30 @@
 <% content_for :stylesheets do %>
   <link rel="preload" as="image" href="<%= image_url("mascot/news/TaylorDeskClosed.png") %>">
   <link rel="preload" as="image" href="<%= image_url("mascot/news/TaylorDeskOpen.png") %>">
+  <link rel="preload" as="image" href="<%= image_url("mascot/news/TaylorDeskBreakingNews.png") %>">
+  <link rel="preload" as="image" href="<%= image_url("mascot/news/TaylorDeskTransition.png") %>">
+  <link rel="preload" as="image" href="<%= image_url("mascot/news/KiInterviewOpen.png") %>">
+  <link rel="preload" as="image" href="<%= image_url("mascot/news/TaylorInterviewOpen.png") %>">
+  <link rel="preload" as="image" href="<%= image_url("mascot/news/WarrenInterviewOpen.png") %>">
+  <link rel="preload" as="image" href="<%= image_url("mascot/news/KiInterviewClosed.png") %>">
+  <link rel="preload" as="image" href="<%= image_url("mascot/news/TaylorInterviewClosed.png") %>">
+  <link rel="preload" as="image" href="<%= image_url("mascot/news/WarrenInterviewClosed.png") %>">
 <% end %>
 
-<%= turbo_stream_from :news_backdrop %>
-<%= turbo_frame_tag :news_backdrop do %>
-  <%= render 'backdrop', news_entry: @news_entry %>
-<% end %>
+<div class="news-room">
+  <%= turbo_stream_from :news_backdrop %>
+  <%= turbo_frame_tag :news_backdrop, refresh: 'morph' do %>
+    <%= render 'backdrop', news_entry: @news_entry %>
+  <% end %>
 
-<%= turbo_stream_from :desk %>
-<%= turbo_frame_tag :desk do %>
-  <%= render 'desk', news_entry: @news_entry %>
-<% end %>
+  <%= turbo_stream_from :desk %>
+  <%= turbo_frame_tag :desk, refresh: 'morph' do %>
+    <%= render 'desk', news_entry: @news_entry %>
+  <% end %>
+
+  <div data-controller="audio">
+    <%= audio_tag 'news.mp3', autoplay: true, data: { 'audio-target': 'player' } %>
+  </div>
+</div>
+
+<%= video_tag 'globe.mp4', autoplay: true, loop: true, muted: true, class: 'video-bg' %>
