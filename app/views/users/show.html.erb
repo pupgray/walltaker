@@ -67,7 +67,9 @@
       <% if @user.username == 'gios' %>
         <ion-icon role="presentation" name="logo-octocat" class="big"></ion-icon>
       <% elsif @user.username == 'gray' %>
-        <ion-icon role="presentation" name="train-outline" class="big"></ion-icon>
+        <ion-icon role="presentation" name="train-outline" class="big">
+      <% elsif @user.admin == true %>
+        <ion-icon role="presentation" name="shield-outline" class="big"></ion-icon>
       <% else %>
         <ion-icon role="presentation" name="person" class="big"></ion-icon>
       <% end %>

@@ -16,10 +16,24 @@ class SurrendersController < ApplicationController
     friendship = Friendship.involving(current_user).is_confirmed.find(surrender_params[:friendship])
 
     if friendship.present?
-      surrender = current_user.create_current_surrender(expires_at: Time.now + 24.hours, friendship:, accepted_consequences: surrender_params[:accepted_consequences], pending: surrender_params[:pending])
+      # Calculate expiration time based on selected duration
+      duration_hours = surrender_params[:duration].to_i
+      expires_at = Time.now + duration_hours.hours
+
+      surrender = current_user.create_current_surrender(
+        expires_at: expires_at,
+        friendship: friendship,
+        accepted_consequences: surrender_params[:accepted_consequences],
+        pending: surrender_params[:pending]
+      )
 
       if surrender.save
-        Notification.create user: surrender.controller, notification_type: :surrender_event, link: friendships_path, text: "#{surrender.user.username} has allowed you to log into their account. You can do so in the friends menu."
+        Notification.create(
+          user: surrender.controller,
+          notification_type: :surrender_event,
+          link: friendships_path,
+          text: "#{surrender.user.username} has allowed you to log into their account. You can do so in the friends menu."
+        )
         redirect_to surrender_path(surrender), notice: 'Surrender was successfully created. Now just wait...'
       else
         redirect_to new_surrender_path, alert: surrender.errors.full_messages.first
@@ -42,7 +56,7 @@ class SurrendersController < ApplicationController
   end
 
   def assume
-    # It's reallllllly important we don't fuck up here. Each guard on it's own line please.
+    # It's reallllllly important we don't fuck up here. Each guard on its own line, please.
 
     return redirect_to root_path, alert: 'Not allowed.' if @surrender.nil?
     return redirect_to root_path, alert: 'Not allowed.' if @surrender.invalid?
@@ -69,7 +83,7 @@ class SurrendersController < ApplicationController
   end
 
   def surrender_params
-    params.require(:surrender).permit(:friendship, :pending, :accepted_consequences)
+    params.require(:surrender).permit(:friendship, :pending, :accepted_consequences, :duration)
   end
 
   def protect_own_surrender
