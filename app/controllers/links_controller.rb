@@ -359,6 +359,8 @@ class LinksController < ApplicationController
     link.forks.each do |fork|
       result = e621_service.get_post e621_post['id'], fork
       SetLinkJob.set(wait: 1.second, priority: 10).perform_later(e621_post: result, link: fork, set_by:) if result
+    rescue
+      track :error, :bad_fork, fork_id: fork.id, post_id: e621_post['id']
     end
     if set_by.present? && (link.user.id != set_by.id)
       set_by.set_count = set_by.set_count.to_i + 1
