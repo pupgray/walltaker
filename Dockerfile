@@ -1,4 +1,4 @@
-FROM ruby:3.1.0
+FROM ruby:3.3.4
 
 # Prepare working directory.
 WORKDIR /ror
