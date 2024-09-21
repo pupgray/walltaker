@@ -1,6 +1,7 @@
 <% mascot = current_user&.mascot || 'ki' %>
+<% pervert = current_user&.pervert || false %>
 <!DOCTYPE html>
-<html class="<%= current_user ? "force-#{current_user.colour_preference}" : "" %>">
+<html class="<%= current_user ? "force-#{current_user.colour_preference}" : ""%> <%= "current-mascot-"+mascot %> <%=pervert ? "currently-perverted" : ""%> ">
 <head>
   <title><%= content_for?(:html_title) ? yield(:html_title) : "Walltaker" %></title>
   <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1">

@@ -113,6 +113,26 @@ body > header {
     opacity: 1;
 }
 
+html:not(.currently-perverted) .show-for-perverts {
+    display: none;
+}
+
+html.currently-perverted .show-for-nonperverts {
+    display: none;
+}
+
+html:not(.current-mascot-ki) .show-for-ki {
+    display: none;
+}
+
+html:not(.current-mascot-warren) .show-for-warren {
+    display: none;
+}
+
+html:not(.current-mascot-taylor) .show-for-taylor {
+    display: none;
+}
+
 body > header h1 span {
     position: relative;
 

@@ -830,7 +830,7 @@ figure > a.background-sample {
     display: block;
 }
 
-figure > a.background-sample img {
+figure:not(.embiggened) > a.background-sample img {
     position: absolute;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -839,17 +839,54 @@ figure > a.background-sample img {
     object-fit: cover;
 }
 
-figure > a.background-sample img.background-sample__image--desktop {
+figure:not(.embiggened) > a.background-sample img.background-sample__image--desktop {
     top: calc(50% + 6px);
     height: 96px;
     width: 136px;
 }
 
-figure > a.background-sample img.background-sample__image--mobile {
+figure:not(.embiggened) > a.background-sample img.background-sample__image--mobile {
     top: calc(50% + 8px);
     height: 160px;
     width: 81px;
 }
+
+.embiggened img.embiggen-me-daddy {
+    width:100%;
+    max-height:80vh;
+    object-fit: contain;
+}
+
+.embiggened .hide-when-embiggened {
+    display: none;
+}
+.embiggen-button-container {
+    display: flex;
+    margin: auto;
+    padding: 0;
+    max-width: 25em;
+}
+
+.embiggen-button-container button {
+    font-family: var(--sans-font);
+}
+
+.embiggen-button-container a {
+    margin: 8px 0;
+    padding: .7em .9em;
+    flex-grow: 1;
+    text-align: right;
+}
+
+
+.embiggened .embiggen-button-container button .text-embiggen {
+    display: none;
+}
+
+figure:not(.embiggened) .embiggen-button-container button .text-ensmallen {
+    display: none;
+}
+
 
 figure > a.background-sample > ion-icon {
     font-size: 180px;
