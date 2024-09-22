@@ -27,6 +27,7 @@ module LinksHelper
     return :ioswidget if link_agent.include? 'widgetExtension'
     return :swift if link_agent.include? 'CFNetwork/'
     return :android_changer if link_agent.include? 'Walltaker-Changer/'
+    return :windows_checker if link_agent.include? 'Walltaker-Checker/'
     return :jberliner if link_agent.include? 'JBerliner'
     return :chewtoy if link_agent.include? 'WalltakerEngine-chewtoy/'
     return :kemkem_userscript if link_agent.include? 'Walltaker for Walltaker (kemkem)'
