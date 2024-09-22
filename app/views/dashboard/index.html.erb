@@ -68,7 +68,9 @@
         </span>
         <%= button_to 'My Scoops', scoops_path, method: :get %>
       </h2>
-      <%= render 'scoops/scoop', scoop: @recent_scoop, tight: true %>
+      <% if @recent_scoop %>
+        <%= render 'scoops/scoop', scoop: @recent_scoop, tight: true %>
+      <% end %>
 
       <%= link_to 'Tune in', news_room_index_url, class: 'button-like centred' %>
     </div>
