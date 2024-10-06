@@ -47,22 +47,40 @@
   </h2>
 
   <% if link.post_thumbnail_url && link.post_url %>
-    <figure>
+    <figure data-controller="embiggen-toggle">
       <a href="<%= link.post_url %>" target="_blank" class="background-sample">
         <% case device %>
         <% when :desktop %>
-          <ion-icon role="presentation" name="laptop-outline" class="background-sample__icon--desktop"></ion-icon>
+          <ion-icon role="presentation" name="laptop-outline" class="background-sample__icon--desktop hide-when-embiggened"></ion-icon>
         <% when :mobile %>
-          <ion-icon role="presentation" name="phone-portrait-outline" class="background-sample__icon--mobile"></ion-icon>
+          <ion-icon role="presentation" name="phone-portrait-outline" class="background-sample__icon--mobile hide-when-embiggened"></ion-icon>
         <% end %>
 
-        <img src="<%= link.post_thumbnail_url %>" class="background-sample__image--<%= device %>"/>
+        <img src="<%= link.post_thumbnail_url %>" class="embiggen-me-daddy background-sample__image--<%= device %>"/>
       </a>
       <figcaption class="link--description">
+      <div class="embiggen-button-container"> 
+        <button type="button" data-action="click->embiggen-toggle#toggle">
+          <ion-icon name="expand" class="text-embiggen"></ion-icon>
+          <ion-icon name="contract" class="text-ensmallen"></ion-icon>
+          <span class="show-for-warren show-for-perverts text-embiggen">MAKE IT HUGE!</span>
+          <span class="show-for-warren show-for-nonperverts text-embiggen">Bigger</span>
+          <span class="show-for-warren show-for-perverts text-ensmallen">MAKE IT TINY!</span>
+          <span class="show-for-warren show-for-nonperverts text-ensmallen">Smaller</span>
+          <span class="show-for-taylor show-for-perverts text-embiggen">Show it all~!</span>
+          <span class="show-for-taylor show-for-nonperverts text-embiggen">Show more</span>
+          <span class="show-for-taylor show-for-perverts text-ensmallen">Cover up a little~</span>
+          <span class="show-for-taylor show-for-nonperverts text-ensmallen">Show less</span>
+          <span class="show-for-ki show-for-perverts text-embiggen">Let's get up close~</span>
+          <span class="show-for-ki show-for-nonperverts text-embiggen">Expand</span>
+          <span class="show-for-ki show-for-perverts text-ensmallen">That's plenty~</span>
+          <span class="show-for-ki show-for-nonperverts text-ensmallen">Collapse</span>
+        </button>
         <%= link_to e621_url, class: 'small' do %>
           Show on E621
           <ion-icon role="presentation" name="arrow-forward"></ion-icon>
         <% end %>
+      </div>
         <%= simple_format link.post_description %>
       </figcaption>
     </figure>
