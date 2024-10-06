@@ -108,8 +108,6 @@ class ApiController < ApplicationController
     @is_online = online_links_ids.length > 0
     @is_authenticated = !!current_user_or_api_user
     @public_links = @user.link.where(friends_only: false).and(@user.link.where('expires > ?', Time.now).or(@user.link.where(never_expires: true)))
-
-    expires_in 7.minutes, public: true
   rescue => e
     track :error, :api_user_missing, username: params[:username], message: e.message
     render json: { message: 'This user does not exist.' }, status: 404
