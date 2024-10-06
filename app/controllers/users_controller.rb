@@ -136,13 +136,13 @@ class UsersController < ApplicationController
 
   def set_user_vars
     @user = User.find_by(username: params[:username])
+    @is_current_user = current_user && current_user.id == @user.id
     @has_friendship = Friendship.find_friendship(current_user, @user).exists? if current_user
-    @links = @user.link.where(friends_only: false).and(@user.link.where('expires > ?', Time.now).or(@user.link.where(never_expires: true))) unless @has_friendship
-    @links = @user.link.where('expires > ?', Time.now).or(@user.link.where(never_expires: true)) if @has_friendship
+    @links = @user.link.where(friends_only: false).and(@user.link.where('expires > ?', Time.now).or(@user.link.where(never_expires: true))) unless (@has_friendship or @is_current_user)
+    @links = @user.link.where('expires > ?', Time.now).or(@user.link.where(never_expires: true)) if (@has_friendship or @is_current_user)
     @any_links_online = @links.is_online.count.positive?
     @most_recent_pinged_link = @links.order(last_ping: :desc).take(1) if @links.count.positive?
     @past_links = PastLink.all.order(id: :desc).where(user: @user).take(5)
-    @is_current_user = current_user && current_user.id == @user.id
   end
 
   def user_params
