@@ -41,7 +41,7 @@ class LeashesController < ApplicationController
   # PATCH/PUT /leashes/1 or /leashes/1.json
   def update
     if @leash.update(leash_params)
-      redirect_to leash_url(@leash), notice: "Leash was successfully updated."
+      redirect_to edit_leash_path(@leash), notice: "Flair was successfully updated."
     else
       render :edit
     end
@@ -65,6 +65,6 @@ class LeashesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def leash_params
-    params.require(:leash).permit(:friendship_id)
+    params.require(:leash).permit(:friendship_id, :flair)
   end
 end

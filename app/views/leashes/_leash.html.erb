@@ -8,6 +8,7 @@
 
   <%= render 'users/user', user: leash.pet %>
   <% if current_user && current_user == leash.master %>
-    <%= button_to "Unleash!", leash, method: :delete, class: 'accent-block__button' %>
+    <%= button_to "Unleash!", leash, method: :delete, class: 'accent-block__button danger-button accent-block__button--left' %>
+    <%= button_to "Add flair", edit_leash_path(leash), method: :get, class: 'accent-block__button accent-block__button--right' %>
   <% end %>
 </div>

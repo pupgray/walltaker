@@ -1,12 +1,15 @@
-<% content_for :title, "Editing leash" %>
+<h2>
+  <% if current_user && current_user.master.present? %>
+    <iconify-icon icon="mdi:dog-service"></iconify-icon>
+  <% else %>
+    <iconify-icon icon="mdi:dog-side"></iconify-icon>
+  <% end %>
+  <%= @leash.pet.username.capitalize %>'s Flair
+</h2>
 
-<h1>Editing leash</h1>
+<p>
+  As <%= @leash.pet.username.capitalize %>'s master, you're allowed to add a small flair to their username, that will
+  appear anywhere their username shows on the website. Use this for praise or punishment, that's up to your training method.
+</p>
 
 <%= render "form", leash: @leash %>
-
-<br>
-
-<div>
-  <%= link_to "Show this leash", @leash %> |
-  <%= link_to "Back to leashes", leashes_path %>
-</div>

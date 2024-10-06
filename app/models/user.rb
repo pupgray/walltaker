@@ -49,6 +49,10 @@ class User < ApplicationRecord
     masters.first || nil
   end
 
+  def flair
+    obeying_leashes.first&.flair || nil
+  end
+
   # This was implemented so bad lol, should've been a relation.
   def find_pornlizard
     case mascot

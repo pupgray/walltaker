@@ -810,6 +810,19 @@ form.button_to {
     color: var(--border);
 }
 
+[data-controller=user-reference] > .flair:empty {
+    display: none;
+}
+
+[data-controller=user-reference] > .flair {
+    font-size: 0.8em;
+    background: var(--accent-bg);
+    padding: 0.25ex 1ex;
+    margin-left: 0.5ex;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+}
+
 .friendship--pending a[data-controller=user-reference] {
     color: var(--border);
 }
@@ -1976,3 +1989,4 @@ main.full-width {
         background: var(--accent-bg);
     }
 }
+

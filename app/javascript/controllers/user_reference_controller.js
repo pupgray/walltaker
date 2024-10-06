@@ -18,16 +18,21 @@ const MEDALS = [
 export default class UserReferenceController extends Controller {
     static values = { hideOnline: String }
     online = false;
+    flair = "";
     setCount = 0;
 
     connect() {
         const username = this.element.childNodes[0].textContent
+        this.flairEl = this.element.querySelector('.flair') ?? document.createElement("span");
+        this.flairEl.className = 'flair'
+        this.element.appendChild(this.flairEl);
         if (username) {
             fetch(`/api/users/${username}.json`)
                 .then(stream => stream.json())
                 .then(result => {
                     if (!this.hasHideOnlineValue) {
                         this.online = !!result.online;
+                        this.flair = result.flair;
                     }
                     this.setCount = result.set_count ?? 0;
                 })
@@ -47,6 +52,7 @@ export default class UserReferenceController extends Controller {
             this.detachCharm('online')
         }
         this.setMedal()
+        this.flairEl.innerHTML = this.flair;
     }
 
     attachCharm (type) {

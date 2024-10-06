@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_06_151535) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_06_191351) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
@@ -244,6 +244,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_06_151535) do
     t.bigint "pet_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "flair"
     t.index ["friendship_id"], name: "index_leashes_on_friendship_id"
     t.index ["master_id"], name: "index_leashes_on_master_id"
     t.index ["pet_id"], name: "index_leashes_on_pet_id"

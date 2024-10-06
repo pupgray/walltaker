@@ -2,7 +2,8 @@
 
 <% if @user.profile&.origin %>
   <div class="profile_attribution">
-    <%= link_to @user.profile.origin.name.truncate(20), profile_path(@user.profile.origin) %> by <%= link_to @user.profile.origin.user.username.truncate(20), user_path(@user.profile.origin.user.username) %>
+    <%= link_to @user.profile.origin.name.truncate(20), profile_path(@user.profile.origin) %>
+    by <%= link_to @user.profile.origin.user.username.truncate(20), user_path(@user.profile.origin.user.username) %>
   </div>
 <% end %>
 
@@ -63,20 +64,29 @@
     <% end %>
     </div>
     <h2 class="one-line <%= @total_orgasms_by_day.present? ? 'with-chart' : '' %>">
-
-    <% if current_user&.admin? && @user.flagged==true %>
-      <ion-icon role="presentation" name="warning-outline" class="big"></ion-icon>
-    <% elsif @user.username == 'gios' %>
-      <ion-icon role="presentation" name="logo-octocat" class="big"></ion-icon>
-    <% elsif @user.username == 'gray' %>
-      <ion-icon role="presentation" name="train-outline" class="big"></ion-icon>
-    <% else %>
-      <ion-icon role="presentation" name="person" class="big"></ion-icon>
-    <% end %>
-
+      <% if current_user&.admin? && @user.flagged == true %>
+        <ion-icon role="presentation" name="warning-outline" class="big"></ion-icon>
+      <% elsif @user.username == 'gios' %>
+        <ion-icon role="presentation" name="logo-octocat" class="big"></ion-icon>
+      <% elsif @user.username == 'gray' %>
+        <ion-icon role="presentation" name="train-outline" class="big"></ion-icon>
+      <% else %>
+        <ion-icon role="presentation" name="person" class="big"></ion-icon>
+      <% end %>
       <span data-controller="user-reference" data-user-reference-hide-online-value><%= @user.username %></span>
       <% if @any_links_online %>
         <strong class="online" title="User is online"></strong>
+      <% end %>
+      <% if @user.master.present? %>
+        <div class="user-leash">
+          <iconify-icon icon="mdi:dog-service"></iconify-icon>
+          Leashed to <%= link_to @user.master.username, user_path(@user.master.username) %>
+          <% if @user.flair.present? %>
+            <blockquote>
+              <%= @user.flair %>
+            </blockquote>
+          <% end %>
+        </div>
       <% end %>
       <div class="gios-user-grid">
         <small>
@@ -84,12 +94,12 @@
             Set <%= @user.set_count %> wallpapers
           <% end %>
           <span>
-        <% if @user.username == 'gray' %>
-          Caused <%= pluralize @total_orgasms_caused, 'orgasm' %>, technically.
-        <% else %>
-          Caused <%= pluralize @total_orgasms_caused, 'orgasm' %>
-        <% end %>
-      </span>
+            <% if @user.username == 'gray' %>
+              Caused <%= pluralize @total_orgasms_caused, 'orgasm' %>, technically.
+            <% else %>
+              Caused <%= pluralize @total_orgasms_caused, 'orgasm' %>
+            <% end %>
+          </span>
         </small>
         <small>
           <div>
@@ -132,6 +142,13 @@
           See past 50 wallpapers
           <ion-icon role="presentation" name="arrow-forward"></ion-icon>
         <% end %>
+      <% end %>
+
+      <% if @user.pets.present? %>
+        <div class="user-kennel">
+          <h2><iconify-icon icon="mdi:dog-service"></iconify-icon> Kennel</h2>
+          <%= render @user.held_leashes %>
+        </div>
       <% end %>
 
       <% if @is_current_user %>
@@ -259,7 +276,11 @@
             </div>
 
             <p>
-              You can share your profile styles publicly, allowing others to install it themselves. A small label will be visible on their profile, attributing you as the coder. They will be able to modify their copy. <strong>If you make changes here, users who have already installed <%= @user.profile.name %> will need to reinstall it to get your new changes.</strong> Once installed, you cannot revoke someone's copy of <%= @user.profile.name %>.
+              You can share your profile styles publicly, allowing others to install it themselves. A small label will
+              be visible on their profile, attributing you as the coder. They will be able to modify their copy.
+              <strong>If you make changes here, users who have already installed <%= @user.profile.name %> will need to
+                reinstall it to get your new changes.</strong> Once installed, you cannot revoke someone's copy
+              of <%= @user.profile.name %>.
             </p>
 
             <%= turbo_frame_tag :sharing_form do %>

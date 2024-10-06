@@ -1,17 +1,17 @@
-<%= form_with(model: leash) do |form| %>
-  <% if leash.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(leash.errors.count, "error") %> prohibited this leash from being saved:</h2>
+<%# locals: (leash:) %>
 
-      <ul>
-        <% leash.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div>
-    <%= form.submit %>
+<div class="accent-block spaced">
+  <div class="accent-block__charm">
+    <ion-icon role="presentation" name="eye"></ion-icon>
+    Preview
   </div>
+  <div data-controller="user-reference"><%= leash.pet.username %></div>
+</div>
+
+<%= form_with(model: leash) do |form| %>
+  <%= form.label :flair, class: 'form__row' do %>
+    Flair text:
+  <% end %>
+  <%= form.text_field :flair %>
+  <%= form.submit "Save Flair for #{leash.pet.username}" %>
 <% end %>

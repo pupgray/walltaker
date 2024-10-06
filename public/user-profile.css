@@ -553,3 +553,19 @@ h2.with-chart #chart-1 {
         }
     }
 }
+
+.user-leash {
+    font-size: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--accent);
+    margin: 1rem 0;
+    border-radius: 4px;
+}
+
+.user-kennel {
+    margin-bottom: 1rem;
+
+    & > [id^="leash"]:first-of-type {
+        margin-top: 0;
+    }
+}
