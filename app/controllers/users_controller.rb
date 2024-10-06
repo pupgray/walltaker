@@ -140,8 +140,12 @@ class UsersController < ApplicationController
     if @user.present?
       @is_current_user = current_user && current_user.id == @user.id
       @has_friendship = Friendship.find_friendship(current_user, @user).exists? if current_user
-      @links = @user.link.where(friends_only: false).and(@user.link.where('expires > ?', Time.now).or(@user.link.where(never_expires: true))) unless (@has_friendship or @is_current_user)
-      @links = @user.link.where('expires > ?', Time.now).or(@user.link.where(never_expires: true)) if (@has_friendship or @is_current_user)
+      if current_user && @user.master == current_user
+        @links = @user.link.all
+      else
+        @links = @user.link.where(friends_only: false).and(@user.link.where('expires > ?', Time.now).or(@user.link.where(never_expires: true))) unless (@has_friendship or @is_current_user)
+        @links = @user.link.where('expires > ?', Time.now).or(@user.link.where(never_expires: true)) if (@has_friendship or @is_current_user)
+      end
       @any_links_online = @links.is_online.count.positive?
       @most_recent_pinged_link = @links.order(last_ping: :desc).take(1) if @links.count.positive?
       @past_links = PastLink.all.order(id: :desc).where(user: @user).take(5)

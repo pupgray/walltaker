@@ -4,6 +4,7 @@ class LinkAbility < ApplicationRecord
     can_show_videos: 'can_show_videos',
     can_be_set_by_porn_bot: 'can_be_set_by_porn_bot',
     can_be_set_by_lizard: 'can_be_set_by_lizard',
-    is_kink_aligned: 'is_kink_aligned'
+    is_kink_aligned: 'is_kink_aligned',
+    is_master_only: 'is_master_only',
   }
 end

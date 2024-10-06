@@ -14,6 +14,10 @@
           Surrender
         <% end %>
       <% end %>
+      <%= link_to user_leashes_path(current_user.username), class: 'no-underline' do %>
+        <iconify-icon icon="mdi:dog-service"></iconify-icon>
+        Leashes
+      <% end %>
       <% if has_requests? %>
         <span class="notice-right">New Requests <ion-icon role="presentation" name="arrow-forward-outline"></ion-icon></span>
       <% end %>

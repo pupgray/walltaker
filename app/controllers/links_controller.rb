@@ -6,7 +6,7 @@ class LinksController < ApplicationController
   ######
 
   # 1. force auth for protected routes
-  before_action :authorize, only: %i[index new edit create destroy]
+  before_action :authorize, only: %i[index new edit create destroy toggle_ability]
 
   # 2. set @link instance var, since a lot of action filters use it
   before_action :set_link, only: %i[show edit update destroy export toggle_ability embed show_similar]
@@ -14,7 +14,7 @@ class LinksController < ApplicationController
   # 3. protect link-specific buisness rules
   before_action :prevent_public_expired, only: %i[show update]
   before_action :protect_friends_only_links, only: %i[show update]
-  before_action :skip_unauthorized_requests, only: %i[update toggle_ability], if: -> { update_request_unsafe? }
+  before_action :skip_unauthorized_requests, only: %i[update], if: -> { update_request_unsafe? }
   before_action :disallow_surrendered_accounts, only: %i[update]
 
   # 4. Layout for the embedded view has no nav or footer
@@ -189,8 +189,17 @@ class LinksController < ApplicationController
   end
 
   def toggle_ability
-    @link.toggle_ability params['ability']
-    redirect_to edit_link_path @link
+    if params['ability'] != 'is_master_only' && current_user == @link.user
+      @link.toggle_ability params['ability']
+      return redirect_to edit_link_path @link
+    end
+
+    if params['ability'] == 'is_master_only' && current_user == @link.user.master
+      @link.toggle_ability params['ability']
+      return redirect_to link_path(@link)
+    end
+
+    redirect_to link_path(@link), alert: 'Not authorized'
   end
 
   def fork
@@ -281,6 +290,12 @@ class LinksController < ApplicationController
 
   def protect_friends_only_links
     unless request.format == :json
+      if current_user && @link.user.master == current_user
+        return true
+      end
+
+      return redirect_to @link, alert: 'Only the link owner\'s master can change this link right now.' if @link.check_ability('is_master_only') && action_name == 'update'
+
       authorize if @link.friends_only
 
       unless current_user.nil?
@@ -317,6 +332,10 @@ class LinksController < ApplicationController
   end
 
   def prevent_public_expired
+    if current_user && @link.user.master == current_user
+      return true
+    end
+
     @is_expired = @link.never_expires ? false : @link.expires <= Time.now.utc
     current_user_is_not_owner = current_user && current_user.id != @link.user.id
     not_logged_in = current_user.nil?

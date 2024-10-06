@@ -76,9 +76,12 @@
       <ion-icon role="presentation" name="warning"></ion-icon>
       Configuration warning
     </div>
-    <p>Your link has a really long blacklist! I know I ask that you fill out your blacklist as fully as you can, but we can only make requests to e621 with a maximum number of tags. Your link still works, this is just a warning.</p>
+    <p>Your link has a really long blacklist! I know I ask that you fill out your blacklist as fully as you can, but we
+      can only make requests to e621 with a maximum number of tags. Your link still works, this is just a warning.</p>
     <br>
-    <p><%= (@link.blacklist || '').split(' ').length %> blacklist tags <%= @link.theme ? "+ 1 theme tag": "" %> = only <%= pluralize(45 - ((@link.blacklist || '').split(' ').length + (@link.theme ? 1 : 0)), 'tag') %> a user can search with.</p>
+    <p><%= (@link.blacklist || '').split(' ').length %> blacklist tags <%= @link.theme ? "+ 1 theme tag" : "" %> =
+      only <%= pluralize(45 - ((@link.blacklist || '').split(' ').length + (@link.theme ? 1 : 0)), 'tag') %> a user can
+      search with.</p>
   </div>
 <% end %>
 
@@ -193,6 +196,41 @@
 <%= turbo_stream_from "link_details_#{@link.id}" %>
 <%= render 'details', link: @link, set_by: @set_by %>
 <%= render 'porn_selector', link: @link %>
+
+<% if current_user && @link.user.master === current_user %>
+  <div class="abilities accent-block">
+    <div class="accent-block__charm">
+      <ion-icon role="presentation" name="eye-off"></ion-icon>
+      Only you see this, as you are the master of <%= @link.user.username %>
+    </div>
+    <div class="abilities__ability">
+      <% is_master_only = @link.check_ability 'is_master_only' %>
+
+      <div class="abilities__ability__title">
+        <strong>
+          <% if is_master_only %>
+            <iconify-icon icon="mdi:dog-service"></iconify-icon>
+          <% else %>
+            <ion-icon name="eye"></ion-icon>
+          <% end %>
+          <%= is_master_only ? 'Master Only' : 'Public' %>
+        </strong>
+        <p>
+          <% if is_master_only %>
+            Only bots and you, the master of <%= @link.user.username %>, will be able to set wallpapers.
+          <% else %>
+            Anyone can set wallpapers for this link.
+          <% end %>
+        </p>
+      </div>
+      <div class="abilities__ability__controls">
+        <%= button_to toggle_link_ability_link_path(ability: :is_master_only), method: :post, class: is_master_only ? 'enabled' : 'disabled' do %>
+          <%= is_master_only ? 'Make Public' : 'Make Master Only' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>
 
 <%= turbo_stream_from "link_viewing_users_#{@link.id}" %>
 <%= render 'viewing_users', link: @link %>

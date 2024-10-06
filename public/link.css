@@ -311,6 +311,11 @@ strong.offline {
     overflow: hidden;
     font-size: 0.8em;
     color: var(--accent);
+
+    & > span > iconify-icon {
+        font-size: 1.9em;
+        transform: translateY(1px);
+    }
 }
 
 
@@ -1163,6 +1168,11 @@ aside.comments-sidebar > button .toggle-badge[data-hidden=true] {
 
 .abilities__ability__title {
     flex: 1;
+
+    & iconify-icon {
+        font-size: 1.2em;
+        transform: translateY(1px);
+    }
 }
 
 .abilities__ability__title > p {

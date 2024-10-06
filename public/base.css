@@ -634,6 +634,11 @@ p {
         border: none;
         padding: 0.1rem 0.5rem;
     }
+
+    & > a > iconify-icon {
+        font-size: 1.3rem;
+        transform: translateY(3px);
+    }
 }
 
 .task-tools span > ion-icon {

@@ -5,7 +5,7 @@
     <div class="accent-block accent-block--link">
       <div class="accent-block__charm">
         <ion-icon role="presentation" name="eye-off"></ion-icon>
-        Only you see this because it's expired
+        Only you <%= link.user.master ? 'and your master' : '' %> see this because it's expired
       </div>
   <% end %>
   <div class="link" data-feed-number="<%= link_id_for_decoration link.id %>">
@@ -81,6 +81,10 @@
               <%= image_tag "mascot/#{mascot.capitalize}Head.png", class: 'mascot', height: 22, width: 22 %>
             <% when 'is_kink_aligned' %>
               <ion-icon name="bookmark"></ion-icon>
+            <% when 'is_master_only' %>
+              <% if link.user.master.present? %>
+                <iconify-icon icon="mdi:dog-service"></iconify-icon>
+              <% end %>
             <% end %>
           </span>
         <% end %>

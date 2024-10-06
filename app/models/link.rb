@@ -54,7 +54,10 @@ class Link < ApplicationRecord
 
   # @param ["can_show_videos"] ability
   def check_ability(ability)
-    abilities.any? { |edge| edge.ability == ability }
+    result = abilities.any? { |edge| edge.ability == ability }
+
+    return result && user.master.present? if ability == 'is_master_only'
+    result
   end
 
   def toggle_ability(ability_name)
