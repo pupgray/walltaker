@@ -1,0 +1,13 @@
+<%# locals: (leash:) %>
+
+<div id="<%= dom_id leash %>" class="accent-block">
+  <div class="accent-block__charm">
+    <ion-icon role="presentation" name="heart"></ion-icon>
+    Leashed for <%= time_ago_in_words leash.created_at %>
+  </div>
+
+  <%= render 'users/user', user: leash.pet %>
+  <% if current_user && current_user == leash.master %>
+    <%= button_to "Unleash!", leash, method: :delete, class: 'accent-block__button' %>
+  <% end %>
+</div>

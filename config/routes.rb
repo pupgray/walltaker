@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :leashes, except: %i[index], as: :leashes
   get 'news_room/index'
   resources :scoops
   resources :profiles, only: %i[update create destroy index show] do
@@ -70,6 +71,7 @@ Rails.application.routes.draw do
 
   resources :users do
     resources :reports, only: %i[new create]
+    resources :leashes, only: %i[index]
     post 'profile', to: 'profiles#set_profile', as: 'set_profile'
 
     member do

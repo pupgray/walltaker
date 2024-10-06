@@ -1,0 +1,12 @@
+<% content_for :title, "Editing leash" %>
+
+<h1>Editing leash</h1>
+
+<%= render "form", leash: @leash %>
+
+<br>
+
+<div>
+  <%= link_to "Show this leash", @leash %> |
+  <%= link_to "Back to leashes", leashes_path %>
+</div>

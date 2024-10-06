@@ -17,6 +17,11 @@ class User < ApplicationRecord
   has_many :messages, through: :message_threads
   has_many :reports, as: :reportable
   has_many :profiles, inverse_of: :user
+  has_many :friendships, ->(user) { unscope(:where).where(receiver_id: user.id).or(where(sender_id: user.id)) }
+  has_many :held_leashes, ->(user) { where(master: user) }, through: :friendships, source: :leashes
+  has_many :obeying_leashes, ->(user) { where(pet: user) }, through: :friendships, source: :leashes
+  has_many :pets, through: :held_leashes
+  has_many :masters, through: :obeying_leashes
   belongs_to :profile, optional: true
   has_one :current_surrender, class_name: 'Surrender', dependent: :destroy
   has_many :scoops
@@ -39,6 +44,10 @@ class User < ApplicationRecord
     controllable_user_ids = other.controllable_surrenders.pluck(:user_id).uniq
     where(id: controllable_user_ids)
   }
+
+  def master
+    masters.first || nil
+  end
 
   # This was implemented so bad lol, should've been a relation.
   def find_pornlizard
@@ -90,10 +99,10 @@ class User < ApplicationRecord
       #{details}
 
       Recent messages:
-      #{messages.limit(6).map {|message| "=> (to #{message.message_thread&.users&.map(&:username).join(',')}) #{message.content}"}.join("\n")}
+      #{messages.limit(6).map { |message| "=> (to #{message.message_thread&.users&.map(&:username).join(',')}) #{message.content}" }.join("\n")}
 
       Recent wallpapers set for others:
-      #{past_links.limit(6).map {|pl| "=> (for #{pl.link&.user&.username} on ##{pl.link&.id}) #{pl.post_url}"}.join("\n")}
+      #{past_links.limit(6).map { |pl| "=> (for #{pl.link&.user&.username} on ##{pl.link&.id}) #{pl.post_url}" }.join("\n")}
 
       All links:
 
@@ -105,7 +114,6 @@ class User < ApplicationRecord
   def to_s
     username
   end
-
 
   after_commit do
     if viewing_link_id

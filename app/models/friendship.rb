@@ -1,9 +1,10 @@
 class Friendship < ApplicationRecord
   has_many :surrenders, dependent: :destroy
+  has_many :leashes, dependent: :destroy
   belongs_to :sender, foreign_key: :sender_id, class_name: 'User'
   belongs_to :receiver, foreign_key: :receiver_id, class_name: 'User', optional: true
 
-  validate :friendship_does_not_already_exist
+  validate :friendship_does_not_already_exist, on: :create
   validates :receiver_id, comparison: { other_than: :sender_id, message: ->(friendship, data) { "You can\'t be friends with yourself, on walltaker at least." } }
 
   scope :involving, ->(user) { where(sender_id: user.id).or(where(receiver_id: user.id)) }

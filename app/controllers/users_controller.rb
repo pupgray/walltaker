@@ -35,7 +35,7 @@ class UsersController < ApplicationController
       @user.profile.content = user_params[:details]
       @user.profile.save
     else
-      new_profile = Profile.create({user: @user, name: nil, content: user_params[:details]})
+      new_profile = Profile.create({ user: @user, name: nil, content: user_params[:details] })
       @user.profile = new_profile
       @user.save
     end
@@ -74,6 +74,7 @@ class UsersController < ApplicationController
   def request_password_reset
 
   end
+
   def password_reset
     begin
       user = User.where("lower(email) = ?", params[:email]&.downcase).first
@@ -136,13 +137,17 @@ class UsersController < ApplicationController
 
   def set_user_vars
     @user = User.find_by(username: params[:username])
-    @is_current_user = current_user && current_user.id == @user.id
-    @has_friendship = Friendship.find_friendship(current_user, @user).exists? if current_user
-    @links = @user.link.where(friends_only: false).and(@user.link.where('expires > ?', Time.now).or(@user.link.where(never_expires: true))) unless (@has_friendship or @is_current_user)
-    @links = @user.link.where('expires > ?', Time.now).or(@user.link.where(never_expires: true)) if (@has_friendship or @is_current_user)
-    @any_links_online = @links.is_online.count.positive?
-    @most_recent_pinged_link = @links.order(last_ping: :desc).take(1) if @links.count.positive?
-    @past_links = PastLink.all.order(id: :desc).where(user: @user).take(5)
+    if @user.present?
+      @is_current_user = current_user && current_user.id == @user.id
+      @has_friendship = Friendship.find_friendship(current_user, @user).exists? if current_user
+      @links = @user.link.where(friends_only: false).and(@user.link.where('expires > ?', Time.now).or(@user.link.where(never_expires: true))) unless (@has_friendship or @is_current_user)
+      @links = @user.link.where('expires > ?', Time.now).or(@user.link.where(never_expires: true)) if (@has_friendship or @is_current_user)
+      @any_links_online = @links.is_online.count.positive?
+      @most_recent_pinged_link = @links.order(last_ping: :desc).take(1) if @links.count.positive?
+      @past_links = PastLink.all.order(id: :desc).where(user: @user).take(5)
+    else
+      raise ActionController::RoutingError.new('Missing user or the username was typed incorrectly.')
+    end
   end
 
   def user_params

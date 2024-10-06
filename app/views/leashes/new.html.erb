@@ -1,0 +1,38 @@
+<h2>
+  <iconify-icon icon="mdi:dog-service"></iconify-icon>
+  Pick Master
+</h2>
+
+<p><strong>Remember!</strong> You need to have a confirmed friendship with your future master first.</p>
+
+<% current_user.friendships.each do |friendship| %>
+  <% friend = friendship.other_user(current_user) %>
+  <% if friend.present? %>
+    <div class="master-row" data-controller="master">
+      <dialog class="modal" data-master-target="modal">
+        <h4>Confirm Master Selection</h4>
+        <p>Are you sure <strong><%= friend.username %></strong> is your master? This CANNOT be undone by you. If you choose the wrong user... that's on you.</p>
+        <div class="modal__buttons">
+          <%= button_tag class: 'no-underline primary', data: { 'master-target': 'cancel', action: 'click->master#cancel' } do %>
+            <ion-icon role="presentation" name="close"></ion-icon>
+            Cancel
+          <% end %>
+          <%= form_with model: @leash, data: { 'turbo-frame': '_top', action: 'submit->master#cancel' }  do |f| %>
+            <%= f.hidden_field :friendship_id, value: friendship.id %>
+            <%= button_tag class: 'no-underline secondary' do %>
+              <iconify-icon icon="mdi:dog-service"></iconify-icon>
+              Woof! (Yes)
+            <% end %>
+          <% end %>
+        </div>
+      </dialog>
+
+      <div>
+        <%= link_to friend, user_path(friend.username), target: "_blank" %>&nbsp;
+        <small>Met <%= time_ago_in_words friendship.created_at %> ago</small>
+      </div>
+
+      <%= button_tag "Leash me", data: { action: 'click->master#confirm' } %>
+    </div>
+  <% end %>
+<% end %>

@@ -1,0 +1,94 @@
+<div data-turbo-prefetch="false" class="task-tools">
+  <div class="left">
+    <%= link_to "Back", user_path(@user.username) %>
+  </div>
+  <div class="right">
+    <% if current_user && @user == current_user && current_user.master.nil? %>
+      <%= button_to new_leash_path, method: :get do %>
+        <iconify-icon icon="mdi:dog-service"></iconify-icon>
+        Get Leashed
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<h2>
+  <% if current_user && current_user.master.present? %>
+    <iconify-icon icon="mdi:dog-service"></iconify-icon>
+  <% else %>
+    <iconify-icon icon="mdi:dog-side"></iconify-icon>
+  <% end %>
+  <%= @user.username.capitalize %>'s Leashes
+</h2>
+
+<% if current_user && @user == current_user %>
+  <div class="accent-block accent-block--warning spaced">
+    <iconify-icon icon="mdi:dog-side" class="scare-charm"></iconify-icon>
+    <div class="accent-block__charm">
+      <ion-icon role="presentation" name="warning"></ion-icon>
+      Your failure to read this is not a bug.
+    </div>
+    <p>
+      A leash is an upgrade you can apply to any confirmed friendship. It's a master/pet relationship, so
+      be careful! <u>There are some things you should know before leashing yourself.</u>
+    </p>
+
+    <ul>
+      <li>A leash can only be created by the pet.</li>
+      <li>A pet can only have <u>ONE</u> direct master.</li>
+      <li>A master can have multiple pets.</li>
+      <li>A pet <u>CANNOT REVOKE</u> a leash. It <u>must</u> be removed by the master.</li>
+    </ul>
+
+    <!-- maybe later
+    <h4>Packs</h4>
+
+    <ul>
+      <li>A pet can be a master for another user. This forms a chain of leashes.</li>
+      <li>If your master is a pet for someone else, <u>you are part of a pack.</u></li>
+      <li>Pack privileges lead upwards, <u>your master's master is your master.</u></li>
+      <li>
+        Your position in the pack is determined by the distance to the first non-leashed master.
+        <ul>
+          <li>α Alpha = First Pet</li>
+          <li>β Beta = Second Pet</li>
+          <li>Ω Omega = Third Pet or deeper</li>
+        </ul>
+      </li>
+      <li>Packs are automatically included in a message thread.</li>
+    </ul>
+    -->
+
+    <h4>What can masters do?</h4>
+
+    <ul>
+      <li>
+        Masters <u>DO NOT</u> get surrender access.<br>
+        <em>If you surrender to your master, nothing is different from a regular surrender.</em><br>
+        <%= link_to 'Read more about surrenders', surrenders_path %>
+      </li>
+      <li>Masters can add a label to your profile that will be shown publicly.
+        You will still have control of your profile, but this one segment will be uneditable. Only your master can
+        change
+        change/remove it.
+      </li>
+      <li>Masters will have a public list of their pets on their profile, featuring your name.</li>
+      <li>Masters can lock any of your links to "Pack Property", meaning only they can set
+        wallpapers for it. (You cannot.)
+      </li>
+    </ul>
+  </div>
+
+<% end %>
+
+<% if @master %>
+  <h3>Master</h3>
+  <%= render 'users/user', user: @master %>
+<% end %>
+
+<% if @held_leashes.present? %>
+  <h3>Pets</h3>
+  <% @held_leashes.each do |leash| %>
+    <%= render leash %>
+  <% end %>
+<% end %>

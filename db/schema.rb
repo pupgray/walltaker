@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_11_183634) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_06_151535) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
@@ -236,6 +236,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_11_183634) do
   create_table "kinks", force: :cascade do |t|
     t.string "name", limit: 30, null: false
     t.boolean "works_on_e621", default: false, null: false
+  end
+
+  create_table "leashes", force: :cascade do |t|
+    t.bigint "friendship_id", null: false
+    t.bigint "master_id", null: false
+    t.bigint "pet_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["friendship_id"], name: "index_leashes_on_friendship_id"
+    t.index ["master_id"], name: "index_leashes_on_master_id"
+    t.index ["pet_id"], name: "index_leashes_on_pet_id"
   end
 
   create_table "link_abilities", force: :cascade do |t|
@@ -518,9 +529,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_11_183634) do
     t.boolean "pervert"
     t.boolean "quarantined", default: false
     t.integer "colour_preference", default: 0
-    t.boolean "flagged", default: false
     t.boolean "advanced", default: false, null: false
     t.bigint "profile_id"
+    t.boolean "flagged", default: false
     t.index ["email"], name: "unique_emails", unique: true
     t.index ["profile_id"], name: "index_users_on_profile_id"
     t.index ["set_count"], name: "index_users_on_set_count", order: :desc
@@ -541,6 +552,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_11_183634) do
   add_foreign_key "history_events", "users", column: "surrender_controller_id"
   add_foreign_key "kink_havers", "kinks"
   add_foreign_key "kink_havers", "users"
+  add_foreign_key "leashes", "friendships"
+  add_foreign_key "leashes", "users", column: "master_id"
+  add_foreign_key "leashes", "users", column: "pet_id"
   add_foreign_key "link_abilities", "links"
   add_foreign_key "links", "links", column: "forked_from_id"
   add_foreign_key "links", "users"
