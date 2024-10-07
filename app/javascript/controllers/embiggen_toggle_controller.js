@@ -5,17 +5,19 @@ export default class EmbiggenToggleController extends Controller {
         this.tick();
     }
     toggle () {
-        if (window.sessionStorage.getItem("embiggen-link-image") === "false") {
-            window.sessionStorage.setItem("embiggen-link-image", "true")
+        let value = window.localStorage.getItem("embiggen-link-image")
+        if (value === "false" || value === null) {
+            window.localStorage.setItem("embiggen-link-image", "true")
         }
         else {
-            window.sessionStorage.setItem("embiggen-link-image", "false")
+            window.localStorage.setItem("embiggen-link-image", "false")
         }
         this.tick()
     }
 
     tick () {
-        if (window.sessionStorage.getItem("embiggen-link-image") === "false") {
+        let value = window.localStorage.getItem("embiggen-link-image")
+        if (value === "false" || value === null) {
             this.element.classList.remove("embiggened")
         }
         else {

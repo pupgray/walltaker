@@ -195,7 +195,29 @@
 
 <%= turbo_stream_from "link_details_#{@link.id}" %>
 <%= render 'details', link: @link, set_by: @set_by %>
-<%= render 'porn_selector', link: @link %>
+
+<% pack_property = @link.check_ability('is_master_only') && @link.user.master %>
+
+<% if !pack_property || (pack_property && current_user && @link.user.master === current_user) %>
+  <%= render 'porn_selector', link: @link %>
+<% end %>
+
+<% if pack_property %>
+  <div class="accent-block">
+    <div class="accent-block__charm">
+      <iconify-icon icon="mdi:dog-service"></iconify-icon>
+      Leash in use
+    </div>
+    <%= @link.user.username.capitalize %> is leashed to
+    Master <%= link_to @link.user.master.username.capitalize, user_path(@link.user.master.username) %>, who opted to make this link
+    pack property.
+    <% if @link.user.flair.present? %>
+      <blockquote>
+        <%= @link.user.flair %>
+      </blockquote>
+    <% end %>
+  </div>
+<% end %>
 
 <% if current_user && @link.user.master === current_user %>
   <div class="abilities accent-block">

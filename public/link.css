@@ -883,6 +883,9 @@ figure:not(.embiggened) > a.background-sample img.background-sample__image--mobi
     text-align: right;
 }
 
+.text-embiggen, .text-ensmallen {
+    transform: translateY(2px) scale(1.1);
+}
 
 .embiggened .embiggen-button-container button .text-embiggen {
     display: none;
