@@ -5,7 +5,13 @@
 
 <%= turbo_frame_tag 'title' do %>
   <span class="show-desktop">
-    <%= is_surrender_controller_session? ? 'Walltaken' : 'Walltaker' %>
+    <% is_donkey = current_user && current_user.id == 2103 %>
+    <%= if is_surrender_controller_session?
+          'Walltaken'
+        else
+          is_donkey ? 'HEEHAW' : 'Walltaker'
+        end
+    %>
 
     <%= tag.div class: { mascot: true, perverted: pervert } do %>
       <%= image_tag("marx.png", class: ["mascot__under-cover", mascot, pervert ? 'nsfw' : 'sfw']) if is_surrender_controller_session? %>
