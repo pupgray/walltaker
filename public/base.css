@@ -547,6 +547,14 @@ blockquote > .byline {
     flex-direction: column;
 }
 
+.tight {
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+    margin-left: 0.5rem !important;
+    padding-top: 0.25rem !important;
+    padding-bottom: 0.25rem !important;
+}
+
 .flashes .flash {
     background: var(--accent-bg);
     padding: 0.5rem 1rem 0.6rem;
@@ -1248,6 +1256,11 @@ footer small a {
     padding: 0px 0.5rem;
 }
 
+.modal > form > .inset {
+    max-width: 320px;
+    padding: 0px 0.5rem;
+}
+
 .modal__buttons {
     display: flex;
     justify-content: flex-end;
@@ -1257,6 +1270,14 @@ footer small a {
     border-bottom-right-radius: 0.3rem;
     padding: 0.5rem 1rem;
     gap: 0.5rem;
+}
+
+.modal textarea.full-span {
+    width: 100%;
+}
+
+.modal__buttons input[type=submit] {
+    padding: 0.4rem 0.7rem !important;
 }
 
 .modal__buttons > a,

@@ -1,5 +1,27 @@
 <%= turbo_frame_tag :report_button do %>
-  <%= form_with model: @report, url: polymorphic_url([@reportable, Report]) do |f| %>
-    <%= f.submit 'Report', class: 'danger-button' %>
-  <% end %>
+  <div data-controller="report">
+    <dialog class="modal" data-report-target="modal">
+      <h4>Confirm Report</h4>
+      <p>We get a lot of reports everyday. It really helps us to keep the site a fun place to be, but it can be
+        overwhelming to get a lot of confusing or accidental reports.
+        <strong>Can you please provide a reason for this report?</strong></p>
+      <%= form_with model: @report, url: polymorphic_url([@reportable, Report]) do |f| %>
+        <div class="inset">
+          <%= f.label :reason, "I'm reporting because:" %>
+          <%= f.text_area :reason, class: 'full-span' %>
+        </div>
+        <div class="modal__buttons">
+          <%= button_tag class: 'no-underline primary', data: { 'report-target': 'cancel', action: 'click->report#cancel' } do %>
+            <ion-icon role="presentation" name="close"></ion-icon>
+            Cancel
+          <% end %>
+          <%= f.submit 'Send Report', class: 'no-underline danger-button' %>
+        </div>
+      <% end %>
+    </dialog>
+
+    <button class="danger-button" data-action="click->report#confirm">
+      Report
+    </button>
+  </div>
 <% end %>

@@ -19,6 +19,7 @@ class ReportsController < ApplicationController
     @report = Report.new
     @report.reporter = current_user
     @report.reportable = @reportable
+    @report.reason = params.require(:report).permit(:reason)[:reason]
     begin
       @report.snapshot = @reportable.snapshot
     rescue
