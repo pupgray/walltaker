@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_13_172920) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_13_183258) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
@@ -534,6 +534,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_13_172920) do
     t.bigint "profile_id"
     t.boolean "flagged", default: false
     t.boolean "is_reporter", default: false
+    t.boolean "is_cutie", default: false
+    t.boolean "is_supporter", default: false
     t.index ["email"], name: "unique_emails", unique: true
     t.index ["profile_id"], name: "index_users_on_profile_id"
     t.index ["set_count"], name: "index_users_on_set_count", order: :desc

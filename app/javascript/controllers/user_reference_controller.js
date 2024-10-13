@@ -21,6 +21,8 @@ export default class UserReferenceController extends Controller {
     flair = "";
     setCount = 0;
     isReporter = false;
+    isCutie = false;
+    isSupporter = false;
 
     connect() {
         const username = this.element.childNodes[0].textContent
@@ -37,6 +39,8 @@ export default class UserReferenceController extends Controller {
                     }
                     this.setCount = result.set_count ?? 0;
                     this.isReporter = result.is_reporter ?? false;
+                    this.isCutie = result.is_cutie ?? false;
+                    this.isSupporter = result.is_supporter ?? false;
                 })
                 .catch(() => {
                     this.online = false
@@ -69,6 +73,21 @@ export default class UserReferenceController extends Controller {
         }
         this.setMedal()
         this.flairEl.innerHTML = this.flair;
+
+        if (this.isCutie) {
+            const wrapper = document.createElement('sparkly-text')
+            wrapper.setAttribute('number-of-sparkles', '5')
+            wrapper.setAttribute('style', '--sparkly-text-color: var(--code)')
+            this.wrapSelfWith(wrapper);
+        }
+    }
+
+    wrapSelfWith(el) {
+        if (this.element.parentNode) {
+            if (this.element.parentNode.tagName === el.tagName) return;
+            this.element.parentNode.insertBefore(el, this.element);
+            el.appendChild(this.element);
+        }
     }
 
     attachCharm(type) {

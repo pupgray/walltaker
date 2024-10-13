@@ -25,3 +25,4 @@ pin "lit-html/", to: "https://ga.jspm.io/npm:lit-html@2.8.0/"
 pin "lit/", to: "https://ga.jspm.io/npm:lit@2.8.0/"
 pin "state-local", to: "https://ga.jspm.io/npm:state-local@1.0.7/lib/es/state-local.js"
 pin "iconify-icon" # @2.1.0
+pin "@stefanjudis/sparkly-text", to: "@stefanjudis--sparkly-text.js" # @1.0.10

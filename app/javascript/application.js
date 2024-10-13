@@ -6,3 +6,4 @@ import "chartkick"
 import "Chart.bundle"
 import "channels"
 import 'iconify-icon'
+import '@stefanjudis/sparkly-text'
