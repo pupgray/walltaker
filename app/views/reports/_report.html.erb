@@ -14,7 +14,7 @@
         </div>
         <div>Reported a <%= report.reportable_type %>.</div>
         <% if report.reportable %>
-          <%= link_to polymorphic_path(report.reportable), polymorphic_path(report.reportable) %>
+          <%= report.reportable_type == 'User' ? (link_to user_path(report.reportable.username), user_path(report.reportable.username)) : (link_to polymorphic_path(report.reportable), polymorphic_path(report.reportable)) %>
         <% end %>
       </td>
     </tr>
