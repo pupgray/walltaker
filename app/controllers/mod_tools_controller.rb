@@ -64,7 +64,7 @@ class ModToolsController < ApplicationController
 
   def update_user
     begin
-      safe_params = params.require(:user).permit(:id, :email, :username, :details, :set_count, :quarantined, :flagged)
+      safe_params = params.require(:user).permit(:id, :email, :username, :details, :set_count, :quarantined, :flagged, :is_reporter, :is_cutie, :is_supporter)
       user = User.find(safe_params['id'])
 
       if user
