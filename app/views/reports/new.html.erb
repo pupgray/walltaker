@@ -11,7 +11,7 @@
           <%= f.text_area :reason, class: 'full-span' %>
         </div>
         <div class="modal__buttons">
-          <%= button_tag class: 'no-underline primary', data: { 'report-target': 'cancel', action: 'click->report#cancel' } do %>
+          <%= button_tag type: 'button', class: 'no-underline primary', data: { 'report-target': 'cancel', action: 'click->report#cancel' } do %>
             <ion-icon role="presentation" name="close"></ion-icon>
             Cancel
           <% end %>
