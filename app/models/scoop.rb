@@ -22,6 +22,7 @@ class Scoop < ApplicationRecord
   private
 
   def user_has_waited_long_enough
+    return true if user.is_reporter?
     errors.add(:user, 'already posted a scoop within the last week!') if user.scoops.where('created_at > ?', 7.days.ago).exists?
   end
 

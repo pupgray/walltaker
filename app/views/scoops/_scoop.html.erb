@@ -3,7 +3,7 @@
 <div class="accent-block <%= tight ? 'tight-top' : '' %>">
   <div class="accent-block__charm">
     <ion-icon role="presentation" name="newspaper"></ion-icon>
-    <%= link_to scoop.user.username, user_path(scoop.user.username) %> <%= time_ago_in_words scoop.created_at %> ago
+    <%= link_to scoop.user.username, user_path(scoop.user.username), data: { controller: 'user-reference' } %> <%= time_ago_in_words scoop.created_at %> ago
   </div>
   <p><%= scoop.details %></p>
   <hr/>

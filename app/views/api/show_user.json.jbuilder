@@ -1,4 +1,4 @@
-json.extract! @user, :username, :id, :set_count
+json.extract! @user, :username, :id, :set_count, :is_reporter
 json.online @is_online
 json.authenticated @is_authenticated
 json.friend !!@has_friendship if @is_authenticated
