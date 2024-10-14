@@ -1,0 +1,23 @@
+<div data-turbo-prefetch="false" class="task-tools">
+  <div class="left">
+    <%= link_to "Back", user_path(@user.username) %>
+  </div>
+  <% if current_user && @user == current_user %>
+    <div class="right">
+      <%= button_to "New Survey", new_survey_path, method: :get %>
+    </div>
+  <% end %>
+</div>
+
+<h2>
+  <ion-icon name="file-tray-full" class="big"></ion-icon>
+  <%= @user.username.capitalize %>'s Surveys
+</h2>
+
+<div id="forms">
+  <% @surveys.each do |survey| %>
+    <%= link_to survey do %>
+      <%= render 'thumbnail', survey: survey %>
+    <% end %>
+  <% end %>
+</div>

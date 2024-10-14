@@ -33,7 +33,7 @@
         <%= form.label :custom_url, class: 'no-margin' do %>
           <ion-icon role="presentation" name="document-attach-outline"></ion-icon>
           Custom URL
-          <%= form.check_box :custom_url_checkbox, disabled: current_user.set_count < 300, data: { 'theme-form-target': 'switch', action: 'click->theme-form#toggle' } %>
+          <%= form.check_box :custom_url_checkbox, disabled: current_user.set_count < 300, data: { survey: 'switch', action: 'click->theme-form#toggle' } %>
         <% end %>
         <div data-theme-form-target="container">
           <p class="text-light">
@@ -43,7 +43,7 @@
           </strong>
           </p>
 
-          walltaker.joi.how/links/ <%= form.text_field :custom_url, placeholder: 'horny-deer-please', 'data-theme-form-target': 'input' %>
+          walltaker.joi.how/links/ <%= form.text_field :custom_url, placeholder: 'horny-deer-please', survey: 'input' %>
         </div>
       </div>
     </div>
@@ -64,7 +64,7 @@
           <ion-icon role="presentation" name="infinite"></ion-icon>
           Never expires
         <% end %>
-        <%= form.check_box :never_expires, "data-expiry-form-target": "switch", "data-action": "click->expiry-form#toggle" %>
+        <%= form.check_box :never_expires, survey: "switch", "data-action": "click->expiry-form#toggle" %>
       </div>
       <div class="link--form--text-row" data-expiry-form-target="input">
         <%= form.label :expires, style: "display: block" %>
@@ -114,7 +114,7 @@
       <div data-theme-form-target="container">
         <em>All wallpapers selected for this link must contain this tag. You can only use 1 theme tag. Leave it blank to
           allow all posts that are not otherwise blacklisted.</em><br/>
-        <%= form.text_field :theme, placeholder: 'loimu_(character)', 'data-theme-form-target': 'input' %>
+        <%= form.text_field :theme, placeholder: 'loimu_(character)', survey: 'input' %>
       </div>
     </div>
   </div>

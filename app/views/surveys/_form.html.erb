@@ -1,0 +1,20 @@
+<%# locals: (survey:) %>
+
+<%= form_with(model: survey) do |form| %>
+  <div class="form__row stacked">
+    <%= form.label :title %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div class="form__row stacked">
+    <%= form.label :description %>
+    <%= form.text_area :description %>
+  </div>
+
+  <div class="form__row form__row--checkbox">
+    <%= form.label :public %>
+    <%= form.check_box :public %>
+  </div>
+
+  <%= form.submit class: 'accent-block__button' %>
+<% end %>

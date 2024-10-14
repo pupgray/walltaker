@@ -1,0 +1,33 @@
+<div data-turbo-prefetch="false" class="task-tools">
+  <div class="left">
+    <%= link_to "Back to Survey", survey_path(@survey) %>
+  </div>
+  <div class="right">
+    <% if current_user && @survey.user == current_user %>
+      <%= button_to "Delete", @survey, method: :delete %>
+    <% end %>
+  </div>
+</div>
+
+<%= render @survey, edit: true %>
+
+<% if current_user && @survey.user == current_user && @survey.persisted? %>
+  <div class="accent-block">
+    <div class="accent-block__charm">
+      <ion-icon role="presentation" name="add"></ion-icon>
+      Add a new field
+    </div>
+    <%= turbo_frame_tag :form_element, src: new_survey_element_path(@survey), target: :survey %>
+  </div>
+<% end %>
+<br/>
+<hr/>
+
+<div class="accent-block">
+  <div class="accent-block__charm">
+    <ion-icon  role="presentation" name="file-tray-full"></ion-icon>
+    Survey information
+  </div>
+
+  <%= render 'form', survey: @survey %>
+</div>

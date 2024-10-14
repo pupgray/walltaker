@@ -1,0 +1,9 @@
+<%# locals: (survey:) %>
+
+<div class="accent-block">
+  <div class="accent-block__charm">
+    <ion-icon  role="presentation" name="file-tray-full"></ion-icon>
+    <%= survey.title %>
+  </div>
+  <%= tag.p survey.description if survey.description %>
+</div>

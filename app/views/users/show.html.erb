@@ -233,7 +233,7 @@
               <%= f.select :profile_id, options_from_collection_for_select(@user.profiles.order(id: :desc), :id, :name, form.profile_id.to_s), {}, { onchange: 'requestSubmit()' } %>
             <% end %>
 
-            <%= button_to 'New', profiles_path, form: { data: { 'turbo-frame': '_top' } } %>
+            <%= button_to 'New', profiles_path, survey: { data: { 'turbo-frame': '_top' } } %>
           </div>
 
           <% if @user.profile %>
@@ -256,7 +256,7 @@
                   <%= button_tag class: 'no-underline primary', data: { 'delete-profile-style-target': 'cancel', action: 'click->delete-profile-style#cancel' } do %>
                     Cancel
                   <% end %>
-                  <%= button_to profile_path(@user.profile), method: :delete, class: 'no-underline secondary', form: { data: { 'turbo-frame': '_top' } } do %>
+                  <%= button_to profile_path(@user.profile), method: :delete, class: 'no-underline secondary', survey: { data: { 'turbo-frame': '_top' } } do %>
                     <ion-icon role="presentation" name="trash"></ion-icon>
                     Confirm
                   <% end %>

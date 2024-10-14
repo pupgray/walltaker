@@ -1,0 +1,40 @@
+<%# locals: (form_element:, edit: false) %>
+
+<div id="<%= dom_id form_element %>" class="form__element">
+  <div class="form__row stacked">
+    <%= label_tag dom_id(form_element), form_element.label %>
+    <% case form_element.kind %>
+    <% when 'text' %>
+      <%= text_field_tag dom_id(form_element) %>
+    <% when 'yapping' %>
+      <%= text_area_tag dom_id(form_element) %>
+    <% when 'yes_or_no' %>
+      <label class="checkbox_pair">
+        <%= radio_button_tag dom_id(form_element), true %> Yes
+      </label>
+      <label class="checkbox_pair">
+        <%= radio_button_tag dom_id(form_element), false %> No
+      </label>
+    <% when 'score' %>
+      <sl-rating name="<%= dom_id(form_element) %>" label="Rating" style="--symbol-color-active: var(--accent);"></sl-rating>
+    <% when 'acceptance' %>
+      <label class="checkbox_pair">
+        <%= check_box_tag dom_id(form_element) %>
+        <div class="small">I accept</div>
+      </label>
+    <% else %>
+      Missing Field Type!
+    <% end %>
+  </div>
+
+  <% if edit %>
+    <% if current_user && form_element.survey.user == current_user %>
+      <div class="form__element__controls" data-turbo-prefetch="false">
+        <%= link_to 'Up', nudge_survey_element_path(form_element.survey, form_element, direction: 'up'), data: { turbo_method: :put, turbo_stream: true } %>
+        <%= link_to 'Down', nudge_survey_element_path(form_element.survey, form_element, direction: 'down'), data: { turbo_method: :put, turbo_stream: true } %>
+        <%= link_to 'Edit', edit_survey_element_path(form_element.survey, form_element), data: { turbo_stream: true, action: 'click->form#confirm' } %>
+        <%= link_to 'Delete', survey_element_path(form_element.survey, form_element), data: { turbo_method: :delete, turbo_stream: true } %>
+      </div>
+    <% end %>
+  <% end %>
+</div>

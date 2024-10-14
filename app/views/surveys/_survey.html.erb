@@ -1,0 +1,29 @@
+<%# locals: (survey:, edit: false) %>
+
+<h2><%= survey.title %></h2>
+
+<%= tag.p survey.description %>
+
+<div data-controller="form">
+  <dialog class="modal" data-form-target="modal">
+    <div id="form_element_modal"></div>
+  </dialog>
+
+  <%= turbo_frame_tag :survey do %>
+    <% if edit %>
+      <% survey.form_elements.each do |element| %>
+        <%= render 'form_elements/form_element', form_element: element, edit: true %>
+      <% end %>
+    <% else %>
+      <%= form_with url: survey_path(survey) do |f| %>
+        <% survey.form_elements.each do |element| %>
+          <%= render 'form_elements/form_element', form_element: element, edit: false %>
+        <% end %>
+
+        <br/>
+
+        <%= f.submit %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

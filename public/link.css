@@ -981,8 +981,39 @@ figcaption.link--description {
     color: var(--border);
 }
 
-.new_comment_form .field_with_errors {
+.new_comment_form .field_with_errors,
+.form-element__form .field_with_errors {
     display: contents;
+}
+
+.form-element__form .field_with_errors > input {
+    margin-bottom: 0.5rem;
+    border-color: var(--danger);
+}
+
+.form-element__form .field_with_errors + div {
+    background: var(--danger);
+    color: #FFF;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    box-sizing: border-box;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    position: relative;
+
+    &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 10px;
+        top: 0;
+        transform: translateY(-100%);
+        width: 0;
+        height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-bottom: 8px solid var(--danger);
+    }
 }
 
 aside.comments-sidebar[data-hidden=true] {

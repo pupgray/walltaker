@@ -2028,3 +2028,23 @@ main.full-width {
     }
 }
 
+.form__element {
+    display: flex;
+    width: 100%;
+    align-items: center;
+
+    & > * {
+        flex: 1 1 auto;
+    }
+
+    & > .form__element__controls {
+        flex: 0 1 auto;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        & > a {
+
+        }
+    }
+}

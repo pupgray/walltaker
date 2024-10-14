@@ -1,4 +1,11 @@
 Rails.application.routes.draw do
+  resources :surveys, except: %i[index] do
+    resources :form_elements, as: :elements, except: %i[index] do
+      member do
+        put :nudge, as: :nudge
+      end
+    end
+  end
   resources :leashes, except: %i[index], as: :leashes
   get 'news_room/index'
   resources :scoops
@@ -72,6 +79,7 @@ Rails.application.routes.draw do
   resources :users do
     resources :reports, only: %i[new create]
     resources :leashes, only: %i[index]
+    resources :surveys, only: %i[index]
     post 'profile', to: 'profiles#set_profile', as: 'set_profile'
 
     member do

@@ -1,0 +1,25 @@
+<%# locals: (form_element:) %>
+
+<% url = form_element.persisted? ? survey_element_path(form_element.survey, form_element) : survey_elements_path(form_element.survey) %>
+
+<%= form_with model: form_element, url:, data: { turbo_stream: true }, class: 'form-element__form' do |f| %>
+  <%= f.label :label, class: 'form__row stacked' do %>
+    Label
+    <%= f.text_field :label, class: 'full-span' %>
+    <%= tag.div { form_element.errors.full_messages_for(:label).to_sentence } if form_element.errors.include?(:label) %>
+  <% end %>
+
+  <%= f.label :kind, class: 'form__row stacked' do %>
+    Kind
+    <%= f.select :kind, options_for_select(FormElement.kinds.map { |k, v| [k.humanize.capitalize, k] }, form_element.kind), {}, class: 'full-span' %>
+  <% end %>
+
+  <%= f.label :required, class: 'form__row form_row--checkbox' do %>
+    Required
+    <%= f.check_box :required %>
+  <% end %>
+
+  <div class="<%= form_element.persisted? ? 'modal__buttons' : '' %>">
+    <%= button_tag(form_element.persisted? ? 'Save' : 'Add Field', class: { 'no-underline': form_element.persisted?, secondary: form_element.persisted?, 'accent-block__button': form_element.new_record? }, data: { action: 'click->form#cancel' }) %>
+  </div>
+<% end %>

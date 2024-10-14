@@ -1,0 +1,12 @@
+<div data-turbo-prefetch="false" class="task-tools">
+  <div class="left">
+    <%= link_to "#{@survey.user.username.capitalize}'s surveys", user_surveys_path(@survey.user.username) %>
+  </div>
+  <div class="right">
+    <% if current_user && @survey.user == current_user %>
+      <%= button_to "Edit", edit_survey_path(@survey), method: :get %>
+    <% end %>
+  </div>
+</div>
+
+<%= render @survey %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_13_190437) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_14_020043) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
@@ -196,6 +196,18 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_13_190437) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["job_id"], name: "index_crono_jobs_on_job_id", unique: true
+  end
+
+  create_table "form_elements", force: :cascade do |t|
+    t.string "label", null: false
+    t.integer "kind", null: false
+    t.bigint "survey_id", null: false
+    t.integer "sort_order", null: false
+    t.boolean "required", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["survey_id", "sort_order"], name: "index_form_elements_on_survey_id_and_sort_order", unique: true
+    t.index ["survey_id"], name: "index_form_elements_on_survey_id"
   end
 
   create_table "friendships", force: :cascade do |t|
@@ -515,6 +527,16 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_13_190437) do
     t.index ["user_id"], name: "index_surrenders_on_user_id"
   end
 
+  create_table "surveys", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.text "title", null: false
+    t.text "description", default: "", null: false
+    t.boolean "public", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_surveys_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email"
     t.string "username"
@@ -549,6 +571,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_13_190437) do
   add_foreign_key "banned_ips", "users", column: "banned_by_id"
   add_foreign_key "comments", "links"
   add_foreign_key "comments", "users"
+  add_foreign_key "form_elements", "surveys"
   add_foreign_key "friendships", "users", column: "receiver_id"
   add_foreign_key "friendships", "users", column: "sender_id"
   add_foreign_key "history_events", "ahoy_visits"
@@ -582,6 +605,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_13_190437) do
   add_foreign_key "solid_queue_scheduled_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "surrenders", "friendships"
   add_foreign_key "surrenders", "users"
+  add_foreign_key "surveys", "users"
   add_foreign_key "users", "links", column: "viewing_link_id"
   add_foreign_key "users", "profiles"
 end

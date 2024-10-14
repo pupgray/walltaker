@@ -24,7 +24,8 @@ class User < ApplicationRecord
   has_many :masters, through: :obeying_leashes
   belongs_to :profile, optional: true
   has_one :current_surrender, class_name: 'Surrender', dependent: :destroy
-  has_many :scoops
+  has_many :scoops, dependent: :destroy
+  has_many :surveys, dependent: :destroy
 
   validates_uniqueness_of :username
 

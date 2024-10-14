@@ -195,6 +195,19 @@ form.orgasms .form__row {
     cursor: pointer;
     position: relative;
 
+    & .checkbox_pair {
+        display: flex;
+        align-items: center;
+        margin: 0.5rem 0 1rem;
+        cursor: pointer;
+        gap: 0.5rem;
+        margin: 0;
+
+        & input {
+            margin: 0;
+        }
+    }
+
     & > .form__row__charm {
         position: absolute;
         top: 37%;
@@ -221,8 +234,8 @@ form.orgasms .form__row {
     align-items: flex-start;
     gap: 1rem;
 
-    & > input[type="checkbox"] {
-        margin-top: 2px;
+    & input[type="checkbox"] {
+        transform: translateY(-1px) !important;
     }
 }
 
