@@ -15,14 +15,19 @@
         <%= render 'form_elements/form_element', form_element: element, edit: true %>
       <% end %>
     <% else %>
-      <%= form_with url: survey_path(survey) do |f| %>
-        <% survey.form_elements.each do |element| %>
-          <%= render 'form_elements/form_element', form_element: element, edit: false %>
+      <% if survey.form_elements.count > 0 %>
+        <%= form_with url: survey_responses_path(survey) do |f| %>
+          <% survey.form_elements.each do |element| %>
+            <%= render 'form_elements/form_element', form_element: element, edit: false %>
+          <% end %>
+
+          <br/>
+
+          <%= f.submit %>
         <% end %>
-
-        <br/>
-
-        <%= f.submit %>
+      <% else %>
+        <h4>No questions yet</h4>
+        <p>This survey is still missing a list of questions. If you are the owner, you can add them in the survey's <span class="mock-link"><ion-icon role="presentation" name="build"></ion-icon> Edit</span> menu.</p>
       <% end %>
     <% end %>
   <% end %>

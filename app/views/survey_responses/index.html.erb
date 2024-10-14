@@ -1,0 +1,14 @@
+<div data-turbo-prefetch="false" class="task-tools">
+  <div class="left">
+    <%= link_to "Back", survey_path(@survey) %>
+  </div>
+  <div class="right">
+    <%= button_to "New response", @survey, method: :get %>
+  </div>
+</div>
+
+<h2>Responses</h2>
+
+<% @survey.form_elements.each do |element| %>
+  <%= turbo_frame_tag dom_id(element), src: summary_survey_element_path(@survey, element) %>
+<% end %>

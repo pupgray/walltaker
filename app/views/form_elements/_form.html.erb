@@ -14,11 +14,6 @@
     <%= f.select :kind, options_for_select(FormElement.kinds.map { |k, v| [k.humanize.capitalize, k] }, form_element.kind), {}, class: 'full-span' %>
   <% end %>
 
-  <%= f.label :required, class: 'form__row form_row--checkbox' do %>
-    Required
-    <%= f.check_box :required %>
-  <% end %>
-
   <div class="<%= form_element.persisted? ? 'modal__buttons' : '' %>">
     <%= button_tag(form_element.persisted? ? 'Save' : 'Add Field', class: { 'no-underline': form_element.persisted?, secondary: form_element.persisted?, 'accent-block__button': form_element.new_record? }, data: { action: 'click->form#cancel' }) %>
   </div>

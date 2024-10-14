@@ -1,0 +1,2 @@
+class SurveyResponseAnswersController < ApplicationController
+end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_14_020043) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_14_045414) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
@@ -527,6 +527,26 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_14_020043) do
     t.index ["user_id"], name: "index_surrenders_on_user_id"
   end
 
+  create_table "survey_response_answers", force: :cascade do |t|
+    t.bigint "form_element_id", null: false
+    t.bigint "survey_response_id", null: false
+    t.text "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["form_element_id"], name: "index_survey_response_answers_on_form_element_id"
+    t.index ["survey_response_id"], name: "index_survey_response_answers_on_survey_response_id"
+  end
+
+  create_table "survey_responses", force: :cascade do |t|
+    t.bigint "survey_id", null: false
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "comment", default: ""
+    t.index ["survey_id"], name: "index_survey_responses_on_survey_id"
+    t.index ["user_id"], name: "index_survey_responses_on_user_id"
+  end
+
   create_table "surveys", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.text "title", null: false
@@ -605,6 +625,10 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_14_020043) do
   add_foreign_key "solid_queue_scheduled_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "surrenders", "friendships"
   add_foreign_key "surrenders", "users"
+  add_foreign_key "survey_response_answers", "form_elements"
+  add_foreign_key "survey_response_answers", "survey_responses"
+  add_foreign_key "survey_responses", "surveys"
+  add_foreign_key "survey_responses", "users"
   add_foreign_key "surveys", "users"
   add_foreign_key "users", "links", column: "viewing_link_id"
   add_foreign_key "users", "profiles"

@@ -3,8 +3,16 @@
     <%= link_to "#{@survey.user.username.capitalize}'s surveys", user_surveys_path(@survey.user.username) %>
   </div>
   <div class="right">
+    <%= link_to survey_responses_path(@survey), class: 'no-underline' do %>
+      <ion-icon role="presentation" name="file-tray-full"></ion-icon>
+      Responses
+    <% end %>
     <% if current_user && @survey.user == current_user %>
-      <%= button_to "Edit", edit_survey_path(@survey), method: :get %>
+      <%= link_to edit_survey_path(@survey), class: 'no-underline' do %>
+        <ion-icon role="presentation" name="build"></ion-icon>
+        Edit
+      <% end %>
+      <%= button_to "Delete", @survey, method: :delete %>
     <% end %>
   </div>
 </div>

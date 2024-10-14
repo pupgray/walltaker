@@ -1,11 +1,22 @@
 class FormElementsController < ApplicationController
-  before_action :set_form_element, only: %i[ show edit update destroy nudge ]
-  before_action :set_survey
-  before_action :authorize, except: %i[ show ]
+  before_action :set_form_element, only: %i[ show edit update destroy nudge summary ]
+  before_action :set_survey, except: %i[single_response]
+  before_action :authorize, except: %i[ show single_response ]
   before_action :must_own_survey, only: %i[edit update destroy]
 
   # GET /form_elements/1 or /form_elements/1.json
   def show
+  end
+
+  def summary
+  end
+
+  def single_response
+    @form_element = FormElement.find(params[:form_element_id])
+    @response = SurveyResponse.find(params[:id])
+    @answer = @response.answers.where(form_element: @form_element).first
+
+    expires_in 72.hours
   end
 
   # GET /form_elements/new

@@ -1,0 +1,43 @@
+<%= turbo_frame_tag dom_id(@form_element) do %>
+  <h5><%= @form_element.label %></h5>
+  <% case @form_element.kind %>
+<% when 'text' %>
+    <%= tag.div @answer.value %>
+  <% when 'yapping' %>
+    <%= tag.p @answer.value %>
+  <% when 'yes_or_no' %>
+    <% case @answer.value %>
+    <% when 'true' %>
+      <div>
+        <ion-icon name="checkbox-outline"></ion-icon>
+        Yes
+      </div>
+    <% when 'false' %>
+      <div>
+        <ion-icon name="square-outline"></ion-icon>
+        No
+      </div>
+    <% else %>
+      <div>
+        <ion-icon name="help-outline"></ion-icon>
+        Skipped
+      </div>
+    <% end %>
+  <% when 'score' %>
+  <% when 'acceptance' %>
+    <% case @answer.value %>
+    <% when 'true' %>
+      <div>
+        <ion-icon name="checkbox-outline"></ion-icon>
+        Accepted
+      </div>
+    <% else %>
+      <div>
+        <ion-icon name="square-outline"></ion-icon>
+        Unaccepted
+      </div>
+    <% end %>
+  <% else %>
+    Missing summary type!
+  <% end %>
+<% end %>

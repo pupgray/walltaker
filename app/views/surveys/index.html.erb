@@ -16,7 +16,7 @@
 
 <div id="forms">
   <% @surveys.each do |survey| %>
-    <%= link_to survey do %>
+    <%= link_to survey, class: 'no-underline' do %>
       <%= render 'thumbnail', survey: survey %>
     <% end %>
   <% end %>

@@ -1,8 +1,18 @@
 Rails.application.routes.draw do
+  resources :survey_response_answers, except: %i[index]
+  resources :survey_responses, except: %i[index create] do
+    resources :survey_response_answers, only: %i[index], as: :answers
+
+    member do
+      get 'single_response/:form_element_id', to: 'form_elements#single_response', as: :single_response
+    end
+  end
   resources :surveys, except: %i[index] do
+    resources :survey_responses, only: %i[index create], as: :responses
     resources :form_elements, as: :elements, except: %i[index] do
       member do
         put :nudge, as: :nudge
+        get :summary, as: :summary
       end
     end
   end

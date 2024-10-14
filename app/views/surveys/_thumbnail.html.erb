@@ -1,9 +1,13 @@
 <%# locals: (survey:) %>
 
 <div class="accent-block">
-  <div class="accent-block__charm">
-    <ion-icon  role="presentation" name="file-tray-full"></ion-icon>
-    <%= survey.title %>
+  <div class="accent-block__charm inline">
+    <ion-icon role="presentation" name="file-tray-full"></ion-icon>
+    <div class="split">
+      <span><%= survey.title %></span>
+      <span><%= pluralize survey.responses.count, 'response' %></span>
+    </div>
   </div>
   <%= tag.p survey.description if survey.description %>
+  <br/>
 </div>
