@@ -30,7 +30,7 @@ class SurveyResponsesController < ApplicationController
 
   def update
     if @response.update(survey_params)
-      redirect_to survey_responses_path(@response.survey), notice: 'Comment published!'
+      redirect_to survey_responses_path(@response.survey), notice: 'Response published!'
     else
       redirect_to survey_response_path(@response), alert: 'Something went wrong'
     end

@@ -1,46 +1,48 @@
 <%= turbo_frame_tag dom_id(@form_element) do %>
-  <h5><%= @form_element.label %></h5>
-  <% case @form_element.kind %>
-<% when 'text' %>
-    <% @form_element.survey_response_answers.each do |answer| %>
-      <% if answer.value.present? %>
-        <%= tag.strong answer.value %>
-        <%= link_to 'Full Response', survey_response_path(answer.survey_response), target: '_top' %>
+  <div class="response-summary">
+    <h5><%= @form_element.label %></h5>
+    <% case @form_element.kind %>
+    <% when 'text' %>
+      <% @form_element.survey_response_answers.each do |answer| %>
+        <% if answer.value.present? %>
+          <%= tag.p answer.value %>
+          <%= link_to 'Full Response', survey_response_path(answer.survey_response), target: '_top' %>
+        <% end %>
       <% end %>
-    <% end %>
-  <% when 'yapping' %>
-    <% @form_element.survey_response_answers.each do |answer| %>
-      <% if answer.value.present? %>
-        <%= tag.p answer.value %>
-        <%= link_to 'Full Response', survey_response_path(answer.survey_response), target: '_top' %>
+    <% when 'yapping' %>
+      <% @form_element.survey_response_answers.each do |answer| %>
+        <% if answer.value.present? %>
+          <%= tag.p answer.value %>
+          <%= link_to 'Full Response', survey_response_path(answer.survey_response), target: '_top' %>
+        <% end %>
       <% end %>
+    <% when 'yes_or_no' %>
+      <div>
+        <ion-icon name="checkbox-outline"></ion-icon>
+        Yes = <%= @form_element.survey_response_answers.where(value: 'true').count %> votes
+      </div>
+      <div>
+        <ion-icon name="square-outline"></ion-icon>
+        No = <%= @form_element.survey_response_answers.where(value: 'false').count %> votes
+      </div>
+      <div>
+        <ion-icon name="help-outline"></ion-icon>
+        Skipped
+        = <%= @form_element.survey_response_answers.where.not(value: 'false').or(SurveyResponseAnswer.where.not(value: 'true')).count %>
+        votes
+      </div>
+    <% when 'score' %>
+    <% when 'acceptance' %>
+      <div>
+        <ion-icon name="checkbox-outline"></ion-icon>
+        Accepted = <%= @form_element.survey_response_answers.where(value: 'true').count %> votes
+      </div>
+      <div>
+        <ion-icon name="square-outline"></ion-icon>
+        Unaccepted = <%= @form_element.survey_response_answers.where.not(value: 'true').count %> votes
+      </div>
+    <% else %>
+      Missing summary type!
     <% end %>
-  <% when 'yes_or_no' %>
-    <div>
-      <ion-icon name="checkbox-outline"></ion-icon>
-      Yes = <%= @form_element.survey_response_answers.where(value: 'true').count %> votes
-    </div>
-    <div>
-      <ion-icon name="square-outline"></ion-icon>
-      No = <%= @form_element.survey_response_answers.where(value: 'false').count %> votes
-    </div>
-    <div>
-      <ion-icon name="help-outline"></ion-icon>
-      Skipped
-      = <%= @form_element.survey_response_answers.where.not(value: 'false').or(SurveyResponseAnswer.where.not(value: 'true')).count %>
-      votes
-    </div>
-  <% when 'score' %>
-  <% when 'acceptance' %>
-    <div>
-      <ion-icon name="checkbox-outline"></ion-icon>
-      Accepted = <%= @form_element.survey_response_answers.where(value: 'true').count %> votes
-    </div>
-    <div>
-      <ion-icon name="square-outline"></ion-icon>
-      Unaccepted = <%= @form_element.survey_response_answers.where.not(value: 'true').count %> votes
-    </div>
-  <% else %>
-    Missing summary type!
-  <% end %>
+  </div>
 <% end %>

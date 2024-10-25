@@ -2048,3 +2048,8 @@ main.full-width {
         }
     }
 }
+
+.response-summary {
+    background: var(--accent-bg);
+    padding: 1rem;
+}
