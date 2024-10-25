@@ -21,7 +21,7 @@ module MessageThreadHelper
         )
         if response.status != 200
           #track :error, :e621_post_api_fail_in_Message_Thread_previewer, response: response, post_id: post_id.to_i
-          return nil
+          return 'Dead link :('
         end
 
         begin
@@ -31,7 +31,7 @@ module MessageThreadHelper
           CachedPost.create post_id: post_id, url: url
         rescue
           #track :error, :e621_post_unreadable_fail_in_Message_Thread_previewer, response: response, post_id: post_id.to_i
-          return nil
+          return 'Dead link :('
         end
       end
     end
