@@ -6,10 +6,15 @@
 <%= turbo_frame_tag 'title' do %>
   <span class="show-desktop">
     <% is_donkey = current_user && current_user.id == 2103 %>
+    <% is_cow = current_user && current_user.id == 8266 %>
     <%= if is_surrender_controller_session?
           'Walltaken'
+        elsif is_donkey
+          'HEEHAW'
+        elsif is_cow
+          "MOOOO!"
         else
-          is_donkey ? 'HEEHAW' : 'Walltaker'
+          "Walltaker"
         end
     %>
 
