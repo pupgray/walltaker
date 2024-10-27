@@ -1,9 +1,10 @@
 export class Modal {
     #visible = false;
 
-    constructor(target) {
+    constructor(target, cancel) {
         this.target = target;
         this.#tick();
+        this.cancel = cancel;
         this.#appendModalHeader();
     }
 
@@ -25,7 +26,7 @@ export class Modal {
         }
     }
 
-    isOpen () {
+    isOpen() {
         return this.#visible
     }
 
@@ -36,7 +37,7 @@ export class Modal {
 
             const closeButton = document.createElement('button');
             closeButton.className = 'modal__close-button';
-            closeButton.addEventListener('click', this.close.bind(this));
+            closeButton.addEventListener('click', this.cancel ?? this.close.bind(this));
 
             const closeButtonIcon = document.createElement('ion-icon');
             closeButtonIcon.name = 'close';
@@ -45,7 +46,7 @@ export class Modal {
             header.appendChild(closeButton);
 
             this.target.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') this.close();
+                if (e.key === 'Escape') (this.cancel ?? this.close.bind(this))()
             });
 
             this.target.appendChild(header);
@@ -56,6 +57,6 @@ export class Modal {
 export function WithModal(controller) {
     return class extends controller {
         static targets = ['modal'].concat(controller.targets ?? []);
-        modal = new Modal(this.modalTarget);
+        modal = new Modal(this.modalTarget, this.cancel?.bind(this));
     }
 }

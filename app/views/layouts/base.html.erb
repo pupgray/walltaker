@@ -1,7 +1,7 @@
 <% mascot = current_user&.mascot || 'ki' %>
 <% pervert = current_user&.pervert || false %>
 <!DOCTYPE html>
-<html class="<%= current_user ? "force-#{current_user.colour_preference}" : ""%> <%= "current-mascot-"+mascot %> <%=pervert ? "currently-perverted" : ""%> ">
+<html class="<%= current_user ? "force-#{current_user.colour_preference}" : "" %> <%= "current-mascot-" + mascot %> <%= pervert ? "currently-perverted" : "" %> ">
 <head>
   <title><%= content_for?(:html_title) ? yield(:html_title) : "Walltaker" %></title>
   <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1">
@@ -37,6 +37,20 @@
 </head>
 
 <body>
+<div data-controller="age">
+  <dialog class="modal" data-age-target="modal">
+    <h4>This is an adult website</h4>
+    <p>Minors cannot use this website. Are you over the age of 18?</p>
+    <div class="modal__buttons">
+      <%= button_tag class: 'no-underline primary', data: { 'age-target': 'cancel', action: 'click->age#cancel' } do %>
+        No
+      <% end %>
+      <%= button_tag class: 'no-underline secondary', data: { action: 'click->age#dismiss' } do %>
+        I am over the age of 18.
+      <% end %>
+    </div>
+  </dialog>
+</div>
 
 <%= content_for?(:body) ? yield(:body) : yield %>
 
