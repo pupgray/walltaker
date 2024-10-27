@@ -46,7 +46,7 @@ export class Modal {
             header.appendChild(closeButton);
 
             this.target.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') (this.cancel ?? this.close.bind(this))()
+                if (e.key === 'Escape') this.cancel ?? this.close.bind(this)
             });
 
             this.target.appendChild(header);
