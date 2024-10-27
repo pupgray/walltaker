@@ -3,13 +3,13 @@
 <%= turbo_frame_tag :pledge do %>
   <% if @nut_pledge %>
     <% if @nut_pledge.failed? %>
-     <div class="nut_pledge_failed">
-       <ion-icon name="water"></ion-icon>
-       Failed NNN2024 on day <%= @nut_pledge.failed_on.strftime("%e") %>
-       <% if @nut_pledge.past_link.present? %>
-         <div class="preview"><%= image_tag @nut_pledge.past_link.post_url %></div>
-       <% end %>
-     </div>
+      <div class="nut_pledge_failed">
+        <ion-icon name="water"></ion-icon>
+        Failed NNN2024 on day <%= @nut_pledge.failed_on.strftime("%e") %>
+        <% if @nut_pledge.past_link.present? %>
+          <div class="preview"><%= image_tag @nut_pledge.past_link.post_url %></div>
+        <% end %>
+      </div>
     <% else %>
       <div class="accent-block spaced flat-bottom">
         <div class="accent-block__charm">
@@ -21,9 +21,17 @@
           help me <%= mascot.capitalize %>.</p>
         <p><strong>Signed <%= time_ago_in_words @nut_pledge.created_at %> ago.</strong></p>
 
-        <% if @is_current_user && Time.now.after?(Time.new(2024,10,31,23,0,0,0)) %>
+        <% if Time.now.before?(Time.new(2024, 10, 31, 23, 0, 0, 0)) %>
+          <div class="center"><%= distance_of_time_in_words(Time.new(2024, 10, 31, 23, 0, 0, 0), Time.now) %> before NNN begins!</div>
+        <% end %>
+
+        <% if Time.now.after?(Time.new(2024, 10, 31, 23, 0, 0, 0)) %>
+          <div class="center">Only <%= distance_of_time_in_words(Time.new(2024, 11, 31, 23, 0, 0, 0), Time.now) %> to go!</div>
+        <% end %>
+
+        <% if @is_current_user && Time.now.after?(Time.new(2024, 10, 31, 23, 0, 0, 0)) %>
           <div class="center">
-            <%= button_to user_nut_pledge_path, class: 'danger-button', method: :put, form: { data: {'turbo-frame': 'pledge'} } do %>
+            <%= button_to user_nut_pledge_path, class: 'danger-button', method: :put, form: { data: { 'turbo-frame': 'pledge' } } do %>
               I Failed
             <% end %>
           </div>
