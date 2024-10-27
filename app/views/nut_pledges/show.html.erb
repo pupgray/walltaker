@@ -1,0 +1,34 @@
+<% mascot = @user&.mascot || 'ki' %>
+
+<%= turbo_frame_tag :pledge do %>
+  <% if @nut_pledge %>
+    <% if @nut_pledge.failed? %>
+     <div class="nut_pledge_failed">
+       <ion-icon name="water"></ion-icon>
+       Failed NNN2024 on day <%= @nut_pledge.failed_on.strftime("%e") %>
+       <% if @nut_pledge.past_link.present? %>
+         <div class="preview"><%= image_tag @nut_pledge.past_link.post_url %></div>
+       <% end %>
+     </div>
+    <% else %>
+      <div class="accent-block spaced flat-bottom">
+        <div class="accent-block__charm">
+          No Nut November 2024
+        </div>
+        <p>I hereby pledge, as <%= mascot.capitalize %> as my witness, that I will not cum, squirt, ejaculate,
+          orgasm, or otherwise experience any derivative thereof a pelvic sneeze, during the entire month of November,
+          so
+          help me <%= mascot.capitalize %>.</p>
+        <p><strong>Signed <%= time_ago_in_words @nut_pledge.created_at %> ago.</strong></p>
+
+        <% if @is_current_user && Time.now.after?(Time.new(2024,9,31,23,0,0,0)) %>
+          <div class="center">
+            <%= button_to user_nut_pledge_path, class: 'danger-button', method: :put, form: { data: {'turbo-frame': 'pledge'} } do %>
+              I Failed
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

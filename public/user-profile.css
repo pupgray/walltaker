@@ -211,6 +211,85 @@ form.orgasms .form__row {
         flex-direction: column;
         align-items: flex-start;
     }
+
+    &.signature {
+        &::after {
+            content: "x";
+            position: absolute;
+            bottom: 1rem;
+            left: 0.5rem;
+            display: block;
+            font-size: 1.7rem;
+        }
+
+        input, .signature__inner {
+            margin-left: 2rem;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            border-radius: 0;
+        }
+
+        & .signature__inner {
+            margin-bottom: 1rem;
+            font-size: 2rem;
+            transform: translateY(5px);
+
+            & small {
+                display: inline-block;
+                font-size: 0.8em;
+                transform: translateY(-3px) rotate(2deg);
+            }
+        }
+    }
+}
+
+.flat-bottom {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0
+}
+
+.nut_pledge_failed {
+    flex-wrap: wrap;
+    margin-top: -1rem;
+    margin-bottom: 1rem;
+    background: var(--accent);
+    color: var(--bg);
+    padding: 0.4rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+
+    & .preview{
+        position: relative;
+        flex: 1 0 100%;
+        display: flex;
+        justify-content: center;
+
+        &::before {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+            z-index: 99;
+            content: "";
+            display: block;
+            width: 120px;
+            height: 120px;
+            background:
+                    repeating-conic-gradient(rgba(238, 234, 231, 0.23) 0 3%, transparent 0 11%),
+                    repeating-conic-gradient(transparent 0 5%, rgba(238, 234, 231, 0.30) 0 7%) 50% / 60% 60%,
+                    repeating-conic-gradient(transparent 0 7%, rgba(238, 234, 231, 0.33) 0 9%) 50% / 70% 70%,
+                    repeating-conic-gradient(transparent 0 11%, rgba(238, 234, 231, 0.23) 0 13%) 50% / 80% 80%,
+                    radial-gradient(rgba(238, 234, 231, 0.44) 22%, transparent 0);
+            background-repeat: no-repeat;
+            filter: blur(2px) contrast(50);
+        }
+    }
+    & img {
+        max-width: 120px;
+    }
 }
 
 .form__row--stacking {
@@ -567,5 +646,22 @@ h2.with-chart #chart-1 {
 
     & > [id^="leash"]:first-of-type {
         margin-top: 0;
+    }
+}
+
+.lizard_type {
+    font-weight: 400;
+    font-style: normal;
+
+    &.warren {
+        font-family: "Lacquer", system-ui;
+    }
+
+    &.ki {
+        font-family: "Vibur", cursive;
+    }
+
+    &.taylor {
+        font-family: "Mrs Saint Delafield", cursive;
     }
 }

@@ -25,6 +25,7 @@ class User < ApplicationRecord
   belongs_to :profile, optional: true
   has_one :current_surrender, class_name: 'Surrender', dependent: :destroy
   has_many :scoops
+  has_one :nut_pledge, dependent: :destroy
 
   validates_uniqueness_of :username
 

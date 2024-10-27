@@ -103,6 +103,11 @@ class ApplicationController < ActionController::Base
     # If a came reaction, log an orgasm
     Nuttracker::Orgasm.create rating: 3, is_ruined: false, user: link.user, caused_by: link.set_by if link.response_type == 'came'
 
+    if link.response_type == 'came' && link.user.nut_pledge.present?
+      link.user.nut_pledge.past_link = link.past_links.last
+      link.user.nut_pledge.save
+    end
+
     # If a disgust reaction, revert to old wallpaper
     if link.response_type == 'disgust'
       past_links = PastLink.where(link_id: link.id, post_url: link.post_url)

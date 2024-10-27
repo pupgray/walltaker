@@ -1,0 +1,2 @@
+module NutPledgesHelper
+end

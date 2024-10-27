@@ -4,6 +4,13 @@
     grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
     gap: 2rem;
 }
+.dashboard-header {
+    margin: 1rem 0;
+    background: var(--accent-bg);
+    text-align: center;
+    padding: 0.4rem 1rem;
+    border-radius: 4px;
+}
 
 .dashboard .chart {
     margin-top: 1rem;

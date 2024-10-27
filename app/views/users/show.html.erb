@@ -134,6 +134,8 @@
       <% end %>
     </h2>
 
+    <%= turbo_frame_tag :pledge, src: user_nut_pledge_path(@user.username) %>
+
     <% unless @is_editing %>
       <%= render 'users/details', { user: @user, is_current_user: @is_current_user } %><%= render partial: 'users/past_links', locals: { past_links: @past_links } %>
 
@@ -146,7 +148,10 @@
 
       <% if @user.pets.present? %>
         <div class="user-kennel">
-          <h2><iconify-icon icon="mdi:dog-service"></iconify-icon> Kennel</h2>
+          <h2>
+            <iconify-icon icon="mdi:dog-service"></iconify-icon>
+            Kennel
+          </h2>
           <%= render @user.held_leashes %>
         </div>
       <% end %>

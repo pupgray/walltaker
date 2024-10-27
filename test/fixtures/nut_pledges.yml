@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  failed_on: 2024-10-27 12:12:53
+  past_link: one
+
+two:
+  user: two
+  failed_on: 2024-10-27 12:12:53
+  past_link: two

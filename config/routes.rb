@@ -72,6 +72,7 @@ Rails.application.routes.draw do
   resources :users do
     resources :reports, only: %i[new create]
     resources :leashes, only: %i[index]
+    resource :nut_pledge
     post 'profile', to: 'profiles#set_profile', as: 'set_profile'
 
     member do
