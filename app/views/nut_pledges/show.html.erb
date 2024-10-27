@@ -21,7 +21,7 @@
           help me <%= mascot.capitalize %>.</p>
         <p><strong>Signed <%= time_ago_in_words @nut_pledge.created_at %> ago.</strong></p>
 
-        <% if @is_current_user && Time.now.after?(Time.new(2024,9,31,23,0,0,0)) %>
+        <% if @is_current_user && Time.now.after?(Time.new(2024,10,31,23,0,0,0)) %>
           <div class="center">
             <%= button_to user_nut_pledge_path, class: 'danger-button', method: :put, form: { data: {'turbo-frame': 'pledge'} } do %>
               I Failed
