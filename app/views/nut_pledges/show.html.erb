@@ -6,6 +6,9 @@
       <div class="nut_pledge_failed">
         <ion-icon name="water"></ion-icon>
         Failed NNN2024 on day <%= @nut_pledge.failed_on.strftime("%e") %>
+        <% if @nut_pledge.id == 253 %>
+          with first anal orgasm
+        <% end %>
         <% if @nut_pledge.past_link.present? %>
           <div class="preview"><%= image_tag @nut_pledge.past_link.post_url %></div>
         <% end %>
