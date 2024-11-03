@@ -436,6 +436,11 @@ h4.forks-header > ion-icon {
     margin-left: 0.5rem;
 }
 
+.link--device-in-use iconify-icon {
+    font-size: 2em;
+    margin-left: 0.25em;
+}
+
 .link--device-in-use ion-icon.apple-icon {
     transform: translateY(-2px);
 }
