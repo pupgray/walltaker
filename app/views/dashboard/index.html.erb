@@ -10,16 +10,6 @@
 
 <% unless current_user.nil? %>
   <% content_for(:html_title) { 'Walltaker Dashboard' } %>
-  <% if current_user.nut_pledge.nil? %>
-    <div class="dashboard-header">
-      <%= link_to new_user_nut_pledge_path(current_user.username) do %>
-        Sign the NNN Pledge!
-      <% end %>
-      <small>&nbsp;or don't, I'm not your incest-positive mom.</small>
-    </div>
-  <% else %>
-    <%= turbo_frame_tag :pledge, src: user_nut_pledge_path(current_user.username) %>
-  <% end %>
 
   <div class="dashboard">
     <div class="dashboard__recent">
