@@ -3,7 +3,7 @@ class NotificationController < ApplicationController
   before_action :authorize_for_surrendered_accounts
 
   def index
-    @notifications = current_user.notifications
+    @notifications = current_user.notifications.order(created_at: :desc).limit(200)
   end
 
   def show

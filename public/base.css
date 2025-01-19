@@ -1036,6 +1036,28 @@ a.small:hover {
     }
 }
 
+.notification-actions {
+    border-radius: 0 !important;
+    margin-left: 0 !important;
+    background: none;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+    margin-top: 0.5rem !important;
+
+    .accent-block__button {
+        border-radius: 0 !important;
+        transform: unset !important;
+
+
+        &.accent-block__button--right {
+            background: var(--accent-bg);
+            color: var(--accent);
+
+        }
+    }
+}
+
 .accent-block .accent-block__button {
     width: calc(100% + 3rem) !important;
     margin: 0 -1.5rem 0 -1.5rem !important;
@@ -1049,7 +1071,7 @@ a.small:hover {
     }
 
     &.accent-block__button--left {
-       border-bottom-right-radius: 0;
+        border-bottom-right-radius: 0;
     }
 
     &.accent-block__button--right {
@@ -1387,7 +1409,11 @@ footer small a {
 }
 
 .notifications__popover .notification:hover {
-    opacity: 0.6;
+    background: var(--accent-bg);
+
+    time {
+        color: var(--accent);
+    }
 }
 
 .notifications__list .notification {
@@ -1395,7 +1421,7 @@ footer small a {
     border-radius: 0.3rem;
     padding: 0.8rem 0.9rem;
     margin-bottom: 0.5rem;
-    color: white;
+    color: var(--text);
     text-decoration: none;
     background: var(--accent-bg);
 

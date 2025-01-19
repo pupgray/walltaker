@@ -14,9 +14,15 @@
           <%= render 'notification', notification: %>
         <% end %>
 
-        <%= button_to clear_notifications_path, method: 'delete' do %>
-          <ion-icon role="presentation" name="trash"></ion-icon>
-        <% end %>
+        <div class="accent-block tight-top tight notification-actions">
+          <%= button_to clear_notifications_path, method: 'delete', class: 'accent-block__button danger-button accent-block__button--left' do %>
+            Delete All
+          <% end %>
+
+          <%= button_to all_notifications_path, method: 'get', class: 'accent-block__button accent-block__button--right' do %>
+            See All
+          <% end %>
+        </div>
       <% end %>
     </div>
   </div>
