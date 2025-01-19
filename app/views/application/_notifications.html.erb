@@ -11,36 +11,7 @@
         </div>
       <% else %>
         <% notifications.each do |notification| %>
-          <%= link_to notification_path(notification.id), class: 'notification', data: { turbo: false } do %>
-            <% case notification.notification_type %>
-            <% when 'friend_request_sent' %>
-              <ion-icon role="presentation" name="send"></ion-icon>
-            <% when 'friend_request_received' %>
-              <ion-icon role="presentation" name="boat"></ion-icon>
-            <% when 'friend_request_they_accepted' %>
-              <ion-icon role="presentation" name="heart"></ion-icon>
-            <% when 'post_response' %>
-              <ion-icon role="presentation" name="chatbubble-ellipses"></ion-icon>
-            <% when 'added_to_message_thread' %>
-              <ion-icon role="presentation" name="people"></ion-icon>
-            <% when 'new_message' %>
-              <ion-icon role="presentation" name="mail-unread"></ion-icon>
-            <% when 'orgasm_credited_to_you' %>
-              <ion-icon role="presentation" name="ice-cream"></ion-icon>
-            <% when 'comment_on_your_link' %>
-              <ion-icon role="presentation" name="heart"></ion-icon>
-            <% when 'surrender_event' %>
-              <ion-icon role="presentation" name="ticket"></ion-icon>
-            <% when 'leash' %>
-              <iconify-icon icon="mdi:dog-service"></iconify-icon>
-            <% end %>
-            <div>
-              <p><%= notification.text %></p>
-              <%= time_tag notification.created_at do %>
-                <%= time_ago_in_words notification.created_at %> ago
-              <% end %>
-            </div>
-          <% end %>
+          <%= render 'notification', notification: %>
         <% end %>
 
         <%= button_to clear_notifications_path, method: 'delete' do %>

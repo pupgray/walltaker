@@ -1,0 +1,20 @@
+<div data-turbo-prefetch="false" class="task-tools">
+  <div class="right">
+    <%= button_to clear_notifications_path, method: :delete do %>
+      <ion-icon name="trash"></ion-icon>
+      Nuke 'em all
+    <% end %>
+  </div>
+</div>
+
+<h2>
+  <ion-icon name="notifications"></ion-icon>
+  All Notifications
+</h2>
+
+
+<div class="notifications__list">
+  <% @notifications.each do |notification| %>
+    <%= render 'notification', notification: %>
+  <% end %>
+</div>

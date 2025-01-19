@@ -2,6 +2,10 @@ class NotificationController < ApplicationController
   before_action :set_notification, only: %i[show]
   before_action :authorize_for_surrendered_accounts
 
+  def index
+    @notifications = current_user.notifications
+  end
+
   def show
     if @notification && (@notification.user.id == current_user.id)
       link = @notification.link
