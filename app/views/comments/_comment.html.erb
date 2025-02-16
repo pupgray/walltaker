@@ -11,7 +11,7 @@
   <p>
     <%= filtered_content %>
     <% images.each do |image| %>
-      <a target="_blank" href="https://e621.net/posts?tags=md5%3A<%= CGI.escape image[1] %>">
+      <a target="_blank" href="https://e621.net/posts?md5=<%= CGI.escape image[1] %>">
         <img src="<%= image[0] + (CGI.escape image[1]) + '.' + image[2] %>"/>
       </a>
     <% end %>
