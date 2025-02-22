@@ -193,7 +193,21 @@
           <span>WT Popout</span>
           <iconify-icon icon="token:rfox"></iconify-icon>
         <% when :unknown %>
-          <ion-icon role="presentation" name="help-circle-outline"></ion-icon>
+          <% if !link.last_ping_user_agent.nil? %>
+            <%
+              split = link.last_ping_user_agent.reverse.split("/", 2)
+              icon = split.length() == 2 ? split[0].reverse : nil
+              name = split.length() == 2 ? split[1].reverse : split[0].reverse
+            %>
+            <span><%= name %></span>
+            <% if icon.nil? || icon.empty? %>
+              <ion-icon role="presentation" name="help-circle-outline"></ion-icon>
+            <% else %>
+            <ion-icon name="<%= icon %>-outline"></ion-icon>
+            <% end%>
+          <% else %>
+            <ion-icon role="presentation" name="help-circle-outline"></ion-icon>
+          <% end %>
         <% end %>
       </div>
     </div>
