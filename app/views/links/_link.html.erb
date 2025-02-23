@@ -205,11 +205,14 @@
       <strong>
         <%= link.user.username %>
         <% if link.horny? %>
-          😍:
+          😍
+        <% elsif link.came? %>
+          💦 came
         <% elsif link.ok? && link.response_text == '' %>
           says thanks
-        <% elsif link.came? %>
-          💦 said while cumming:
+        <% end %>
+        <% if link.response_text != '' %>
+          :
         <% end %>
       </strong>
       <%= link.response_text %>
