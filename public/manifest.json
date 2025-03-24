@@ -1,0 +1,57 @@
+{
+    "name": "Walltaker",
+    "description": "Walltaker is an application which allows you to set the wallpaper of your friend's phones.",
+    "short_name": "WT",
+    "start_url": "/",
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "icons/ki_head.png",
+            "type": "image/png",
+            "sizes": "100x100"
+        },
+        {
+            "src": "icons/ki.png",
+            "type": "image/png",
+            "sizes": "any"
+        }
+    ],
+    "theme_color": "#ffb300",
+    "background_color": "#212121",
+    "screenshots": [
+        {
+            "src": "screenshots/guest_homepage_narrow.png",
+            "type": "image/png",
+            "sizes": "515x1143",
+            "form_factor": "narrow"
+        },
+        {
+            "src": "screenshots/guest_homepage_wide.png",
+            "type": "image/png",
+            "sizes": "1898x890",
+            "form_factor": "wide"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Browse",
+            "url": "/browse"
+        },
+        {
+            "name": "Links",
+            "url": "/links"
+        },
+        {
+            "name": "Friends",
+            "url": "/friends"
+        },
+        {
+            "name": "Messages",
+            "url": "/messages"
+        },
+        {
+            "name": "Logout",
+            "url": "/logout"
+        }
+    ]
+}
