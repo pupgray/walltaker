@@ -36,6 +36,8 @@ module LinksHelper
     return :pawslut if link_agent.include? 'PawSlut'
     return :collin if link_agent.include? 'umbrella Collin\'s Walltaker Setter Thing'
     return :pawbies if link_agent.include? 'WTPopOutViewer'
+    return :ios_iphone if link_agent.include? 'WalltakeriOS-iPhone-Shortcut (mikapika.)'
+    return :ios_ipad if link_agent.include? 'WalltakeriOS-iPad-Shortcut (mikapika.)'
     :unknown
   end
 
