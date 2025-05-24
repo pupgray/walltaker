@@ -475,8 +475,10 @@ h3 span.beta-tag {
 
 h2 > .online {
     font-size: 1rem;
-    transform: translateY(-0.9rem);
+    vertical-align: middle;
+    transform: none;
     display: inline-block;
+    padding-bottom: 0;
 }
 
 h2 ion-icon {
