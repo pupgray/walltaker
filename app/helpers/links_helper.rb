@@ -24,6 +24,8 @@ module LinksHelper
     return :wallpaper_engine if link_agent.include? 'Wallpaper-Engine-Client'
     return :automate if link_agent.include? 'walltaker-android-automate'
     return :arson_automate if link_agent.include? 'arson-walltaker-automate'
+    return :ios_iphone if link_agent.include? 'WalltakeriOS-iPhone-Shortcut (mikapika.)'
+    return :ios_ipad if link_agent.include? 'WalltakeriOS-iPad-Shortcut (mikapika.)'    
     return :ioswidget if link_agent.include? 'widgetExtension'
     return :swift if link_agent.include? 'CFNetwork/'
     return :android_changer if link_agent.include? 'Walltaker-Changer/'
@@ -36,8 +38,6 @@ module LinksHelper
     return :pawslut if link_agent.include? 'PawSlut'
     return :collin if link_agent.include? 'umbrella Collin\'s Walltaker Setter Thing'
     return :pawbies if link_agent.include? 'WTPopOutViewer'
-    return :ios_iphone if link_agent.include? 'WalltakeriOS-iPhone-Shortcut (mikapika.)'
-    return :ios_ipad if link_agent.include? 'WalltakeriOS-iPad-Shortcut (mikapika.)'
     :unknown
   end
 
