@@ -284,11 +284,12 @@ strong.online ion-icon {
 strong.online::after {
     content: '';
     display: inline-block;
-    width: 1ch;
-    height: 1ch;
+    width: 10px;
+    height: 10px;
     background: currentColor;
     border-radius: 100%;
     margin-left: 0.25rem;
+    vertical-align: 3px;    
 }
 
 strong.offline {
