@@ -1,8 +1,8 @@
 <%
   content = convert_all_e621_links_to_source_links message.content
   images_source = content.scan(/(https:\/\/static\d*\.e621.net\/data\/\w\w\/\w\w\/)(\w*)\.(jpg|png|gif)/)
-  videos_source = content.scan(/(https:\/\/static\d*\.e621.net\/data\/\w\w\/\w\w\/)(\w*)\.(webm)/)
-  filtered_content = content.gsub(/https:\/\/static\d*\.e621.net\/data\/\w\w\/\w\w\/\w*\.(jpg|png|webm|gif)/, '')
+  videos_source = content.scan(/(https:\/\/static\d*\.e621.net\/data\/\w\w\/\w\w\/)(\w*)\.(webm|mp4)/)
+  filtered_content = content.gsub(/https:\/\/static\d*\.e621.net\/data\/\w\w\/\w\w\/\w*\.(jpg|png|webm|mp4|gif)/, '')
 
   # DO NOT TRUST `images`! It's coming from users, and we need to filter EVERYTHING thru CGI.escape if it's not
   # heavily scoped by our Regex.
@@ -21,7 +21,7 @@
 
     <% videos_source.each do |video| %>
       <video controls>
-        <source src="<%= video[0] + (CGI.escape video[1]) + '.' + video[2] %>" type="video/webm"/>
+        <source src="<%= video[0] + (CGI.escape video[1]) + '.' + video[2] %>" type="video/<%= video[2] %>"/>
       </video>
     <% end %>
 
