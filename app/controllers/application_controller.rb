@@ -89,7 +89,7 @@ class ApplicationController < ActionController::Base
     notification_text = "#{link.user.username} did not like your post." if link.response_type == 'disgust'
     notification_text = "#{link.user.username} came to your post!" if link.response_type == 'came'
     notification_text = "#{link.user.username} says thanks" if link.response_type == 'ok'
-    notification_text = "#{notification_text} \"#{link.response_text}\"" unless link.response_type.nil?
+    notification_text = "#{notification_text} \"#{link.response_text}\"" unless link.response_type.nil? || link.response_text.empty?
     Notification.create user_id: link.set_by_id, notification_type: :post_response, text: notification_text, link: "/links/#{link.id}"
 
     # Log reaction in chat sidebar
