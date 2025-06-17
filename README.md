@@ -126,3 +126,26 @@ Get details about this user's status such as if they're online, a friend, or the
   "self": false // 🔐 If they are logged in as this api_key's user, requires api_key param.
 }
 ```
+
+## Setup
+
+For a quick development setup, use the provided Docker Compose file.
+
+First, copy `.env.dev`:
+
+```bash
+cp .env.dev .env
+```
+
+Then, run the setup:
+
+```bash
+docker compose run --rm web /ror/bin/setup
+```
+
+Finally, start the server:
+```
+docker compose up -d
+```
+
+The server will be available at `http://localhost:3000`.
