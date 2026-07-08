@@ -1,8 +1,8 @@
 <%
   content = convert_all_e621_links_to_source_links message.content
-  images_source = content.scan(/(https:\/\/static\d*\.e621.net\/data\/\w\w\/\w\w\/)(\w*)\.(jpg|png|gif)/)
+  images_source = content.scan(/(https:\/\/static\d*\.e621.net\/data\/\w\w\/\w\w\/)(\w*)\.(jpg|png|gif|webp)/)
   videos_source = content.scan(/(https:\/\/static\d*\.e621.net\/data\/\w\w\/\w\w\/)(\w*)\.(webm|mp4)/)
-  filtered_content = content.gsub(/https:\/\/static\d*\.e621.net\/data\/\w\w\/\w\w\/\w*\.(jpg|png|webm|mp4|gif)/, '')
+  filtered_content = content.gsub(/https:\/\/static\d*\.e621.net\/data\/\w\w\/\w\w\/\w*\.(jpg|png|webm|mp4|gif|webp)/, '')
 
   # DO NOT TRUST `images`! It's coming from users, and we need to filter EVERYTHING thru CGI.escape if it's not
   # heavily scoped by our Regex.
